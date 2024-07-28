@@ -17,6 +17,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.css" rel="stylesheet">
     <link href="{{ assets('css/app.css') }}" rel="stylesheet">
     @stack('styles')
     {{-- <style>
@@ -31,23 +32,28 @@
     <aside class="p-0 m-0">
         @include('admin.sidebar')
     </aside>
-    <main class="main-content">
+    <main class="main-content bg-gray-100">
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.js"></script>
     @stack('scripts')
     <script>
         $(document).ready(function() {
+            var sidebarActive = false;
+
             $('.toggle-btn').click(function() {
                 var el = $(this).find('i');
 
                 if (el.hasClass('active')) {
                     el.removeClass('active');
+                    sidebarActive = false;
                 } else {
                     el.addClass('active');
+                    sidebarActive = true;
                 }
                 activeSidebar();
             });
@@ -60,15 +66,26 @@
                     $('.sidebar a span').removeClass('active');
                     $('.title-sidebar span').removeClass('active');
                     $('.main-content').removeClass('active');
+                    sidebarActive = false;
                 } else {
                     sidebar.addClass('active');
                     $('.sidebar a span').addClass('active');
                     $('.title-sidebar span').addClass('active');
                     $('.main-content').addClass('active');
+                    sidebarActive = true;
                 }
             }
 
+            
+
+            $(window).resize(function(){
+                 if($(window).width() < 991 && sidebarActive === false){
+                     activeSidebar();
+                 }
+            })
+
             // activeSidebar();
+            $('#datatable').DataTable();
         });
     </script>
 </body>
