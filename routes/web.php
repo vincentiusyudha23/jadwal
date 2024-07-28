@@ -21,9 +21,16 @@ use App\Http\Controllers\ProfileController;
 
 // Route::get('/', [AdminController::class, 'index']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth','verified'])->prefix('admin')->name('admin.')->group(function(){
+    
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/dashboard', 'index')->name('dashboard');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
