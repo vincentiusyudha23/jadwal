@@ -16,4 +16,9 @@ class AdminController extends Controller
     {
         return view('admin.dashboard.index');
     }
+
+    public function karyawan()
+    {
+        return view('admin.karyawan.index');
+    }
 }

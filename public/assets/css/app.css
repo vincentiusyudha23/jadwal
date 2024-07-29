@@ -37,6 +37,34 @@ a {
     background: #212529;
 }
 
+.text-gray-100 {
+    color: #f8f9fa;
+}
+.text-gray-200 {
+    color: #e9ecef;
+}
+.text-gray-300 {
+    color: #dee2e6;
+}
+.text-gray-400 {
+    color: #ced4da;
+}
+.text-gray-500 {
+    color: #adb5bd;
+}
+.text-gray-600 {
+    color: #6c757d;
+}
+.text-gray-700 {
+    color: #495057;
+}
+.text-gray-800 {
+    color: #343a40;
+}
+.text-gray-900 {
+    color: #212529;
+}
+
 .main-content {
     padding-left: 240px;
     width: 100%;
@@ -150,6 +178,23 @@ a {
     transition: opacity 0.1s ease-in-out;
 }
 
+.card-tugas{
+    display: none;
+}
+
+.dropdown-menu li>.dropdown-item:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu li>.dropdown-item{
+    font-weight: bold;
+    color: var(--bs-gray-600);
+}
+.card-table{
+    max-width: 100%;
+}
+
 @media (max-width: 576px) {
     .main-content {
         padding-left: 0;
@@ -163,4 +208,16 @@ a {
         display: none;
         transition: 0.3s ease;
     }
+    .card-tugas{
+        display: block;
+    }
+    .table-tugas{
+        display: none;
+    }
+    .card-table{
+        max-width: 100%;
+        overflow-x: scroll;
+    }
 }
+
+

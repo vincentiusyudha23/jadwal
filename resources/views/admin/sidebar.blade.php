@@ -8,11 +8,11 @@
     {{-- <div class="w-100 border-top border-primary-subtle"></div> --}}
 
     <div class="sidebar">
-        <a class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('admin.dashboard') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <i class="las la-home mx-2 fs-3"></i>
             <span class="fw-semibold">Halaman Utama</span>
         </a>
-        <a class="text-white fs-5 sidebar-item">
+        <a href="{{ route('admin.karyawan') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.karyawan') ? 'active' : '' }}">
             <i class="las la-user-circle mx-2 fs-3"></i>
             <span class="fw-semibold">Data Karyawan</span>
         </a>

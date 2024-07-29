@@ -10,10 +10,12 @@
         </button>
         <ul class="dropdown-menu">
             <li>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <span onclick="event.preventDefault(); this.closest('form').submit();">Log Out</span>
-                </form>
+                <div class="dropdown-item">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <span onclick="event.preventDefault(); this.closest('form').submit();">Log Out</span>
+                    </form>
+                </div>
             </li>
         </ul>
     </div>
