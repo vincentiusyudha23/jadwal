@@ -18,7 +18,7 @@
       <td>hanggar1234</td>
       <td>
         <div class="d-flex gap-2 justify-content-center">
-          <button class="btn btn-sm btn-warning" type="button">
+          <button id="btn-edit-karyawan" class="btn btn-sm btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#edit-karyawan-form">
             <i class="fa-solid fa-pen-to-square text-white"></i>
           </button>
           <button class="btn btn-sm btn-danger" type="button">

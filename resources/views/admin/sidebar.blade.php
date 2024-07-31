@@ -16,7 +16,7 @@
             <i class="las la-user-circle mx-2 fs-3"></i>
             <span class="fw-semibold">Data Karyawan</span>
         </a>
-        <a class="text-white fs-5 sidebar-item">
+        <a href="{{ route('admin.karyawan.jadwal') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.karyawan.jadwal') ? 'active' : '' }}">
             <i class="las la-clock mx-2 fs-3"></i>
             <span class="fw-semibold">Jadwal Karyawan</span>
         </a>

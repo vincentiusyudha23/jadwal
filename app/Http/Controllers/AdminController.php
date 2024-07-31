@@ -21,4 +21,9 @@ class AdminController extends Controller
     {
         return view('admin.karyawan.index');
     }
+
+    public function jadwal()
+    {
+        return view('admin.karyawan.jadwal');
+    }
 }

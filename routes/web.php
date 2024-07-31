@@ -31,6 +31,7 @@ Route::middleware(['auth','verified'])->prefix('admin')->name('admin.')->group(f
     Route::controller(AdminController::class)->group(function(){
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/karyawan', 'karyawan')->name('karyawan');
+        Route::get('/jadwal', 'jadwal')->name('karyawan.jadwal');
     });
 });
 
