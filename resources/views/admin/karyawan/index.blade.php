@@ -26,7 +26,7 @@
                                     <input class="form-control" name="username" type="text" placeholder="Username">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <textarea class="form-control" name="password" type="password" placeholder="Password">
+                                    <input class="form-control" name="password" type="password" placeholder="Password">
                                 </div>
                             </div>
                         </div>
