@@ -26,4 +26,9 @@ class AdminController extends Controller
     {
         return view('admin.karyawan.jadwal');
     }
+
+    public function profile()
+    {
+        return view('admin.auth.profile');
+    }
 }
