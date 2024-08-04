@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AdminController extends Controller
 {
@@ -30,5 +32,10 @@ class AdminController extends Controller
     public function profile()
     {
         return view('admin.auth.profile');
+    }
+
+    public function history()
+    {
+        return view('admin.history.index');
     }
 }

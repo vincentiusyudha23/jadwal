@@ -195,6 +195,23 @@ a {
     max-width: 100%;
 }
 
+.card-profile{
+    width: 50%;
+}
+
+/* Media Breakpoint max lg  */
+@media (max-width: 992px) { 
+    .card-profile{
+        width: 100%;
+    }
+}
+
+/* Media Breakpoint max md  */
+@media (max-width: 768px) { 
+    
+}
+
+/* Media Breakpoint max sm  */
 @media (max-width: 576px) {
     .main-content {
         padding-left: 0;
