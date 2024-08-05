@@ -31,8 +31,11 @@
                                 <div class="form-group mb-3">
                                     <select class="form-select" name="nama_karyawan" aria-label="Default select example">
                                         <option selected disabled>Nama Karyawan</option>
-                                        <option value="1">Hanggar</option>
-                                        <option value="2">Jati</option>
+                                        @if (!empty($karyawans))
+                                            @foreach ($karyawans ?? [] as $karyawan)
+                                                <option value="{{ $karyawan?->id }}">{{ $karyawan?->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>

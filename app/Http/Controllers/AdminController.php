@@ -124,7 +124,9 @@ class AdminController extends Controller
 
     public function jadwal()
     {
-        return view('admin.karyawan.jadwal');
+        $karyawans = User::where('role', 'karyawan')->select('name', 'id')->latest()->get();
+
+        return view('admin.karyawan.jadwal', compact('karyawans'));
     }
 
     public function profile()

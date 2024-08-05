@@ -29,17 +29,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'enc_password' => Crypt::encryptString('admin')
         ]);
-        
-        $karyawan = \App\Models\User::factory()->create([
-            'name' => 'Hanggar Jati',
-            'id_karyawan' => '1231231123',
-            'username' => 'hanggar',
-            'role' => 'karyawan',
-            'password' => Hash::make('hanggar123'),
-            'enc_password' => Crypt::encryptString('hanggar123')
-        ]);
 
         $user->assignRole('admin');
-        $karyawan->assignRole('karyawan');
     }
 }
