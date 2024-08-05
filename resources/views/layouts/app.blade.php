@@ -42,6 +42,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
     <script>
         $(document).ready(function() {

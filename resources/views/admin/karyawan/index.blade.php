@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="d-flex w-100 justify-content-end">
-                            <button class="btn btn-success w-100" type="submit">
+                            <button class="btn btn-success w-100" type="submit" id="submit-new-karyawan">
                                 <span class="fw-bold fs-6">Simpan</span>
                             </button>
                         </div>
@@ -82,35 +82,39 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Karyawan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="nama" class="form-label">Nama Karyawan</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="nama" id="nama" value="">
+                <form method="POST" class="edit-karyawan-form">
+                    @csrf
+                    <input type="hidden" name="id" value="">
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label for="nama" class="form-label">Nama Karyawan</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="nama" id="nama" value="">
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_karyawan" class="form-label">ID Karyawan</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="id_karyawan" id="id_karyawan" value="">
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="username" id="username" value="">
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="password" id="password" value="">
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-2">
-                        <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" name="id_karyawan" id="id_karyawan" value="">
-                        </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success w-100">Simpan</button>
                     </div>
-                    <div class="mb-2">
-                        <label for="username" class="form-label">Username</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="username" id="username" value="">
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" name="password" id="password" value="">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success w-100">Simpan</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -144,49 +148,62 @@
                     toastr.warning('Isi Terlebih Dahulu Username dan ID Karyawan.');
                 }
             });
-            $('button[type="submit"]').on('click', function(){
+            $('#submit-new-karyawan').on('click', function(){
                 var spinner = '<i class="fa-solid fa-spinner fa-spin"></i>';
                 $(this).html(spinner).addClass('disabled');
             });
-            // $('#karyawan_form').on('submit', function(e) {
-            //     e.preventDefault();
-            //     var el = $(this);
-            //     var formData = new FormData(this);
-            //     var btn = el.find('button[type="submit"]');
-            //     var spinner = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '{{ route('admin.karyawan.store') }}',
-            //         cache: false,
-            //         contentType: false,
-            //         processData: false,
-            //         data: formData,
-            //         beforeSend: function() {
-            //             btn.html(spinner);
-            //         },
-            //         success: function(response) {
-            //             if (response.type == 'success') {
-            //                 var msg_success = $('.msg-success');
-            //                 msg_success.removeClass('d-none');
-            //                 msg_success.text(response.msg);
-            //             }
-            //         },
-            //         error: function(jqXHR, textStatus, errorThrown) {
-            //             var errors = jqXHR.responseJSON.errors;
-            //             if (errors) {
-            //                 var msg = $('.msg-error');
-            //                 msg.removeClass('d-none');
-            //                 $.each(errors, function(field, message) {
-            //                     msg.find('ul').append('<li>'+message+'</li>');
-            //                 })
-            //             }
-            //         },
-            //         complete: function() {
-            //             btn.find('i').remove();
-            //             btn.text('Simpan');
-            //         }
-            //     });
-            // });
+            
+            $(document).on('click', '#btn-edit-karyawan', function(){
+                var el = $(this);
+                var id = el.data('id');
+                var name = el.data('nama');
+                var id_karyawan = el.data('id_karyawan');
+                var username = el.data('username');
+                var password = el.data('password');
+
+                let form = $('#edit-karyawan-form');
+                form.find('input[name="id"]').val(id);
+                form.find('input[name="nama"]').val(name);
+                form.find('input[name="id_karyawan"]').val(id_karyawan);
+                form.find('input[name="username"]').val(username);
+                form.find('input[name="password"]').val(password);
+            });
+
+            $('.edit-karyawan-form').on('submit', function(e){
+                e.preventDefault();
+                var el = $(this);
+                var formData = new FormData(this);
+                var btn = el.find('button[type="submit"]');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route("admin.karyawan.update") }}',
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    beforeSend: function(){
+                        btn.html('<i class="fa-solid fa-spinner fa-spin"></i>');
+                        btn.addClass('disabled');
+                    },
+                    success: function(response){
+                        if(response.type === 'success'){
+                            toastr.success('Berhasil Memperbarui Data');
+                            $('.table-data-karyawan').html(response.markup);
+                            $('.table-data-karyawan').DataTable();
+                            $('#edit-karyawan-form').find('button[aria-label="Close"]').click();
+                        }
+                    },
+                    error: function(response){
+
+                    },
+                    complete: function(){
+                        btn.find('i').remove();
+                        btn.text('Simpan');
+                        btn.removeClass('disabled');
+                    }
+                });
+            });
         });
     </script>
 @endpush

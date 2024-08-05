@@ -26,11 +26,13 @@ use App\Http\Controllers\ProfileController;
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function(){
+Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(function(){
     Route::controller(AdminController::class)->group(function(){
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/karyawan', 'karyawan')->name('karyawan');
         Route::post('/karyawan-store', 'store_karyawan')->name('karyawan.store');
+        Route::post('/karyawan-update', 'update_karyawan')->name('karyawan.update');
+        Route::post('/karyawan-delete', 'delete_karyawan')->name('karyawan.delete');
         Route::get('/jadwal', 'jadwal')->name('karyawan.jadwal');
         Route::get('/profile', 'profile')->name('profile');
         Route::get('/riwayat-jadwal', 'history')->name('history');
