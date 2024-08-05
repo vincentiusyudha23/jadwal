@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
@@ -16,7 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
+        Role::updateOrCreate(['name' => 'admin'],['name' => 'admin']);
+        Role::updateOrCreate(['name' => 'karyawan'],['name' => 'karyawan']);
+
+        $user = \App\Models\User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
             'username' => 'admin',
@@ -26,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'enc_password' => Crypt::encryptString('admin')
         ]);
         
-        \App\Models\User::factory()->create([
+        $karyawan = \App\Models\User::factory()->create([
             'name' => 'Hanggar Jati',
             'id_karyawan' => '1231231123',
             'username' => 'hanggar',
@@ -34,5 +38,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('hanggar123'),
             'enc_password' => Crypt::encryptString('hanggar123')
         ]);
+
+        $user->assignRole('admin');
+        $karyawan->assignRole('karyawan');
     }
 }

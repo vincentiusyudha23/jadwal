@@ -2,6 +2,15 @@
 
 @section('title', 'Halaman Utama')
 
+@push('styles')
+    <style>
+        .input-group .input-group-text:hover {
+            cursor: pointer;
+            background: rgb(0, 0, 0, 0.1);
+        }
+    </style>
+@endpush
+
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="py-4">
@@ -11,22 +20,43 @@
                         <p class="fs-5 text-gray-600 fw-bold">Input Data Karyawan</p>
                         <button type="button" class="btn btn-sm btn-info fw-bold text-light">Import</button>
                     </div>
-                    <form>
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="px-4 m-0">
+                                @foreach ($errors->all() ?? [] as $msg)
+                                    <li>{{ $msg }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success msg-success" role="alert">{{ session('success') }}</div>
+                    @endif
+                    <form id="karyawan_form" method="POST" action="{{ route('admin.karyawan.store') }}">
+                        @csrf
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="nama" type="text" placeholder="Nama Karyawan">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="nama_karyawan_new" name="nama" type="text"
+                                        placeholder="Nama Karyawan" required value="{{ old('nama') }}">
                                 </div>
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="id_karyawan" type="text" placeholder="ID Karyawan">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="id_karyawan_new" name="id_karyawan" type="text"
+                                        placeholder="ID Karyawan" required value="{{ old('id_karyawan') }}">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="username" type="text" placeholder="Username">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="username" name="username" type="text"
+                                        placeholder="Username" required value="{{ old('username') }}">
+                                    <span class="input-group-text" id="add_value_username"><i
+                                            class="fa-solid fa-plus"></i></span>
                                 </div>
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="password" type="password" placeholder="Password">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="password" name="password" type="text"
+                                        placeholder="Password" required value="{{ old('password') }}">
+                                    <span class="input-group-text" id="add_value_password"><i
+                                            class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -85,3 +115,78 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#add_value_username').on('click', function() {
+                let nama = $('#nama_karyawan_new').val();
+                if (nama.length > 0) {
+                    let namaPart = nama.split(' ');
+                    let valNama = namaPart[0];
+
+                    $(this).prev().val(valNama.toLowerCase());
+                } else {
+                    toastr.warning('Isi Terlebih Dahulu Username dan ID Karyawan.');
+                }
+            });
+
+            $('#add_value_password').on('click', function() {
+                let nama = $('#nama_karyawan_new').val();
+                let id_karyawan = $('#id_karyawan_new').val();
+
+                if (nama.length > 0 && id_karyawan.length > 0) {
+                    let namaPart = nama.split(' ');
+                    let valNama = namaPart[0];
+
+                    $(this).prev().val(valNama.toLowerCase() + id_karyawan);
+                } else {
+                    toastr.warning('Isi Terlebih Dahulu Username dan ID Karyawan.');
+                }
+            });
+            $('button[type="submit"]').on('click', function(){
+                var spinner = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                $(this).html(spinner).addClass('disabled');
+            });
+            // $('#karyawan_form').on('submit', function(e) {
+            //     e.preventDefault();
+            //     var el = $(this);
+            //     var formData = new FormData(this);
+            //     var btn = el.find('button[type="submit"]');
+            //     var spinner = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '{{ route('admin.karyawan.store') }}',
+            //         cache: false,
+            //         contentType: false,
+            //         processData: false,
+            //         data: formData,
+            //         beforeSend: function() {
+            //             btn.html(spinner);
+            //         },
+            //         success: function(response) {
+            //             if (response.type == 'success') {
+            //                 var msg_success = $('.msg-success');
+            //                 msg_success.removeClass('d-none');
+            //                 msg_success.text(response.msg);
+            //             }
+            //         },
+            //         error: function(jqXHR, textStatus, errorThrown) {
+            //             var errors = jqXHR.responseJSON.errors;
+            //             if (errors) {
+            //                 var msg = $('.msg-error');
+            //                 msg.removeClass('d-none');
+            //                 $.each(errors, function(field, message) {
+            //                     msg.find('ul').append('<li>'+message+'</li>');
+            //                 })
+            //             }
+            //         },
+            //         complete: function() {
+            //             btn.find('i').remove();
+            //             btn.text('Simpan');
+            //         }
+            //     });
+            // });
+        });
+    </script>
+@endpush

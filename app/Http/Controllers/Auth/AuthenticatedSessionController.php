@@ -30,6 +30,25 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
+        
+        // $this->validate($request,[
+        //     'username' => 'required|string',
+        //     'password' => 'required|string'
+        // ],[
+        //     'username.required' => 'Username is Required',
+        //     'password.required' => 'Password id Required'
+        // ]);
+
+        // $login = [
+        //     'username' => $request->username,
+        //     'password' => $request->password
+        // ];
+
+        // if(Auth::attempt($login, $request->get('remember')) && Auth::user()->hasRole('admin')){
+        //     return redirect()->intended(RouteServiceProvider::HOME);
+        // }
+
+        // return redirect()->route('first_page')->with('failed', 'Username/Password Salah.');
     }
 
     /**

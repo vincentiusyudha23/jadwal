@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 if (!function_exists('assets')) {
     function assets($param) {
         // Logika helper Anda
@@ -20,6 +23,19 @@ if(!function_exists('getCurrentTimeOfDay')){
             return 'Selamat Sore, '.$user;
         } else {
             return 'Selamat Malam, '.$user;
+        }
+    }
+}
+
+if(!function_exists('decryptPassword')){
+    function decryptPassword($password = '')
+    {
+        try {
+            $password = Crypt::decryptString($password);
+
+            return $password;
+        } catch (DecryptException $e) {
+            return $e->getMessage();
         }
     }
 }

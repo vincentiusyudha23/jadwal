@@ -8,7 +8,7 @@
             <div class="card shadow-sm card-profile">
                 <div class="card-body p-4">
                     <div class="w-100 d-flex justify-content-between align-item-center mb-3">
-                        <span class="text-gray-600 fs-5">Edit Profile</span>
+                        <span class="text-gray-600 fs-5">Ubah Password</span>
                     </div>
                     <div class="card-content">
                         <form>
@@ -17,11 +17,11 @@
                                     <div class="mb-3">
                                         <label class="form-label text-gray-600 fw-bold" for="username">Username</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="username" name="username" value="{{ Auth::user()->username }}">
+                                            <input type="text" readonly class="form-control" id="username" name="username" value="{{ Auth::user()->username }}">
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label text-gray-600 fw-bold" for="password">Password</label>
+                                        <label class="form-label text-gray-600 fw-bold" for="password">Password Baru</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="password" name="password" >
                                         </div>

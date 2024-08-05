@@ -18,6 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
     <link href="{{ assets('css/app.css') }}" rel="stylesheet">
     @stack('styles')
     {{-- <style>
@@ -40,6 +41,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
     @stack('scripts')
     <script>
         $(document).ready(function() {
@@ -76,12 +78,12 @@
                 }
             }
 
-            
 
-            $(window).resize(function(){
-                 if($(window).width() < 991 && sidebarActive === false){
-                     activeSidebar();
-                 }
+
+            $(window).resize(function() {
+                if ($(window).width() < 991 && sidebarActive === false) {
+                    activeSidebar();
+                }
             })
 
             // activeSidebar();

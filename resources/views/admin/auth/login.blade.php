@@ -52,7 +52,9 @@
                     </div>
                     @if ($errors->get('username') || $errors->get('password'))
                         <div class="alert alert-danger" role="alert">
-                            A simple danger alert—check it out!
+                            @foreach ($errors->all() as $msg)
+                                {{ $msg }}
+                            @endforeach
                         </div>
                     @endif
                     <form class="w-100" action="{{ route('login') }}" method="POST">
@@ -89,12 +91,12 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function(){
-            $('#show-password').on('click', function(){
+        $(document).ready(function() {
+            $('#show-password').on('click', function() {
                 var el = $(this);
                 var checked = el.find('input[type="checkbox"]');
 
-                if(checked.prop('checked')){
+                if (checked.prop('checked')) {
                     checked.attr('checked', false);
                     $('input[name="password"]').attr('type', 'password');
                 } else {

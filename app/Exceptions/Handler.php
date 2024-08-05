@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -27,4 +28,13 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // public function render($request, Throwable $e)
+    // {
+    //     if($e instanceof UnauthorizedException){
+    //         return redirect()->route('first_page')->with('failed', 'Anda Tidak Punya Akses ke Halaman ini.');
+    //     }
+
+    //     return parent::render($request, $e);
+    // }
 }
