@@ -34,8 +34,14 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::post('/karyawan-update', 'update_karyawan')->name('karyawan.update');
         Route::post('/karyawan-delete', 'delete_karyawan')->name('karyawan.delete');
         Route::get('/jadwal', 'jadwal')->name('karyawan.jadwal');
+        Route::post('/jadwal-store', 'store_jadwal')->name('karyawan.jadwal.store');
+        Route::post('/jadwal-update', 'update_jadwal')->name('karyawan.jadwal.update');
+        Route::post('/jadwal-delete', 'delete_jadwal')->name('karyawan.jadwal.delete');
+        Route::get('/jadwal/{id}', 'show_jadwal')->name('karyawan.jadwal.show');
         Route::get('/profile', 'profile')->name('profile');
+        Route::put('/update-password', 'updatePassword')->name('profile.update.password');
         Route::get('/riwayat-jadwal', 'history')->name('history');
+        Route::get('/riwayat-jadwal/{tanggal}', 'getHistory')->name('history.show');
     });
 });
 

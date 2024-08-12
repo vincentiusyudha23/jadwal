@@ -35,7 +35,23 @@ if(!function_exists('decryptPassword')){
 
             return $password;
         } catch (DecryptException $e) {
-            return $e->getMessage();
+            return \Log::error($e->getMessage());
+        }
+    }
+}
+
+if(!function_exists('statusJadwal')){
+    function statusJadwal($status = ''){
+        switch ($status) {
+            case 0:
+                return 'Belum Selesai';
+                break;
+            case 1:
+                return 'Selesai';
+                break;
+            default:
+                return $status;
+                break;
         }
     }
 }

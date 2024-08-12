@@ -1,13 +1,13 @@
-@props(['id_karyawan', 'route', 'method', 'table'])
+@props(['data_id', 'route', 'method', 'table'])
 
-<button class="btn btn-sm btn-danger" type="button" id="btn-delete-karyawan{{ $id_karyawan ?? '' }}"
-    data-id="{{ $id_karyawan ?? '' }}">
+<button class="btn btn-sm btn-danger" type="button" id="btn-delete-karyawan{{ $data_id ?? '' }}"
+    data-id="{{ $data_id ?? '' }}">
     <i class="fa-solid fa-trash text-white"></i>
 </button>
 
 @push('scripts')
     <script>
-        $(document).on('click', '#btn-delete-karyawan{{ $id_karyawan ?? '' }}', function() {
+        $(document).on('click', '#btn-delete-karyawan{{ $data_id ?? '' }}', function() {
             Swal.fire({
                 title: "Yakin Hapus?",
                 icon: "warning",
@@ -17,7 +17,7 @@
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     var el = $(this);
-                    var id_karyawan = el.data('id');
+                    var data_id = el.data('id');
 
                     Swal.fire({
                         title: 'Please Wait...',
@@ -33,7 +33,7 @@
                         type: '{{ $method }}',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            id_karyawan: id_karyawan
+                            data_id: data_id
                         },
                         success: function(response) {
                             Swal.hideLoading();

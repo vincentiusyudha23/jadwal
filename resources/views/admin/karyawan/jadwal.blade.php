@@ -4,48 +4,52 @@
 
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
-        <div class="py-4">
+        <div class="py-2">
+            <nav aria-label="breadcrumb" class="p-0 mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Jadwal Karyawan</li>
+                </ol>
+            </nav>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-between align-items-center">
                         <p class="text-gray-600 fw-bold fs-5">Input Jadwal Baru</p>
                     </div>
-                    <form>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <select class="form-select" name="hari" aria-label="Default select example">
-                                        <option selected disabled>Hari</option>
-                                        <option value="senin">Senin</option>
-                                        <option value="selasa">Selasa</option>
-                                        <option value="rabu">Rabu</option>
-                                        <option value="kamis">Kamis</option>
-                                        <option value="jumat">Jumat</option>
-                                        <option value="sabtu">Sabtu</option>
-                                        <option value="minggu">Minggu</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="tanggal" type="date" placeholder="Tanggal">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <select class="form-select" name="nama_karyawan" aria-label="Default select example">
-                                        <option selected disabled>Nama Karyawan</option>
-                                        @if (!empty($karyawans))
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="px-4 m-0">
+                                @foreach ($errors->all() ?? [] as $msg)
+                                    <li>{{ $msg }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form action="{{ route('admin.karyawan.jadwal.store') }}" method="POST">
+                        @csrf
+                        <div class="w-100">
+                            <div class="row mb-3">
+                                <div class="col-12 col-lg-6">
+                                    <div class="input-group">
+                                        <select class="form-select" name="karyawan" aria-label="Default select example">
+                                            <option disabled selected>Pilih Karyawan</option>
                                             @foreach ($karyawans ?? [] as $karyawan)
-                                                <option value="{{ $karyawan?->id }}">{{ $karyawan?->name }}</option>
+                                                <option value="{{ $karyawan->id }}">{{ $karyawan->name }}</option>
                                             @endforeach
-                                        @endif
-                                    </select>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="input-group">
+                                        <input class="form-control" type="date" name="tanggal">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input class="form-control" name="tujuan" type="text" placeholder="Tujuan">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <textarea class="form-control" name="tugas" style="height: 100%;" placeholder="Tugas"></textarea>
-                                </div>
+                            <div class="input-group mb-3">
+                                <input class="form-control" type="text" name="tujuan" placeholder="Tujuan...">
+                            </div>
+                            <div class="input-group mb-3">
+                                <textarea class="form-control" name="tugas" placeholder="Tugas..."></textarea>
                             </div>
                         </div>
                         <div class="d-flex w-100 justify-content-end">
@@ -70,51 +74,12 @@
             </div>
         </div>
     </x-navbar-admin>
-    <div class="modal fade" id="edit-jadwal-form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Jadwal</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form>
-                    <div class="modal-body">
-                        <div class="form-group mb-3">
-                            <select class="form-select" name="hari" aria-label="Default select example">
-                                <option selected disabled>Hari</option>
-                                <option value="senin">Senin</option>
-                                <option value="selasa">Selasa</option>
-                                <option value="rabu">Rabu</option>
-                                <option value="kamis">Kamis</option>
-                                <option value="jumat">Jumat</option>
-                                <option value="sabtu">Sabtu</option>
-                                <option value="minggu">Minggu</option>
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <input class="form-control" name="tanggal" type="date" placeholder="Tanggal">
-                        </div>
-                        <div class="form-group mb-3">
-                            <select class="form-select" name="nama_karyawan" aria-label="Default select example">
-                                <option selected disabled>Nama Karyawan</option>
-                                <option value="1">Hanggar</option>
-                                <option value="2">Jati</option>
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <input class="form-control" name="tujuan" type="text" placeholder="Tujuan">
-                        </div>
-                        <div class="form-group mb-3">
-                            <textarea class="form-control" name="tugas" style="height: 100%;" placeholder="Tugas"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success w-100" type="submit">
-                            <span class="fw-bold fs-6">Simpan</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection
+
+@push('scripts')
+    @if (session('success'))
+        <script>
+            toastr.success('{{ session("success") }}');
+        </script>
+    @endif
+@endpush

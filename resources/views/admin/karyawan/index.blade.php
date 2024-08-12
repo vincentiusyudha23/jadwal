@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Halaman Utama')
+@section('title', 'Data Karyawan')
 
 @push('styles')
     <style>
@@ -13,7 +13,13 @@
 
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
-        <div class="py-4">
+        <div class="py-2">
+            <nav aria-label="breadcrumb" class="p-0 mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Data Karyawan</li>
+                </ol>
+            </nav>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-between align-items-center">
@@ -48,13 +54,13 @@
                             <div class="col-12 col-md-6">
                                 <div class="input-group mb-3">
                                     <input class="form-control" id="username" name="username" type="text"
-                                        placeholder="Username" required value="{{ old('username') }}">
+                                        placeholder="Username" value="{{ old('username') }}">
                                     <span class="input-group-text" id="add_value_username"><i
                                             class="fa-solid fa-plus"></i></span>
                                 </div>
                                 <div class="input-group mb-3">
                                     <input class="form-control" id="password" name="password" type="text"
-                                        placeholder="Password" required value="{{ old('password') }}">
+                                        placeholder="Password" value="{{ old('password') }}">
                                     <span class="input-group-text" id="add_value_password"><i
                                             class="fa-solid fa-plus"></i></span>
                                 </div>

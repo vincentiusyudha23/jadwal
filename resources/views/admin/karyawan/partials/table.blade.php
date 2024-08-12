@@ -30,7 +30,7 @@
                                 data-bs-target="#edit-karyawan-form">
                                 <i class="fa-solid fa-pen-to-square text-white"></i>
                             </button>
-                            <x-button-delete table="table-data-karyawan" :id_karyawan="$karyawan->id" :route="route('admin.karyawan.delete')" method="POST"/>
+                            <x-button-delete table="table-data-karyawan" :data_id="$karyawan->id" :route="route('admin.karyawan.delete')" method="POST"/>
                             {{-- <button class="btn btn-sm btn-danger" type="button" id="btn-delete-karyawan" data-id="{{ $karyawan->id }}">
                                 <i class="fa-solid fa-trash text-white"></i>
                             </button> --}}

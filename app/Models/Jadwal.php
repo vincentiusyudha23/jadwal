@@ -11,10 +11,11 @@ class Jadwal extends Model
     use HasFactory;
 
     protected $table = 'jadwals';
-    protected $fillable = ['id_karyawan', 'hari', 'tanggal', 'tujuan', 'tugas'];
+    protected $fillable = ['id_karyawan','tanggal', 'tujuan', 'tugas', 'status'];
+    protected $casts = [ 'tanggal' => 'datetime'];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_karyawan', 'id');
     }
 }

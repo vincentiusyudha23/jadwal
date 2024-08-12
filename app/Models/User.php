@@ -49,8 +49,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function scopeHasKaryawan($query)
+    {
+        return $query->whereHas('roles', function($query){
+            $query->where('name', 'karyawan');
+        });
+    }
+
     public function jadwal()
     {
-        return $this->hasMany(Jadwal::class);
+        return $this->hasMany(Jadwal::class, 'id_karyawan', 'id');
     }
 }

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_karyawan')->references('id')->on('users')->cascadeOnDelete();
-            $table->string('hari');
             $table->date('tanggal');
-            $table->string('tujuan');
-            $table->longText('tugas');
+            $table->string('tujuan')->nullable();
+            $table->longText('tugas')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

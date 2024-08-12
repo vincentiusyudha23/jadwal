@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'role' => 'admin',
             'id_karyawan' => '1234567890',
-            'password' => Hash::make('admin'),
-            'enc_password' => Crypt::encryptString('admin')
+            'password' => Hash::make('admin12345'),
+            'enc_password' => Crypt::encryptString('admin12345')
         ]);
 
         $user->assignRole('admin');
