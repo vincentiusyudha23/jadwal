@@ -21,6 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/css-skeletons@1.0.7/dist/css-skeletons.min.css" />
     <link href="{{ assets('css/app.css') }}" rel="stylesheet">
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
     @stack('styles')
     {{-- <style>
         .title-sidebar.active{
@@ -44,6 +45,7 @@
     <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.0/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
     @stack('scripts')
     <script>
         $(document).ready(function() {
@@ -92,6 +94,11 @@
             $('#datatable').DataTable();
         });
     </script>
+    @if (session('failed.role'))
+        <script>
+            toastr.error("{{ session('failed.role') }}")
+        </script>
+    @endif
 </body>
 
 </html>

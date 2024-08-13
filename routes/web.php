@@ -4,6 +4,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +17,6 @@ use App\Http\Controllers\ProfileController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/', [AdminController::class, 'index']);
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(function(){
     Route::controller(AdminController::class)->group(function(){
@@ -42,14 +34,37 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::put('/update-password', 'updatePassword')->name('profile.update.password');
         Route::get('/riwayat-jadwal', 'history')->name('history');
         Route::get('/riwayat-jadwal/{tanggal}', 'getHistory')->name('history.show');
+
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['web','role:karyawan'])->prefix('karyawan')->name('karyawan.')->group(function(){
+    Route::controller(KaryawanController::class)->group(function(){
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/show-jadwal/{id}', 'show_jadwal')->name('jadwal.show');
+        Route::post('/upload-image', 'uploaderImage')->name('upload.image');
+        Route::post('/update-jadwal', 'update_jadwal')->name('jadwal.update');
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    });
 });
+
+Route::middleware('guest')->group(function(){
+
+    Route::get('/', [AuthenticatedSessionController::class, 'login_karyawan'])->name('firstpage_karyawan');
+    Route::post('/login', [AuthenticatedSessionController::class, 'storeKaryawan'])->name('login.karyawan');
+
+    Route::prefix('admin')->group(function(){
+        Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('first_page');
+        Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
+    });
+});
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 Route::get('/deploy', [Controller::class, 'deploy']);
 

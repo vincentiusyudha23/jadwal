@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\MediaImage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
@@ -53,5 +54,37 @@ if(!function_exists('statusJadwal')){
                 return $status;
                 break;
         }
+    }
+}
+
+if(!function_exists('formatBytes')){
+    function formatBytes($size,
+        $precision = 2)
+    {
+        $base = log($size, 1024);
+        $suffixes = ['',
+            'KB',
+            'MB',
+            'GB',
+            'TB'];
+
+        return round(1024 ** ($base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+    }
+}
+
+if(!function_exists('get_data_image')){
+    function get_data_image($id){
+        $image = MediaImage::find($id);
+
+        $data = [];
+        
+        if($image){
+            $data = [
+                'alt' => $image->title,
+                'img_url' => asset('storage/media/'.$image->path)
+            ];
+        }
+
+        return $data;
     }
 }

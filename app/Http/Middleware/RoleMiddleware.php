@@ -17,7 +17,7 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role): Response
     {
         if(!Auth::check() || !Auth::user()->hasRole($role)){
-            return redirect()->route('first_page')->with('failed', 'Anda tidak punya akses ke halaman '.$role);
+            return redirect()->back()->with('failed.role', 'Anda tidak punya akses ke halaman '.$role);
         }
         return $next($request);
     }

@@ -30,25 +30,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
-        
-        // $this->validate($request,[
-        //     'username' => 'required|string',
-        //     'password' => 'required|string'
-        // ],[
-        //     'username.required' => 'Username is Required',
-        //     'password.required' => 'Password id Required'
-        // ]);
-
-        // $login = [
-        //     'username' => $request->username,
-        //     'password' => $request->password
-        // ];
-
-        // if(Auth::attempt($login, $request->get('remember')) && Auth::user()->hasRole('admin')){
-        //     return redirect()->intended(RouteServiceProvider::HOME);
-        // }
-
-        // return redirect()->route('first_page')->with('failed', 'Username/Password Salah.');
     }
 
     /**
@@ -56,12 +37,28 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user()->hasRole('admin');
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return $user ? redirect('/admin') : redirect('/');
+    }
+
+    public function login_karyawan(): View
+    {
+        return view('karyawan.auth.login');
+    }
+
+    public function storeKaryawan(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticateKaryawan();
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(RouteServiceProvider::HOME_KARYAWAN);
     }
 }

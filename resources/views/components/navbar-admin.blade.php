@@ -11,7 +11,7 @@
         <ul class="dropdown-menu">
             <li>
                 <div class="dropdown-item">
-                    <form method="POST" class="w-100" action="{{ route('logout') }}">
+                    <form method="POST" class="w-100" action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
                         @csrf
                         <span class="btn btn-sm w-100"
                             onclick="event.preventDefault(); this.closest('form').submit();">Log Out</span>
@@ -26,7 +26,7 @@
     <button type="button" class="btn text-white btn-menu">
         <i class="fa-solid fa-bars fa-xl"></i>
     </button>
-    <form method="POST" action="{{ route('logout') }}">
+    <form method="POST" action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
         @csrf
         <button type="submit" class="btn text-white">
             <i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
