@@ -235,7 +235,7 @@ class AdminController extends Controller
         return view('admin.auth.profile');
     }
 
-    public function updatePassword(Request $request): RedirectResponse
+    public function updatePassword(Request $request)
     {
         $validated = $request->validateWithBag('updatePassword', [
             'username' => ['required'],

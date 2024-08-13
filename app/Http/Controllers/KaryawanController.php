@@ -8,6 +8,10 @@ use App\Models\MediaImage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\Rules\Password;
 
 class KaryawanController extends Controller
 {
@@ -98,5 +102,51 @@ class KaryawanController extends Controller
                 }
             }
         }
+    }
+
+    public function profile()
+    {
+        return view('karyawan.auth.profile');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'username' => ['required'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+            'enc_password' => Crypt::encryptString($validated['password'])
+        ]);
+
+        return back()->with('success', 'Berhasil Memperbarui Password');
+    }
+
+    public function riwayat_jadwal()
+    {
+        $jadwals = Jadwal::where('id_karyawan', Auth::user()->id)->orderBy('tanggal', 'desc')->get();
+
+        return view('karyawan.jadwal.riwayat', compact('jadwals'));
+    }
+
+    public function export_jadwal()
+    {
+        $jadwal = Jadwal::where('id_karyawan', Auth::user()->id)->orderBy('tanggal', 'desc')->get();
+
+        $export = (new FastExcel($jadwal))->download('jadwal.xlsx', function($jadwal){
+            return [
+                'Hari' => $jadwal->tanggal->translatedFormat('l'),
+                'Tanggal' => $jadwal->tanggal->format('d/m/Y'),
+                'Nama' => Auth::user()->name,
+                'Tujuan' => $jadwal->tujuan,
+                'tugas' => $jadwal->tugas,
+                'status' => statusJadwal($jadwal->status),
+                'keterangan' => $jadwal->keterangan
+            ];
+        });
+
+        return $export;
     }
 }

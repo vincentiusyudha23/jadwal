@@ -11,7 +11,8 @@
         <ul class="dropdown-menu">
             <li>
                 <div class="dropdown-item">
-                    <form method="POST" class="w-100" action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
+                    <form method="POST" class="w-100"
+                        action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
                         @csrf
                         <span class="btn btn-sm w-100"
                             onclick="event.preventDefault(); this.closest('form').submit();">Log Out</span>
@@ -26,7 +27,8 @@
     <button type="button" class="btn text-white btn-menu">
         <i class="fa-solid fa-bars fa-xl"></i>
     </button>
-    <form method="POST" action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
+    <form method="POST"
+        action="{{ Auth::user()->hasRole('admin') ? route('admin.logout') : route('karyawan.logout') }}">
         @csrf
         <button type="submit" class="btn text-white">
             <i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
@@ -34,21 +36,35 @@
     </form>
     <div class="mobile-menu bg-primary">
         <ul class="w-100 d-flex flex-column gap-2 list-menu-mb justify-content-center align-items-center py-3">
-            <li>
-                <a href="{{ route('admin.dashboard') }}" class="item-list-menu-mb">Halaman Utama</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.karyawan') }}" class="item-list-menu-mb">Data Karyawan</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.karyawan.jadwal') }}" class="item-list-menu-mb">Jadwal Karyawan</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.profile') }}" class="item-list-menu-mb">Ubah Password</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.history') }}" class="item-list-menu-mb">Riwayat Jadwal</a>
-            </li>
+            @if (Auth::user()->hasRole('admin'))
+                <li>
+                    <a href="{{ route('admin.dashboard') }}" class="item-list-menu-mb">Halaman Utama</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.karyawan') }}" class="item-list-menu-mb">Data Karyawan</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.karyawan.jadwal') }}" class="item-list-menu-mb">Jadwal Karyawan</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.profile') }}" class="item-list-menu-mb">Ubah Password</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.history') }}" class="item-list-menu-mb">Riwayat Jadwal</a>
+                </li>
+            @endif
+
+            @if (Auth::user()->hasRole('karyawan'))
+                <li>
+                    <a href="{{ route('karyawan.dashboard') }}" class="item-list-menu-mb">Halaman Utama</a>
+                </li>
+                <li>
+                    <a href="{{ route('karyawan.profile') }}" class="item-list-menu-mb">Ubah Password</a>
+                </li>
+                <li>
+                    <a href="{{ route('karyawan.jadwal.riwayat') }}" class="item-list-menu-mb">Riwayat Jadwal</a>
+                </li>
+            @endif
         </ul>
     </div>
 </div>

@@ -33,15 +33,15 @@
         @endif
 
         @if (Auth::user()->hasRole('karyawan'))
-            <a href="{{ route('karyawan.dashboard') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('karyawan.dashboard') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.dashboard') ? 'active' : '' }}">
                 <i class="las la-home mx-2 fs-3"></i>
                 <span class="fw-semibold">Halaman Utama</span>
             </a>
-            <a href="{{ route('admin.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.profile') ? 'active' : '' }}">
+            <a href="{{ route('karyawan.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.profile') ? 'active' : '' }}">
                 <i class="las la-user-lock mx-2 fs-3"></i>
                 <span class="fw-semibold">Ubah Password</span>
             </a>
-            <a href="{{ route('admin.history') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.history') ? 'active' : '' }}">
+            <a href="{{ route('karyawan.jadwal.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.jadwal.riwayat') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Jadwal</span>
             </a>

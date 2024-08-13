@@ -42,9 +42,13 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
 Route::middleware(['web','role:karyawan'])->prefix('karyawan')->name('karyawan.')->group(function(){
     Route::controller(KaryawanController::class)->group(function(){
         Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/ubah-password', 'profile')->name('profile');
+        Route::put('/update-password', 'updatePassword')->name('profile.update.password');
         Route::get('/show-jadwal/{id}', 'show_jadwal')->name('jadwal.show');
         Route::post('/upload-image', 'uploaderImage')->name('upload.image');
         Route::post('/update-jadwal', 'update_jadwal')->name('jadwal.update');
+        Route::get('/riwayat-jadwal', 'riwayat_jadwal')->name('jadwal.riwayat');
+        Route::get('/export-jadwal', 'export_jadwal')->name('export.jadwal');
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });
 });
