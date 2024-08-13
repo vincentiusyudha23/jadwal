@@ -82,14 +82,14 @@ class KaryawanController extends Controller
             $image_name = strtolower(Str::slug($image_name));
 
             $image_db = $image_name.time().'.'.$image_extension;
-
-            $image->storeAs('public/media', $image_db);
+            $folder_path = global_assets_path('assets/img');
+            $image->move($folder_path, $image_db);
 
             if($image){
                 $mediaData = MediaImage::create([
                     'title' => $image_name_with_ext,
                     'path' => $image_db,
-                    'size' => formatBytes($image->getSize()),
+                    'size' => null,
                     'user_type' => 0,
                     'user_id' => Auth::user()->id
                 ]);
