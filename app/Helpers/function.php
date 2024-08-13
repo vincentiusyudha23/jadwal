@@ -81,7 +81,8 @@ if(!function_exists('get_data_image')){
         if($image){
             $data = [
                 'alt' => $image->title,
-                'img_url' => asset('storage/media/'.$image->path)
+                // 'img_url' => asset('storage/media/'.$image->path)
+                'img_url' =>Storage::url('media/'.$image->path)
             ];
         }
 
