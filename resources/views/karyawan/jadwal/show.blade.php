@@ -70,13 +70,14 @@
                             $images = json_decode($jadwal->image);
                         @endphp
                         <div class="w-100 d-flex gap-2">
-                            @forelse ($images as $item)
-                                <x-media-upload-v2 :image="$item"/>
-                            @empty
-                                <x-media-upload-v2 />
-                                <x-media-upload-v2 />
-                            @endforelse
-                            
+                            @if ($images)
+                                @foreach ($images as $item)
+                                    <x-media-upload-v2 :image="$item"/>
+                                @endforeach
+                            @else
+                                <x-media-upload-v2/>
+                                <x-media-upload-v2/>
+                            @endif
                         </div>
                         <div class="w-100 mt-4">
                             <button type="submit" id="btn-submit-form" class="btn btn-success w-100">Simpan</button>
