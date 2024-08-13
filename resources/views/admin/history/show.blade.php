@@ -20,6 +20,12 @@
                         </span>
                         <a class="btn btn-sm btn-primary">Kembali</a>
                     </div>
+                    <div class="w-100 d-flex justify-content-end align-items-center">
+                        <a href="{{ route('admin.export.jadwal', ['tanggal' => $tanggal]) }}" class="btn btn-sm btn-success text-white fw-bold" type="button">
+                            Export
+                            <i class="fa-solid fa-download ps-1"></i>
+                        </a>
+                    </div>
                     <div class="p-2">
                         <table class="table tabel-data-jadwal" id="datatable">
                             <thead>

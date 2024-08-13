@@ -64,10 +64,10 @@
                 <div class="card-body p-4">
                     <div class="w-100 d-flex justify-content-between align-item-center mb-3">
                         <span class="text-gray-600 fs-5">Jadwal Karyawan</span>
-                        <button type="button" class="btn btn-sm btn-success">
+                        <a href="{{ route('admin.export.jadwal.all') }}" type="button" class="btn btn-sm btn-success">
                             <span class="me-1">Export</span>
                             <i class="fa-solid fa-download"></i>
-                        </button>
+                        </a>
                     </div>
                     @include('admin.karyawan.partials.tabel-jadwal')
                 </div>

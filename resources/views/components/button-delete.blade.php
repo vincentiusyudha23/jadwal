@@ -42,9 +42,8 @@
                                     title: response.msg,
                                     icon: 'success',
                                 });
-                                var table = $('.{{ $table }}');
-                                table.html(response.markup);
-                                table.DataTable();
+                                
+                                location.reload();
                             }
                         }
                     })

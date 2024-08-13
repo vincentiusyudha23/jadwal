@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-between align-items-center">
                         <p class="fs-5 text-gray-600 fw-bold">Input Data Karyawan</p>
-                        <button type="button" class="btn btn-sm btn-info fw-bold text-light">Import</button>
+                        {{-- <button type="button" class="btn btn-sm btn-info fw-bold text-light">Import</button> --}}
                     </div>
                     @if ($errors->any())
                         <div class="alert alert-danger" role="alert">
@@ -76,6 +76,12 @@
             </div>
             <div class="card shadow-sm card-table">
                 <div class="card-body p-4">
+                    <div class="w-100 d-flex justify-content-end">
+                        <a href="{{ route('admin.export.akun.all') }}"  class="btn btn-sm btn-success">
+                            <span class="me-1">Export</span>
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
                     @include('admin.karyawan.partials.table')
                 </div>
             </div>

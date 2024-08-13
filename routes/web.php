@@ -34,6 +34,9 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::put('/update-password', 'updatePassword')->name('profile.update.password');
         Route::get('/riwayat-jadwal', 'history')->name('history');
         Route::get('/riwayat-jadwal/{tanggal}', 'getHistory')->name('history.show');
+        Route::get('/export-jadwal/{tanggal}', 'export_jadwal')->name('export.jadwal');
+        Route::get('/export-jadwal-all', 'export_jadwal_all')->name('export.jadwal.all');
+        Route::get('/export-akun', 'export_akun_karyawan')->name('export.akun.all');
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });

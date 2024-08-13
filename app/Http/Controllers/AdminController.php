@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rules\Password;
@@ -208,12 +209,11 @@ class AdminController extends Controller
             $jadwals = Jadwal::latest()->get();
             $karyawans = User::where('role', 'karyawan')->select('name', 'id')->latest()->get();
 
-            $markup = View::make('admin.karyawan.partials.tabel-jadwal', compact('jadwals', 'karyawans'))->render();
+            // $markup = View::make('admin.karyawan.partials.tabel-jadwal', compact('jadwals', 'karyawans'))->render();
 
             return response()->json([
                 'type' => 'success',
                 'msg' => 'Berhasil Menghapus Jadwal Karyawan',
-                'markup' => $markup
             ]);
         }
 
@@ -261,5 +261,61 @@ class AdminController extends Controller
         $karyawans = User::hasKaryawan()->select('name', 'id')->latest()->get(); 
 
         return view('admin.history.show', compact('jadwals', 'tanggal', 'karyawans'));
+    }
+
+    public function export_jadwal($option)
+    {
+        $tanggal = Carbon::parse($option);
+
+        $jadwal = Jadwal::whereDate('tanggal', $tanggal)->orderBy('tanggal', 'desc')->get();
+
+        $export = (new FastExcel($jadwal))->download('jadwal_karyawan_'.$tanggal->format('d-m-Y').'.xlsx', function($jadwal){
+            return [
+                'Hari' => $jadwal->tanggal->translatedFormat('l'),
+                'Tanggal' => $jadwal->tanggal->format('d/m/Y'),
+                'Nama' => $jadwal->user->name,
+                'Tujuan' => $jadwal->tujuan,
+                'tugas' => $jadwal->tugas,
+                'status' => statusJadwal($jadwal->status),
+                'keterangan' => $jadwal->keterangan
+            ];
+        });
+
+        return $export;
+    }
+
+    public function export_jadwal_all()
+    {
+        $jadwal = Jadwal::orderBy('tanggal', 'asc')->get();
+
+        $export = (new FastExcel($jadwal))->download('jadwal_karyawan.xlsx', function($jadwal){
+            return [
+                'Hari' => $jadwal->tanggal->translatedFormat('l'),
+                'Tanggal' => $jadwal->tanggal->format('d/m/Y'),
+                'Nama' => $jadwal->user->name,
+                'Tujuan' => $jadwal->tujuan,
+                'tugas' => $jadwal->tugas,
+                'status' => statusJadwal($jadwal->status),
+                'keterangan' => $jadwal->keterangan
+            ];
+        });
+
+        return $export;
+    }
+
+    public function export_akun_karyawan()
+    {
+        $karyawan = User::hasKaryawan()->latest()->get();
+
+        $export = (new FastExcel($karyawan))->download('data_karyawan.xlsx', function($user){
+            return [
+                'Nama' => $user->name,
+                'ID Karyawan' => $user->id_karyawan,
+                'username' => $user->username,
+                'password' => decryptPassword($user->enc_password)
+            ];
+        });
+
+        return $export;
     }
 }

@@ -40,10 +40,6 @@
                 <div class="card-body">
                     <div class="card-title mb-4 w-100 d-flex justify-content-between align-items-center">
                         <span class="fs-5 fw-bold text-gray-600">Riwayat Jadwal</span>
-                        <button class="btn btn-sm btn-info text-white fw-bold" type="button">
-                            Export
-                            <i class="fa-solid fa-download ps-1"></i>
-                        </button>
                     </div>
                     <livewire:riwayat-jadwal/>
                 </div>
