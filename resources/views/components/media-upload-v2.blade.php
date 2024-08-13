@@ -64,7 +64,7 @@
     <div class="progress-bar" id="progress-bar-{{ $random_id }}">
         <span></span>
     </div>
-    <input type="hidden" name="image[]" value="{{ $image }}">
+    <input type="hidden" name="image[]" value="{{ $image ?? '' }}">
 </div>
 
 @push('scripts')
