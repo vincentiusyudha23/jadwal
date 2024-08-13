@@ -7,11 +7,20 @@
                 <span>{{ $jadwal->tanggal->translatedFormat('l') }}</span>
                 <span>{{ $jadwal->tanggal->format('d/m/Y') }}</span>
             </div>
-            <div class="mt-1">
-                <span style="font-size: 0.85em;"><strong>Nama : </strong>{{ $jadwal?->user?->name }}</span>
-            </div>
-            <div class="mt-1">
-                <span style="font-size: 0.85em;"><strong>Tujuan : </strong>{{ $jadwal?->tujuan }}</span>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mt-1">
+                        <span style="font-size: 0.85em;"><strong>Nama : </strong>{{ $jadwal?->user?->name }}</span>
+                    </div>
+                    <div class="mt-1">
+                        <span style="font-size: 0.85em;"><strong>Tujuan : </strong>{{ $jadwal?->tujuan }}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+                        <x-status-jadwal :status="$jadwal?->status" type="button"/>
+                    </div>
+                </div>
             </div>
             <div class="mt-3 w-100">
                 <div class="border border-2 px-2 py-1 rounded-2">
