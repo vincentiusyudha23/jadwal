@@ -1,6 +1,5 @@
 <?php
 
-use Mail;
 use App\Models\MediaImage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -121,7 +120,7 @@ if(!function_exists('sendEmail')){
         dispatch(function () use ($data) {
             try {
                 $viewData = $data['viewData'] ?? [];
-                Mail::send('emails.'.$data['view'], $viewData, function($message) use ($data) {
+                \Mail::send('emails.'.$data['view'], $viewData, function($message) use ($data) {
                     if(isset($data['viewData']['from_name']) && !is_null($data['viewData']['from_name'])){
                         $message->from(($data['viewData']['from_address'] ?? env('MAIL_FROM_ADDRESS','email@email.com')) , ($data['viewData']['from_name'] ?? env('MAIL_FROM_NAME','WiraGriya')));
                     }
