@@ -14,6 +14,7 @@ class ForgotPassword extends Component
     public $input3;
     public $input4;
 
+    
     #[Validate('required|email|exists:users,email')]
     public $email = '';
 
