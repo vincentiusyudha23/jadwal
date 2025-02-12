@@ -1,5 +1,6 @@
 <?php
 
+use Mail;
 use App\Models\MediaImage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -94,5 +95,58 @@ if(!function_exists('global_assets_path')){
     {
         return str_replace(['core/public/',
                                'core\\public\\'], '', public_path($path));
+    }
+}
+
+if(!function_exists('generateOtp')){
+    function generateOtp()
+    {
+        $otp = rand(1000, 9999);
+
+        if (env('APP_ENV') == 'local') {
+            $otp = 1234;
+        }
+
+        return $otp;
+    }
+}
+
+if(!function_exists('sendEmail')){
+    function sendEmail($data= [])
+    {
+        if (!isset($data['to']) || !isset($data['subject']) || !isset($data['view'])) {
+            return false;
+        }
+
+        dispatch(function () use ($data) {
+            try {
+                $viewData = $data['viewData'] ?? [];
+                Mail::send('emails.'.$data['view'], $viewData, function($message) use ($data) {
+                    if(isset($data['viewData']['from_name']) && !is_null($data['viewData']['from_name'])){
+                        $message->from(($data['viewData']['from_address'] ?? env('MAIL_FROM_ADDRESS','email@email.com')) , ($data['viewData']['from_name'] ?? env('MAIL_FROM_NAME','WiraGriya')));
+                    }
+                    $message->to($data['to'])->subject($data['subject']);
+                    foreach ($data['attachments'] ?? [] as $attachment) {
+                        $message->attach($attachment['path'], [
+                            'as' => $attachment['name'],
+                        ]);
+                    }
+                });
+
+                \Log::channel('info')->info('Email sending',[
+                    'to' => $data['to'],
+                    'subject' => $data['subject'],
+                ]);
+
+            } catch (\Exception $e) {
+                if(app()->environment('local')){
+                    dd($e->getMessage());
+                }
+
+                \Log::error('Error while sending email: ' . $e->getMessage());
+            }
+        });
+
+        return true;
     }
 }

@@ -64,6 +64,7 @@ Route::middleware('guest')->group(function(){
     Route::prefix('admin')->group(function(){
         Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('first_page');
         Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
+        Route::get('/forgot-password', [AuthenticatedSessionController::class, 'forgotPassword'])->name('admin.forgot_password');
     });
 });
 

@@ -61,4 +61,9 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()->intended(RouteServiceProvider::HOME_KARYAWAN);
     }
+
+    public function forgotPassword()
+    {
+        return view('admin.auth.forgot_pass');
+    }
 }
