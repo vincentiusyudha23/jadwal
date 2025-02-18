@@ -44,6 +44,13 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
+                                        <label class="form-label text-gray-600 fw-bold" for="email">Email</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control" id="email"
+                                                name="email" value="{{ Auth::user()->email }}">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label class="form-label text-gray-600 fw-bold" for="password">Password Baru</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="password" name="password">
