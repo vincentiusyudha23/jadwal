@@ -143,7 +143,7 @@
 
                     $(this).prev().val(valNama.toLowerCase());
                 } else {
-                    toastr.warning('Isi Terlebih Dahulu Username dan ID Karyawan.');
+                    toastr.warning('Isi Terlebih Dahulu Nama dan ID Karyawan.');
                 }
             });
 
