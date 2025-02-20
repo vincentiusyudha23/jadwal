@@ -239,17 +239,25 @@ class AdminController extends Controller
     {
         $validated = $request->validateWithBag('updatePassword', [
             'username' => ['required'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['nullable',Password::defaults(), 'confirmed'],
             'email' => ['required']
         ]);
+        
+        $data = [
+            'email' => $validated['email']
+        ];
 
-        $request->user()->update([
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'enc_password' => Crypt::encryptString($validated['password'])
-        ]);
+        if($request->password && isset($validated['password'])){
+            $data = [
+                ...$data,
+                'password' => Hash::make($validated['password']),
+                'enc_password' => Crypt::encryptString($validated['password'])
+            ];
+        }
 
-        return back()->with('success', 'Berhasil Memperbarui Password');
+        $request->user()->update($data);
+
+        return back()->with('success', 'Berhasil Memperbarui Akun');
     }
 
     public function history()

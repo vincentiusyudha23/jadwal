@@ -24,7 +24,7 @@
             </a>
             <a href="{{ route('admin.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <i class="las la-user-lock mx-2 fs-3"></i>
-                <span class="fw-semibold">Ubah Password</span>
+                <span class="fw-semibold">Kelola Akun</span>
             </a>
             <a href="{{ route('admin.history') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.history') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>

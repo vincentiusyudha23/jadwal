@@ -8,13 +8,13 @@
             <nav aria-label="breadcrumb" class="p-0 mt-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Ubah Password</li>
+                    <li class="breadcrumb-item active" aria-current="page">Kelola Akun</li>
                 </ol>
             </nav>
             <div class="card shadow-sm card-profile">
                 <div class="card-body p-4">
                     <div class="w-100 d-flex justify-content-between align-item-center mb-3">
-                        <span class="text-gray-600 fs-5">Ubah Password</span>
+                        <span class="text-gray-600 fs-5">Kelola Akun</span>
                     </div>
                     @if ($errors->updatePassword->count() > 0)
                         <div class="alert alert-danger" role="alert">
