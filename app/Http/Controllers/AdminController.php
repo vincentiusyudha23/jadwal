@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Jadwal;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
@@ -42,24 +44,42 @@ class AdminController extends Controller
             'nama' => ['required'],
             'id_karyawan' => ['required', 'unique:users,id_karyawan'],
             'username' => ['required', 'unique:users,username'],
-            'password' => ['required', Password::min(8)]
+            'password' => ['required', Password::min(8)],
+            'jabatan' => ['required', 'string'],
+            'divisi' => ['required'],
+            'nomor_rekening' => ['required'],
+            'email' => ['required', 'email'],
         ]);
 
         try{
-            $karyawan = User::create([
+            DB::beginTransaction();
+
+            $user = User::create([
                 'name' => $request->nama,
                 'id_karyawan' => $request->id_karyawan,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
                 'enc_password' => Crypt::encryptString($request->password),
-                'role' => 'karyawan'
+                'role' => 'karyawan',
+                'email' => $request->email
             ]);
 
-            $karyawan->assignRole('karyawan');
+            Karyawan::create([
+                'id_karyawan' => $user->id, 
+                'name' => $request->nama,
+                'jabatan' => $request->jabatan,
+                'divisi' => $request->divisi,
+                'nomor_rekening' => $request->nomor_rekening
+            ]);
+
+            $user->assignRole('karyawan');
+
+            DB::commit();
 
             return redirect()->back()->with('success', 'Berhasil Menambah Data.');
 
         }catch(\Exception $e){
+            DB::rollBack();
             return redirect()->back()->with('errors', 'Terjadi Kesalahan.');
         }
     }
@@ -71,10 +91,16 @@ class AdminController extends Controller
             'nama' => ['required'],
             'id_karyawan' => ['required'],
             'username' => ['required'],
-            'password' => ['required', Password::min(8)]
+            'password' => ['required', Password::min(8)],
+            'jabatan' => ['required', 'string'],
+            'divisi' => ['required'],
+            'nomor_rekening' => ['required'],
+            'email' => ['required', 'email'],
         ]);
 
         try{
+            DB::beginTransaction();
+
             $user = User::find($request->id);
 
             $user->update([
@@ -83,18 +109,30 @@ class AdminController extends Controller
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
                 'enc_password' => Crypt::encryptString($request->password),
+                'email' => $request->email
+            ]);
+
+            $user->karyawan?->update([
+                'jabatan' => $request->jabatan,
+                'divisi' => $request->divisi,
+                'nomor_rekening' => $request->nomor_rekening
             ]);
 
             $karyawans = User::where('role', 'karyawan')->latest()->get();
 
             $markup = View::make('admin.karyawan.partials.table', compact('karyawans'))->render();
             
+            DB::commit();
+
             return response()->json([
                 'type' => 'success',
                 'markup' => $markup 
             ]);
 
         }catch(\Exception $e){
+            
+            DB::rollBack();
+
             return response()->json([
                 'type' => 'errors',
                 'msg' => $e->getMessage()

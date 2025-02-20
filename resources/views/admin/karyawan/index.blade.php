@@ -65,6 +65,30 @@
                                             class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6">
+                                <div class="input-group mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="jabatan" id="jabatan" value="{{ old('jabatan') }}" placeholder="Jabatan">
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="divisi" id="divisi" value="{{ old('divisi') }}" placeholder="Divisi">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="input-group mb-3">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="nomor_rekening" id="nomor_rekening" value="{{ old('nomor_rekening') }}" placeholder="Nomor Rekening">
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" placeholder="Email">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="d-flex w-100 justify-content-end">
                             <button class="btn btn-success w-100" type="submit" id="submit-new-karyawan">
@@ -88,7 +112,7 @@
         </div>
     </x-navbar-admin>
     <div class="modal fade" id="edit-karyawan-form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Karyawan</h1>
@@ -98,28 +122,62 @@
                     @csrf
                     <input type="hidden" name="id" value="">
                     <div class="modal-body">
-                        <div class="mb-2">
-                            <label for="nama" class="form-label">Nama Karyawan</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="nama" id="nama" value="">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-2">
+                                    <label for="nama" class="form-label">Nama Karyawan</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="nama" id="nama" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="id_karyawan" class="form-label">ID Karyawan</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="id_karyawan" id="id_karyawan" value="">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-2">
-                            <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="id_karyawan" id="id_karyawan" value="">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-2">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="username" id="username" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="password" id="password" value="">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-2">
-                            <label for="username" class="form-label">Username</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="username" id="username" value="">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-2">
+                                    <label for="jabatan" class="form-label">Jabatan</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="jabatan" id="jabatan" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="divisi" class="form-label">Divisi</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="divisi" id="divisi" value="">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-2">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="password" id="password" value="">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-2">
+                                    <label for="nomor_rekening" class="form-label">No. Rekening</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="nomor_rekening" id="nomor_rekening" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="email" id="email" value="">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,6 +230,10 @@
                 var id_karyawan = el.data('id_karyawan');
                 var username = el.data('username');
                 var password = el.data('password');
+                var jabatan = el.data('jabatan');
+                var divisi = el.data('divisi');
+                var norek = el.data('norek');
+                var email = el.data('email');
 
                 let form = $('#edit-karyawan-form');
                 form.find('input[name="id"]').val(id);
@@ -179,6 +241,10 @@
                 form.find('input[name="id_karyawan"]').val(id_karyawan);
                 form.find('input[name="username"]').val(username);
                 form.find('input[name="password"]').val(password);
+                form.find('input[name="jabatan"]').val(jabatan);
+                form.find('input[name="divisi"]').val(divisi);
+                form.find('input[name="nomor_rekening"]').val(norek);
+                form.find('input[name="email"]').val(email);
             });
 
             $('.edit-karyawan-form').on('submit', function(e){

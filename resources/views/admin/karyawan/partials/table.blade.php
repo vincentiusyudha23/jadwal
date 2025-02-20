@@ -4,6 +4,9 @@
             <th class="text-center">No.</th>
             <th class="text-center">Nama</th>
             <th class="text-center">ID</th>
+            <th class="text-center">Jabatan</th>
+            <th class="text-center">Divisi</th>
+            <th class="text-center">No. Rek</th>
             <th class="text-center">Username</th>
             <th class="text-center">Password</th>
             <th class="text-center">Aksi</th>
@@ -16,6 +19,9 @@
                     <th class="text-center">{{ $loop->index + 1 }}</th>
                     <td class="text-center">{{ $karyawan->name }}</td>
                     <td class="text-center">{{ $karyawan->id_karyawan }}</td>
+                    <td class="text-center">{{ $karyawan->karyawan?->jabatan ?? '' }}</td>
+                    <td class="text-center">{{ $karyawan->karyawan?->divisi ?? '' }}</td>
+                    <td class="text-center">{{ $karyawan->karyawan?->nomor_rekening }}</td>
                     <td class="text-center">{{ $karyawan->username }}</td>
                     <td class="text-center">{{ decryptPassword($karyawan->enc_password) }}</td>
                     <td class="text-center">
@@ -26,6 +32,10 @@
                                 data-id_karyawan="{{ $karyawan->id_karyawan }}"
                                 data-username="{{ $karyawan->username }}"
                                 data-password="{{ decryptPassword($karyawan->enc_password) }}"
+                                data-jabatan="{{ $karyawan->karyawan?->jabatan ?? '' }}"
+                                data-divisi="{{ $karyawan->karyawan?->divisi ?? '' }}"
+                                data-norek="{{ $karyawan->karyawan?->nomor_rekening ?? '' }}"
+                                data-email="{{ $karyawan->email }}"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#edit-karyawan-form">
                                 <i class="fa-solid fa-pen-to-square text-white"></i>
