@@ -25,6 +25,8 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::post('/karyawan-store', 'store_karyawan')->name('karyawan.store');
         Route::post('/karyawan-update', 'update_karyawan')->name('karyawan.update');
         Route::post('/karyawan-delete', 'delete_karyawan')->name('karyawan.delete');
+        Route::get('/card-id-karyawan/{id}', 'view_id_card')->name('karyawan.card-id');
+        Route::get('/download-card-id/{id}', 'downloadCardId')->name('karyawan.download.card-id');
         Route::get('/jadwal', 'jadwal')->name('karyawan.jadwal');
         Route::post('/jadwal-store', 'store_jadwal')->name('karyawan.jadwal.store');
         Route::post('/jadwal-update', 'update_jadwal')->name('karyawan.jadwal.update');

@@ -6,7 +6,10 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Jadwal;
 use App\Models\Karyawan;
+use App\Enums\DivisiEnum;
+use App\Enums\JabatanEnum;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -34,8 +37,26 @@ class AdminController extends Controller
     public function karyawan()
     {
         $karyawans = User::hasKaryawan()->latest()->get();
+       
+        $divisi = DivisiEnum::getKeyDivisi();
+        $jabatan = JabatanEnum::getKeyJabatan();
+        
+        $divisi_db = Karyawan::select('divisi')->distinct()->pluck('divisi')->toArray();
+        $jabatan_db = Karyawan::select('jabatan')->distinct()->pluck('jabatan')->toArray();
 
-        return view('admin.karyawan.index', compact('karyawans'));
+        foreach($divisi_db as $val){
+            if(!in_array(strtolower($val), $divisi)){
+                $divisi[] = $val;
+            }
+        }
+
+        foreach($jabatan_db as $val){
+            if(!in_array(strtolower($val), $jabatan)){
+                $jabatan[] = $val;
+            }
+        }
+
+        return view('admin.karyawan.index', compact('karyawans', 'divisi', 'jabatan'));
     }
 
     public function store_karyawan(Request $request)
@@ -165,6 +186,29 @@ class AdminController extends Controller
                 'msg' => 'Data Karyawan Tidak Ditemukan'
             ]);
         }
+    }
+
+    public function view_id_card($id)
+    {
+        $karyawan = User::findOrFail($id);
+        $image = assets('img/logo-1.png');
+
+        return view('admin.karyawan.partials.card-id', compact('karyawan', 'image'));
+    }
+
+    public function downloadCardId($id)
+    {
+        $karyawan = User::findOrFail($id);
+
+        $pdf = Pdf::loadView('admin.karyawan.partials.card-id', [
+            'karyawan' => $karyawan,
+            'image' => public_path('/assets/img/logo-1.png')
+        ]);
+
+        $pdfPath = global_assets_path("assets/img/id-card-{$karyawan->id_karyawan}.pdf");
+        $pdf->save($pdfPath);
+
+        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
     public function jadwal()

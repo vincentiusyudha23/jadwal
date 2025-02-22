@@ -8,6 +8,11 @@
             cursor: pointer;
             background: rgb(0, 0, 0, 0.1);
         }
+        @media (min-width: 576px) {
+            .modal-card-id {
+                width: fit-content;
+            }
+        }
     </style>
 @endpush
 
@@ -68,12 +73,22 @@
                             <div class="col-12 col-md-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="jabatan" id="jabatan" value="{{ old('jabatan') }}" placeholder="Jabatan">
+                                        <select class="form-select select2" name="jabatan" id="jabatan" data-placeholder="Jabatan">
+                                            <option></option>
+                                            @foreach ($jabatan as $item)
+                                                <option value="{{ $item }}">{{ \App\Enums\JabatanEnum::getItemJabatan($item) }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="divisi" id="divisi" value="{{ old('divisi') }}" placeholder="Divisi">
+                                        <select class="form-select select2" name="divisi" data-placeholder="Divisi">
+                                            <option></option>
+                                            @foreach ($divisi as $item)
+                                                <option value="{{ $item }}">{{ \App\Enums\DivisiEnum::getItemDivisi($item) }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -125,57 +140,67 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="mb-2">
-                                    <label for="nama" class="form-label">Nama Karyawan</label>
+                                    <label for="nama-edit" class="form-label">Nama Karyawan</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="nama" id="nama" value="">
+                                        <input type="text" class="form-control" name="nama" id="nama-edit" value="">
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <label for="id_karyawan" class="form-label">ID Karyawan</label>
+                                    <label for="id_karyawan-edit" class="form-label">ID Karyawan</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="id_karyawan" id="id_karyawan" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="mb-2">
-                                    <label for="username" class="form-label">Username</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="username" id="username" value="">
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <label for="password" class="form-label">Password</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="password" id="password" value="">
+                                        <input type="text" class="form-control" name="id_karyawan" id="id_karyawan-edit" value="">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="mb-2">
-                                    <label for="jabatan" class="form-label">Jabatan</label>
+                                    <label for="username-edit" class="form-label">Username</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="jabatan" id="jabatan" value="">
+                                        <input type="text" class="form-control" name="username" id="username-edit" value="">
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <label for="divisi" class="form-label">Divisi</label>
+                                    <label for="password-edit" class="form-label">Password</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="divisi" id="divisi" value="">
+                                        <input type="text" class="form-control" name="password" id="password-edit" value="">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="mb-2">
-                                    <label for="nomor_rekening" class="form-label">No. Rekening</label>
+                                    <label for="jabatan-edit" class="form-label">Jabatan</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" name="nomor_rekening" id="nomor_rekening" value="">
+                                        <select class="form-select select2" name="jabatan" id="jabatan-edit" data-placeholder="Jabatan">
+                                            <option></option>
+                                            @foreach ($jabatan as $item)
+                                                <option value="{{ strtolower($item) }}">{{ \App\Enums\JabatanEnum::getItemJabatan($item) }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <label for="email" class="form-label">Email</label>
+                                    <label for="divisi-edit" class="form-label">Divisi</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="email" id="email" value="">
+                                        <select class="form-select select2" name="divisi" data-placeholder="Divisi" id="divisi-edit">
+                                            <option></option>
+                                            @foreach ($divisi as $item)
+                                                <option value="{{ strtolower($item) }}">{{ \App\Enums\DivisiEnum::getItemDivisi($item) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="mb-2">
+                                    <label for="nomor_rekening-edit" class="form-label">No. Rekening</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="nomor_rekening" id="nomor_rekening-edit" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="email-edit" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="email" id="email-edit" value="">
                                     </div>
                                 </div>
                             </div>
@@ -188,11 +213,31 @@
             </div>
         </div>
     </div>
+
+    
 @endsection
 
 @push('scripts')
     <script>
+        function printIframe(id) {
+            var iframe = document.getElementById('iframe-card-id-'+id);
+            if (iframe.contentWindow) {
+                iframe.contentWindow.focus(); 
+                iframe.contentWindow.print();
+            }
+        }
+
+
         $(document).ready(function() {
+
+            $('.select2').select2({
+                theme: "bootstrap-5",
+                selectionCssClass: "select2--small",
+                dropdownCssClass: "select2--small",
+                tags: true
+            });
+
+            
             $('#add_value_username').on('click', function() {
                 let nama = $('#nama_karyawan_new').val();
                 if (nama.length > 0) {
@@ -241,8 +286,8 @@
                 form.find('input[name="id_karyawan"]').val(id_karyawan);
                 form.find('input[name="username"]').val(username);
                 form.find('input[name="password"]').val(password);
-                form.find('input[name="jabatan"]').val(jabatan);
-                form.find('input[name="divisi"]').val(divisi);
+                form.find('select[name="jabatan"]').val(jabatan).trigger('change');
+                form.find('select[name="divisi"]').val(divisi).trigger('change');
                 form.find('input[name="nomor_rekening"]').val(norek);
                 form.find('input[name="email"]').val(email);
             });
