@@ -170,7 +170,7 @@
                                 <div class="mb-2">
                                     <label for="jabatan-edit" class="form-label">Jabatan</label>
                                     <div class="input-group">
-                                        <select class="form-select select2" name="jabatan" id="jabatan-edit" data-placeholder="Jabatan">
+                                        <select class="form-select select2" name="jabatan" id="jabatan-edit" data-placeholder="Jabatan" data-bs-parent="#edit-karyawan-form">
                                             <option></option>
                                             @foreach ($jabatan as $item)
                                                 <option value="{{ strtolower($item) }}">{{ \App\Enums\JabatanEnum::getItemJabatan($item) }}</option>
@@ -181,7 +181,7 @@
                                 <div class="mb-2">
                                     <label for="divisi-edit" class="form-label">Divisi</label>
                                     <div class="input-group">
-                                        <select class="form-select select2" name="divisi" data-placeholder="Divisi" id="divisi-edit">
+                                        <select class="form-select select2" name="divisi" data-placeholder="Divisi" id="divisi-edit" data-bs-parent="#edit-karyawan-form">
                                             <option></option>
                                             @foreach ($divisi as $item)
                                                 <option value="{{ strtolower($item) }}">{{ \App\Enums\DivisiEnum::getItemDivisi($item) }}</option>
@@ -230,11 +230,25 @@
 
         $(document).ready(function() {
 
-            $('.select2').select2({
-                theme: "bootstrap-5",
-                selectionCssClass: "select2--small",
-                dropdownCssClass: "select2--small",
-                tags: true
+            $('.select2').each(function() {
+                var parent = $(this).data('bs-parent');
+
+                if(parent){
+                    $(this).select2({
+                        theme: "bootstrap-5",
+                        selectionCssClass: "select2--small",
+                        dropdownCssClass: "select2--small",
+                        tags: true,
+                        dropdownParent: $(parent)
+                    });
+                }else{
+                    $(this).select2({
+                        theme: "bootstrap-5",
+                        selectionCssClass: "select2--small",
+                        dropdownCssClass: "select2--small",
+                        tags: true
+                    });
+                }
             });
 
             
