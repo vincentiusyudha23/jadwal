@@ -115,10 +115,12 @@
             </div>
             <div class="card shadow-sm card-table">
                 <div class="card-body p-4">
-                    <div class="w-100 d-flex justify-content-end">
+                    <div class="w-100 d-flex justify-content-end gap-2">
                         <a href="{{ route('admin.export.akun.all') }}"  class="btn btn-sm btn-success">
-                            <span class="me-1">Export</span>
-                            <i class="fa-solid fa-download"></i>
+                            <span class="me-1 fw-bold">Export</span>
+                        </a>
+                        <a href="#"  class="btn btn-sm btn-primary">
+                            <span class="me-1 fw-bold">Import</span>
                         </a>
                     </div>
                     @include('admin.karyawan.partials.table')
@@ -218,6 +220,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         function printIframe(id) {
             var iframe = document.getElementById('iframe-card-id-'+id);
@@ -227,8 +230,22 @@
             }
         }
 
-
         $(document).ready(function() {
+
+            $('.btn-download-card').on('click', function(){
+                let id = $(this).data('id_card');
+                let name = $(this).data('name').toLowerCase().replace(/\s+/g, '_');
+                const screenshotCard = document.getElementById('idcard-'+id);
+
+                html2canvas(screenshotCard).then((canvas) => {
+                    const base64image = canvas.toDataURL("image/png");
+                    var anchor = document.createElement('a');
+                    anchor.setAttribute("href", base64image);
+                    anchor.setAttribute("download", `${name}-${id}.png`);
+                    anchor.click();
+                    anchor.remove();
+                });
+            });
 
             $('.select2').each(function() {
                 var parent = $(this).data('bs-parent');

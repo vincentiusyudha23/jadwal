@@ -1,6 +1,6 @@
 @props(['data_id', 'route', 'method', 'table'])
 
-<button class="btn btn-sm btn-danger" type="button" id="btn-delete-karyawan{{ $data_id ?? '' }}"
+<button class="btn btn-sm btn-danger" type="button" id="btn-delete-karyawan{{ $data_id ?? '' }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Hapus"
     data-id="{{ $data_id ?? '' }}">
     <i class="fa-solid fa-trash text-white"></i>
 </button>

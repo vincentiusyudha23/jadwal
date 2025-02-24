@@ -15,7 +15,7 @@
             height: 90%;
             display: table;
             text-align: center;
-            border: 2px solid black;
+            border: 2px solid #0d6efd;
             border-bottom: none;
         }
 
@@ -37,7 +37,7 @@
         .card-2 {
             width: 100%;
             height: 10%;
-            border: 2px solid black;
+            border: 2px solid #0d6efd;
             text-align: center;
             display: table;
         }
@@ -56,7 +56,7 @@
 <body>
     <div class="card">
         <div>
-            <h2 style="margin-bottom: 20px;">PT. WIRA GRIYA</h2>
+            <h2 style="margin-bottom: 20px; color: #0d6efd;">PT. WIRA GRIYA</h2>
             <img style="margin-bottom: 15px;" src="{{ $image }}" alt="PT. WIRA GRIYA">
             <h3>{{ $karyawan->name }}</h3>
             <h3>{{ $karyawan->id_karyawan }}</h3>
