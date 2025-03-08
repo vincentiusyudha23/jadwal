@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\View;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
@@ -409,5 +410,65 @@ class AdminController extends Controller
         });
 
         return $export;
+    }
+
+    public function importDataKaryawan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required'
+        ]);
+
+        try{
+            DB::beginTransaction();
+            
+            (new FastExcel)->import($request->file, function($line){
+                $username = strtolower(explode(' ', trim($line['Nama']))[0]);
+                $password = $username . $line['ID'];
+
+                $user = User::create([
+                    'name' => $line['Nama'],
+                    'id_karyawan' => intval($line['ID']),
+                    'username' => $username,
+                    'password' => Hash::make($password),
+                    'enc_password' => Crypt::encryptString($password),
+                    'role' => 'karyawan',
+                    'email' => $line['Email']
+                ]);
+
+                $user->karyawan()->create([
+                    'name' => $line['Nama'],
+                    'jabatan' => $line['Jabatan'],
+                    'divisi' => $line['Divisi'],
+                    'nomor_rekening' => $line['Nomor Rekening']
+                ]);
+
+                $user->assignRole('karyawan');
+
+                return $user;
+            });
+
+            DB::commit();
+
+            return response()->json([
+                'type' => 'success',
+                'msg' => 'Berhasil mengimport data karyawan.'
+            ]);
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            
+            return response()->json([
+                'type' => 'error',
+                'msg' => $e->getMessage()
+            ], 422);
+        }
+    }
+
+    public function downloadTemplateImport()
+    {
+        $file_path = global_assets_path('assets/template_import_data.xlsx');
+        $file_name = 'Template_Import_karyawan.xlsx';
+
+        return response()->download($file_path, $file_name);
     }
 }

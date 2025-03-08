@@ -39,6 +39,8 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/export-jadwal/{tanggal}', 'export_jadwal')->name('export.jadwal');
         Route::get('/export-jadwal-all', 'export_jadwal_all')->name('export.jadwal.all');
         Route::get('/export-akun', 'export_akun_karyawan')->name('export.akun.all');
+        Route::post('/import-data-karyawan', 'importDataKaryawan')->name('import.data.karyawan');
+        Route::get('/download-template-import', 'downloadTemplateImport')->name('download.template.import');
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });

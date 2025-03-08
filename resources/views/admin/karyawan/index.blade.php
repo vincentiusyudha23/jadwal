@@ -119,9 +119,9 @@
                         <a href="{{ route('admin.export.akun.all') }}"  class="btn btn-sm btn-success">
                             <span class="me-1 fw-bold">Export</span>
                         </a>
-                        <a href="#"  class="btn btn-sm btn-primary">
+                        <button type="button" class="btn btn-sm btn-primary" id="import-btn">
                             <span class="me-1 fw-bold">Import</span>
-                        </a>
+                        </button>
                     </div>
                     @include('admin.karyawan.partials.table')
                 </div>
@@ -215,8 +215,6 @@
             </div>
         </div>
     </div>
-
-    
 @endsection
 
 @push('scripts')
@@ -299,7 +297,7 @@
                 $(this).html(spinner).addClass('disabled');
             });
             
-            $(document).on('click', '#btn-edit-karyawan', function(){
+            $(document).on('click', '.btn-edit-karyawan', function(){
                 var el = $(this);
                 var id = el.data('id');
                 var name = el.data('nama');
@@ -355,6 +353,82 @@
                         btn.find('i').remove();
                         btn.text('Simpan');
                         btn.removeClass('disabled');
+                    }
+                });
+            });
+
+            $(document).on('click', '#import-btn',function(){
+                Swal.fire({
+                    title: "Import Data Karyawan",
+                    input: "file",
+                    inputAttributes:{
+                        "accept" : ".xls,.xlsx,.csv",
+                        "aria-label": "Unggah file excel anda"
+                    },
+                    showDenyButton: true,
+                    confirmButtonText: "Simpan",
+                    denyButtonText: "Unduh Template",
+                    customClass: {
+                        denyButton: "bg-primary",
+                        confirmButton: "bg-success"
+                    },
+                    preConfirm: (file) => {
+                        if(!file){
+                            Swal.showValidationMessage("Silakan pilih file untuk diunggah");
+                        }
+
+                        return file;
+                    }
+                }).then(async (result) => {
+                    if(result.isConfirmed){
+                        const formData = new FormData();
+                        formData.append('file', result.value);
+                        formData.append('_token', '{{ csrf_token() }}');
+
+                        await $.ajax({
+                            url: '{{ route('admin.import.data.karyawan') }}',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            beforeSend: function(){
+                                Swal.fire({
+                                    title: 'Uploading...',
+                                    text: 'Harap tunggu, sistem sedang memproses file anda.',
+                                    allowOutsideClick: false,
+                                    showConfirmButton: false,
+                                    willOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                            },
+                            success: function(res){
+                                Swal.hideLoading();
+                                if(res.type == 'success'){
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: res.msg,
+                                        icon: 'success',
+                                    }).then( () => {
+                                        location.reload();
+                                    });
+                                }
+                            },
+                            error: function(err){
+                                Swal.hideLoading();
+                                
+                                Swal.fire({
+                                    title: 'Gagal',
+                                    text: 'Gagal mengimport data karyawan.',
+                                    icon: 'error',
+                                });
+                            }
+                        });
+                    } else if(result.isDenied){
+                        window.open("{{ route('admin.download.template.import') }}", "_blank");
+                        setTimeout(() => {
+                            $('#import-btn').trigger('click');
+                        }, 200);
                     }
                 });
             });

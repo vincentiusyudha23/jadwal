@@ -29,7 +29,7 @@
                         <td class="text-center">{{ decryptPassword($karyawan->enc_password) }}</td>
                         <td class="text-center">
                             <div class="d-flex gap-2 justify-content-center">
-                                <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ID Card" type="button" id="btn-cardid" data-bs-toggle="modal" data-bs-target="#id-card-karyawan-{{ $karyawan->id }}">
+                                <button class="btn btn-sm btn-success" type="button" id="btn-cardid" data-bs-toggle="modal" data-bs-target="#id-card-karyawan-{{ $karyawan->id }}">
                                     <i class="fa-solid fa-id-card"></i>
                                 </button>
     
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
     
-                                <button id="btn-edit-karyawan" class="btn btn-sm btn-warning" type="button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit"
+                                <button class="btn btn-sm btn-warning btn-edit-karyawan" type="button"
                                     data-nama="{{ $karyawan->name }}"
                                     data-id="{{ $karyawan->id }}"
                                     data-id_karyawan="{{ $karyawan->id_karyawan }}"

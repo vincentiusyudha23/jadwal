@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Karyawan extends Model
@@ -19,8 +20,8 @@ class Karyawan extends Model
         'id_karyawan'
     ];
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id_karyawan', 'id');
+        return $this->belongsTo(User::class, 'id_karyawan', 'id');
     }
 }
