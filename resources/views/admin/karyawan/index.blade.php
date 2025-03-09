@@ -425,10 +425,11 @@
                             }
                         });
                     } else if(result.isDenied){
-                        window.open("{{ route('admin.download.template.import') }}", "_blank");
+                        // window.open("{{ route('admin.download.template.import') }}", "_blank");
+                        window.location.href = "{{ route('admin.download.template.import') }}";
                         setTimeout(() => {
                             $('#import-btn').trigger('click');
-                        }, 200);
+                        }, 100);
                     }
                 });
             });

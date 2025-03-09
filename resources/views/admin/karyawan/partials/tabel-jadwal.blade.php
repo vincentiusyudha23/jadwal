@@ -1,8 +1,10 @@
-<table class="table tabel-data-jadwal" id="datatable">
+<div class="table-responsive">
+    <table class="table tabel-data-jadwal" id="datatable">
     <thead>
         <tr>
             <th>Hari</th>
             <th>Tanggal</th>
+            <th>Waktu</th>
             <th>Nama</th>
             <th>Tujuan</th>
             <th>Tugas</th>
@@ -15,6 +17,7 @@
             <tr>
                 <th>{{ $jadwal->tanggal->translatedFormat('l') }}</th>
                 <td>{{ $jadwal->tanggal->format('d/m/Y') }}</td>
+                <td>{{ $jadwal->waktuFormat }}</td>
                 <td>{{ $jadwal->user->name }}</td>
                 <td>{{ $jadwal?->tujuan ?? '' }}</td>
                 <td>{{ $jadwal?->tugas ?? '' }}</td>
@@ -46,6 +49,10 @@
                                             <div class="form-group mb-3">
                                                 <input class="form-control" name="tanggal" type="date"
                                                     placeholder="Tanggal" value="{{ $jadwal?->tanggal?->format('Y-m-d') ?? '' }}">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <input class="form-control" name="waktu" type="time"
+                                                    placeholder="Waktu" value="{{ $jadwal?->waktuFormat ?? '' }}">
                                             </div>
                                             <div class="form-group mb-3">
                                                 <select class="form-select" name="karyawan"
@@ -80,6 +87,7 @@
         @endforeach
     </tbody>
 </table>
+</div>
 
 @push('scripts')
     <script>

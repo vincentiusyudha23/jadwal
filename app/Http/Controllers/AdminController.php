@@ -225,7 +225,8 @@ class AdminController extends Controller
             'karyawan' => ['required','max:8'],
             'tanggal' => ['required'],
             'tujuan' => ['required', 'max:255'],
-            'tugas' => ['required']
+            'tugas' => ['required'],
+            'waktu' => ['required']
         ]);
 
         try{
@@ -236,7 +237,8 @@ class AdminController extends Controller
                     'id_karyawan' => $user->id,
                     'tanggal' => $request->tanggal,
                     'tujuan' => $request->tujuan,
-                    'tugas' => $request->tugas
+                    'tugas' => $request->tugas,
+                    'waktu' => $request->waktu
                 ]);
 
                 return redirect()->back()->with('success', 'Berhasil Membuat Jadwal');
@@ -255,7 +257,8 @@ class AdminController extends Controller
             'karyawan' => ['required','max:8'],
             'tanggal' => ['required'],
             'tujuan' => ['required', 'max:255'],
-            'tugas' => ['required']
+            'tugas' => ['required'],
+            'waktu' => ['required']
         ]);
 
         try{
@@ -268,7 +271,8 @@ class AdminController extends Controller
                     'id_karyawan' => $user->id,
                     'tanggal' => $request->tanggal,
                     'tujuan' => $request->tujuan,
-                    'tugas' => $request->tugas
+                    'tugas' => $request->tugas,
+                    'waktu' => $request->waktu
                 ]);
 
                 return redirect()->back()->with('success', 'Berhasil Memperbarui Jadwal');
@@ -366,6 +370,7 @@ class AdminController extends Controller
             return [
                 'Hari' => $jadwal->tanggal->translatedFormat('l'),
                 'Tanggal' => $jadwal->tanggal->format('d/m/Y'),
+                'Waktu' => $jadwal->waktuFormat,
                 'Nama' => $jadwal->user->name,
                 'Tujuan' => $jadwal->tujuan,
                 'tugas' => $jadwal->tugas,
@@ -385,6 +390,7 @@ class AdminController extends Controller
             return [
                 'Hari' => $jadwal->tanggal->translatedFormat('l'),
                 'Tanggal' => $jadwal->tanggal->format('d/m/Y'),
+                'Waktu' => $jadwal->waktuFormat,
                 'Nama' => $jadwal->user->name,
                 'Tujuan' => $jadwal->tujuan,
                 'tugas' => $jadwal->tugas,
@@ -468,6 +474,52 @@ class AdminController extends Controller
     {
         $file_path = global_assets_path('assets/template_import_data.xlsx');
         $file_name = 'Template_Import_karyawan.xlsx';
+
+        return response()->download($file_path, $file_name);
+    }
+
+    public function importJadwalKaryawan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required'
+        ]);
+
+        try{
+            DB::beginTransaction();
+
+            (new FastExcel)->import($request->file, function($line){
+                $user = User::where('name', $line['Nama Karyawan'])
+                    ->orWhere('id_karyawan', $line['ID Karyawan'])
+                    ->select('id')
+                    ->first();
+                if($user){
+                    return Jadwal::create([
+                        'id_karyawan' => $user->id,
+                        'tanggal' => $line['Tanggal'],
+                        'waktu' => $line['Waktu'],
+                        'tujuan' => $line['Tujuan'],
+                        'tugas' => $line['Tugas'] 
+                    ]);
+                }
+            });
+
+            DB::commit();
+
+            return response()->json([
+                'type' => 'success',
+                'msg' => 'Berhasil mengimport Jadwal karyawan.'
+            ]);
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            dd($e->getMessage());
+        }
+    }
+
+    public function downloadTemplateJadwal()
+    {
+        $file_path = global_assets_path('assets/template_import_jadwal.xlsx');
+        $file_name = 'Template_Import_Jadwal.xlsx';
 
         return response()->download($file_path, $file_name);
     }

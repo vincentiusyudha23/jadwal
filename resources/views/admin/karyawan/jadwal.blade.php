@@ -45,8 +45,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input-group mb-3">
-                                <input class="form-control" type="text" name="tujuan" placeholder="Tujuan...">
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-12">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" name="tujuan" placeholder="Tujuan...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="input-group">
+                                        <input class="form-control" type="time" name="waktu">
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-group mb-3">
                                 <textarea class="form-control" name="tugas" placeholder="Tugas..."></textarea>
@@ -64,10 +73,12 @@
                 <div class="card-body p-4">
                     <div class="w-100 d-flex justify-content-between align-item-center mb-3">
                         <span class="text-gray-600 fs-5">Jadwal Karyawan</span>
-                        <a href="{{ route('admin.export.jadwal.all') }}" type="button" class="btn btn-sm btn-success">
-                            <span class="me-1">Export</span>
-                            <i class="fa-solid fa-download"></i>
-                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('admin.export.jadwal.all') }}" type="button" class="btn btn-sm btn-success">
+                                Export
+                            </a>
+                            <button type="button" class="btn btn-primary btn-sm btn-import-jadwal">Import</button>
+                        </div>
                     </div>
                     @include('admin.karyawan.partials.tabel-jadwal')
                 </div>
@@ -82,4 +93,84 @@
             toastr.success('{{ session("success") }}');
         </script>
     @endif
+
+    <script>
+        $(document).ready(function(){
+            $(document).on('click', '.btn-import-jadwal',function(){
+                Swal.fire({
+                    title: "Import Jadwal Karyawan",
+                    input: "file",
+                    inputAttributes:{
+                        "accept" : ".xls,.xlsx,.csv",
+                        "aria-label": "Unggah file excel anda"
+                    },
+                    showDenyButton: true,
+                    confirmButtonText: "Simpan",
+                    denyButtonText: "Unduh Template",
+                    customClass: {
+                        denyButton: "bg-primary",
+                        confirmButton: "bg-success"
+                    },
+                    preConfirm: (file) => {
+                        if(!file){
+                            Swal.showValidationMessage("Silakan pilih file untuk diunggah");
+                        }
+
+                        return file;
+                    }
+                }).then(async (result) => {
+                    if(result.isConfirmed){
+                        const formData = new FormData();
+                        formData.append('file', result.value);
+                        formData.append('_token', '{{ csrf_token() }}');
+
+                        await $.ajax({
+                            url: '{{ route('admin.import.jadwal.karyawan') }}',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            beforeSend: function(){
+                                Swal.fire({
+                                    title: 'Uploading...',
+                                    text: 'Harap tunggu, sistem sedang memproses file anda.',
+                                    allowOutsideClick: false,
+                                    showConfirmButton: false,
+                                    willOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                            },
+                            success: function(res){
+                                Swal.hideLoading();
+                                if(res.type == 'success'){
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: res.msg,
+                                        icon: 'success',
+                                    }).then( () => {
+                                        location.reload();
+                                    });
+                                }
+                            },
+                            error: function(err){
+                                Swal.hideLoading();
+                                
+                                Swal.fire({
+                                    title: 'Gagal',
+                                    text: 'Gagal mengimport data karyawan.',
+                                    icon: 'error',
+                                });
+                            }
+                        });
+                    } else if(result.isDenied){
+                        window.location.href = "{{ route('admin.download.template.jadwal') }}";
+                        setTimeout(() => {
+                            $('.btn-import-jadwal').trigger('click');
+                        }, 100);
+                    }
+                });
+            });
+        });
+    </script>
 @endpush
