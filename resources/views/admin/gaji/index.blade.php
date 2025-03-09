@@ -166,6 +166,7 @@
 
             <div class="card mt-2">
                 <div class="card-body">
+                    <h4 class="fw-bold my-2">Total diterima : Rp 200.000</h4>
                     <button class="btn btn-success w-100 fw-bold">Simpan</button>
                 </div>
             </div>

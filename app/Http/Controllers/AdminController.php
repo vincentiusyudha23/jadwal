@@ -462,7 +462,9 @@ class AdminController extends Controller
 
         }catch(\Exception $e){
             DB::rollBack();
-            
+            if(app()->isLocal()){
+                dd($e->getMessage());
+            }
             return response()->json([
                 'type' => 'error',
                 'msg' => $e->getMessage()
