@@ -523,4 +523,9 @@ class AdminController extends Controller
 
         return response()->download($file_path, $file_name);
     }
+
+    public function salary_page()
+    {
+        return view('admin.gaji.index');
+    }
 }

@@ -43,6 +43,7 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/download-template-import', 'downloadTemplateImport')->name('download.template.import');
         Route::post('/import-jadwal-karyawan', 'importJadwalKaryawan')->name('import.jadwal.karyawan');
         Route::get('/download-template-jadwal', 'downloadTemplateJadwal')->name('download.template.jadwal');
+        Route::get('/penggajian', 'salary_page')->name('penggajian');
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });

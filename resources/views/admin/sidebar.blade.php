@@ -18,17 +18,29 @@
                 <i class="las la-user-circle mx-2 fs-3"></i>
                 <span class="fw-semibold">Data Karyawan</span>
             </a>
+            <a href="#" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.karyawan') ? 'active' : '' }}">
+                <i class="las la-camera mx-2 fs-3"></i>
+                <span class="fw-semibold">Data Absensi</span>
+            </a>
             <a href="{{ route('admin.karyawan.jadwal') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.karyawan.jadwal') ? 'active' : '' }}">
                 <i class="las la-clock mx-2 fs-3"></i>
                 <span class="fw-semibold">Jadwal Karyawan</span>
             </a>
-            <a href="{{ route('admin.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.profile') ? 'active' : '' }}">
-                <i class="las la-user-lock mx-2 fs-3"></i>
-                <span class="fw-semibold">Kelola Akun</span>
-            </a>
             <a href="{{ route('admin.history') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.history') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Jadwal</span>
+            </a>
+            <a href="{{ route('admin.penggajian') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.penggajian') ? 'active' : '' }}">
+                <i class="las la-money-check mx-2 fs-3"></i>
+                <span class="fw-semibold">Penggajian</span>
+            </a>
+            <a href="{{ route('admin.history') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.history') ? 'active' : '' }}">
+                <i class="las la-history mx-2 fs-3"></i>
+                <span class="fw-semibold">Riwayat Gaji</span>
+            </a>
+            <a href="{{ route('admin.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.profile') ? 'active' : '' }}">
+                <i class="las la-user-lock mx-2 fs-3"></i>
+                <span class="fw-semibold">Kelola Akun</span>
             </a>
         @endif
 
