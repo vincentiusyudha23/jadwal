@@ -8,6 +8,7 @@ use App\Models\Jadwal;
 use App\Models\Karyawan;
 use App\Enums\DivisiEnum;
 use App\Enums\JabatanEnum;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -428,7 +429,7 @@ class AdminController extends Controller
             DB::beginTransaction();
             
             (new FastExcel)->import($request->file, function($line){
-                $username = strtolower(explode(' ', trim($line['Nama']))[0]);
+                $username = Str::lower(Str::replace(' ', '', $line['Nama']));
                 $password = $username . $line['ID'];
 
                 $user = User::create([
@@ -462,9 +463,9 @@ class AdminController extends Controller
 
         }catch(\Exception $e){
             DB::rollBack();
-            if(app()->isLocal()){
-                dd($e->getMessage());
-            }
+            // if(app()->isLocal()){
+            //     dd($e->getMessage());
+            // }
             return response()->json([
                 'type' => 'error',
                 'msg' => $e->getMessage()

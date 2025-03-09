@@ -416,7 +416,7 @@
                             },
                             error: function(err){
                                 Swal.hideLoading();
-                                
+                                console.log(err.responseJSON);
                                 Swal.fire({
                                     title: 'Gagal',
                                     text: 'Gagal mengimport data karyawan.',
