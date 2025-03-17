@@ -17,6 +17,7 @@ class ImportDataKaryawan implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $data;
+    public $errors = [];
 
     /**
      * Create a new job instance.
@@ -39,25 +40,45 @@ class ImportDataKaryawan implements ShouldQueue
             $username = Str::lower(Str::replace(' ', '', $karyawan['Nama']));
             $password = $username . $karyawan['ID'];
 
-            $user = User::create([
-                'name' => $karyawan['Nama'],
-                'id_karyawan' => (int) $karyawan['ID'],
-                'username' => $username,
-                'password' => Hash::make($password),
-                'enc_password' => Crypt::encryptString($password),
-                'role' => 'karyawan',
-                'email' => $karyawan['Email']
-            ]);
+            $user = User::where('username', $username)
+                        ->orWhere('id_karyawan', $karyawan['ID'])
+                        ->orWhere('email', $karyawan['Email'])
+                        ->first();
+            
+            if($user){
+                $user->update([
+                    'name' => $karyawan['Nama'],
+                    'id_karyawan' => (int) $karyawan['ID'],
+                    'username' => $username,
+                    'password' => Hash::make($password),
+                    'enc_password' => Crypt::encryptString($password),
+                    'role' => 'karyawan',
+                    'email' => $karyawan['Email']
+                ]);
+            }else{
+                $user = User::create([
+                    'name' => $karyawan['Nama'],
+                    'id_karyawan' => (int) $karyawan['ID'],
+                    'username' => $username,
+                    'password' => Hash::make($password),
+                    'enc_password' => Crypt::encryptString($password),
+                    'role' => 'karyawan',
+                    'email' => $karyawan['Email']
+                ]);
+            }
 
-            $user->karyawan()->create([
-                'name' => $karyawan['Nama'],
-                'jabatan' => $karyawan['Jabatan'],
-                'divisi' => $karyawan['Divisi'],
-                'nomor_rekening' => $karyawan['Nomor Rekening'],
-                'gaji' => (float) $karyawan['Gaji']
-            ]);
+            $user->karyawan()->updateOrCreate(
+                ['id_karyawan' => $user->id],
+                [
+                    'name' => $karyawan['Nama'],
+                    'jabatan' => $karyawan['Jabatan'],
+                    'divisi' => $karyawan['Divisi'],
+                    'nomor_rekening' => $karyawan['Nomor Rekening'],
+                    'gaji' => (float) $karyawan['Gaji']
+                ]
+            );
 
-            $user->assignRole('karyawan');
+            $user->assignRole('karyawan');   
         }
     }
 }

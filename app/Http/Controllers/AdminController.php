@@ -434,14 +434,13 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             $file = $request->file;
-            $fileName = 'import-'.now()->format('dmYHi').'.'.$file->getClientOriginalExtension();;
-            $filePath = global_assets_path('assets/import');
+            $fileName = 'import-'.now()->format('dmYHi').'.'.$file->getClientOriginalExtension();
+            
+            $filePath = $file->storeAs('imports', $fileName, 'local');
 
-            $file->move($filePath, $fileName);
-
-            $fix_file = global_assets_path("assets/import/{$fileName}");
-
-            $import = collect((new FastExcel)->startRow(1)->import($fix_file));
+            $fullPath = storage_path("app/{$filePath}");
+            
+            $import = collect((new FastExcel)->startRow(1)->import($fullPath));
 
             $import->chunk(10)->each(function ($chunk) {
                 ImportDataKaryawan::dispatch($chunk);
