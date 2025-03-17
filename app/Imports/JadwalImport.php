@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Jadwal;
 use Illuminate\Support\Collection;
@@ -19,6 +20,9 @@ class JadwalImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $line) {
+            $tanggal = Carbon::parse($line['Tanggal'])->format('Y-m-d');
+            $waktu = Carbon::parse($line['Waktu'])->format('H:i');
+
             $user = User::where('name', $line['Nama Karyawan'])
                 ->orWhere('id_karyawan', $line['ID Karyawan'])
                 ->select('id')
@@ -26,8 +30,8 @@ class JadwalImport implements ToCollection, WithHeadingRow
 
             if($user){
                 $jadwal = Jadwal::where([
-                    'tanggal' => $line['Tanggal'],
-                    'waktu' => $line['Waktu']
+                    'tanggal' => $tanggal,
+                    'waktu' => $waktu
                 ])->first();
 
                 if($jadwal){
@@ -36,8 +40,8 @@ class JadwalImport implements ToCollection, WithHeadingRow
 
                 Jadwal::create([
                     'id_karyawan' => $user->id,
-                    'tanggal' => $line['Tanggal'],
-                    'waktu' => $line['Waktu'],
+                    'tanggal' => $tanggal,
+                    'waktu' => $waktu,
                     'tujuan' => $line['Tujuan'],
                     'tugas' => $line['Tugas'] 
                 ]);
