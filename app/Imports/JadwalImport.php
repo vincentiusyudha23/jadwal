@@ -22,7 +22,7 @@ class JadwalImport implements ToCollection, WithHeadingRow
         foreach ($collection as $line) {
             $tanggal = Carbon::parse($line['Tanggal'])->format('Y-m-d');
             $waktu = Carbon::parse($line['Waktu'])->format('H:i');
-
+            
             $user = User::where('name', $line['Nama Karyawan'])
                 ->orWhere('id_karyawan', $line['ID Karyawan'])
                 ->select('id')
