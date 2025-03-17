@@ -356,9 +356,10 @@
                     success: function(response){
                         if(response.type === 'success'){
                             toastr.success('Berhasil Memperbarui Data');
-                            $('.table-data-karyawan').parent().html(response.markup);
-                            $('.table-data-karyawan').DataTable();
-                            $('#edit-karyawan-form').find('button[aria-label="Close"]').click();
+                            location.reload();
+                            // $('.table-data-karyawan').parent().html(response.markup);
+                            // $('.table-data-karyawan').DataTable();
+                            // $('#edit-karyawan-form').find('button[aria-label="Close"]').click();
                         }
                     },
                     error: function(response){
