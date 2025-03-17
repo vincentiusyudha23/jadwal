@@ -27,7 +27,7 @@ class JadwalImport implements ToCollection, WithHeadingRow
             if($user){
                 $jadwal = Jadwal::where([
                     'tanggal' => $line['Tanggal'],
-                    'waktu' => $line['waktu']
+                    'waktu' => $line['Waktu']
                 ])->first();
 
                 if($jadwal){
