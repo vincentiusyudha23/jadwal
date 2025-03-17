@@ -17,7 +17,8 @@ class Karyawan extends Model
         'jabatan',
         'divisi',
         'nomor_rekening',
-        'id_karyawan'
+        'id_karyawan',
+        'gaji'
     ];
 
     public function user(): BelongsTo

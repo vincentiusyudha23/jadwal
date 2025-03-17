@@ -110,6 +110,13 @@ if(!function_exists('generateOtp')){
     }
 }
 
+if (!function_exists('currency')) {
+    function currency($amount = 0)
+    {
+        return 'Rp ' . number_format($amount, 0, ',', '.') . ',-';
+    }
+}
+
 if(!function_exists('sendEmail')){
     function sendEmail($data= [])
     {

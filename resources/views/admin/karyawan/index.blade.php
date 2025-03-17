@@ -104,6 +104,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <input class="form-control" type="number" name="gaji" id="gaji" value="{{ old('gaji') }}" placeholder="Gaji Pokok">
+                                </div>
+                            </div>
                         </div>
                         <div class="d-flex w-100 justify-content-end">
                             <button class="btn btn-success w-100" type="submit" id="submit-new-karyawan">
@@ -203,6 +208,14 @@
                                     <label for="email-edit" class="form-label">Email</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="email" id="email-edit" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-2">
+                                    <label class="form-label" for="gaji-edit">Gaji</label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="number" name="gaji" id="gaji-edit" placeholder="Gaji Pokok">
                                     </div>
                                 </div>
                             </div>
@@ -308,6 +321,7 @@
                 var divisi = el.data('divisi');
                 var norek = el.data('norek');
                 var email = el.data('email');
+                var gaji = el.data('gaji');
 
                 let form = $('#edit-karyawan-form');
                 form.find('input[name="id"]').val(id);
@@ -319,6 +333,7 @@
                 form.find('select[name="divisi"]').val(divisi).trigger('change');
                 form.find('input[name="nomor_rekening"]').val(norek);
                 form.find('input[name="email"]').val(email);
+                form.find('input[name="gaji"]').val(gaji);
             });
 
             $('.edit-karyawan-form').on('submit', function(e){
@@ -416,10 +431,11 @@
                             },
                             error: function(err){
                                 Swal.hideLoading();
-                                console.log(err.responseJSON);
+                                var error = err.responseJSON.msg ?? 'Gagal mengimport data karyawan.';
+
                                 Swal.fire({
                                     title: 'Gagal',
-                                    text: 'Gagal mengimport data karyawan.',
+                                    text: error,
                                     icon: 'error',
                                 });
                             }

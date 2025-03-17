@@ -11,6 +11,7 @@ use App\Enums\JabatanEnum;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Jobs\ImportDataKaryawan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +73,7 @@ class AdminController extends Controller
             'divisi' => ['required'],
             'nomor_rekening' => ['required'],
             'email' => ['required', 'email'],
+            'gaji' => ['required', 'numeric']
         ]);
 
         try{
@@ -92,7 +94,8 @@ class AdminController extends Controller
                 'name' => $request->nama,
                 'jabatan' => $request->jabatan,
                 'divisi' => $request->divisi,
-                'nomor_rekening' => $request->nomor_rekening
+                'nomor_rekening' => $request->nomor_rekening,
+                'gaji' => $request->gaji
             ]);
 
             $user->assignRole('karyawan');
@@ -119,6 +122,7 @@ class AdminController extends Controller
             'divisi' => ['required'],
             'nomor_rekening' => ['required'],
             'email' => ['required', 'email'],
+            'gaji' => ['required', 'numeric']
         ]);
 
         try{
@@ -138,7 +142,8 @@ class AdminController extends Controller
             $user->karyawan?->update([
                 'jabatan' => $request->jabatan,
                 'divisi' => $request->divisi,
-                'nomor_rekening' => $request->nomor_rekening
+                'nomor_rekening' => $request->nomor_rekening,
+                'gaji' => $request->gaji
             ]);
 
             $karyawans = User::where('role', 'karyawan')->latest()->get();
@@ -427,31 +432,19 @@ class AdminController extends Controller
 
         try{
             DB::beginTransaction();
-            
-            (new FastExcel)->import($request->file, function($line){
-                $username = Str::lower(Str::replace(' ', '', $line['Nama']));
-                $password = $username . $line['ID'];
 
-                $user = User::create([
-                    'name' => $line['Nama'],
-                    'id_karyawan' => intval($line['ID']),
-                    'username' => $username,
-                    'password' => Hash::make($password),
-                    'enc_password' => Crypt::encryptString($password),
-                    'role' => 'karyawan',
-                    'email' => $line['Email']
-                ]);
+            $file = $request->file;
+            $fileName = 'import-'.now()->format('dmYHi').'.'.$file->getClientOriginalExtension();;
+            $filePath = global_assets_path('assets/import');
 
-                $user->karyawan()->create([
-                    'name' => $line['Nama'],
-                    'jabatan' => $line['Jabatan'],
-                    'divisi' => $line['Divisi'],
-                    'nomor_rekening' => $line['Nomor Rekening']
-                ]);
+            $file->move($filePath, $fileName);
 
-                $user->assignRole('karyawan');
+            $fix_file = global_assets_path("assets/import/{$fileName}");
 
-                return $user;
+            $import = collect((new FastExcel)->startRow(1)->import($fix_file));
+
+            $import->chunk(10)->each(function ($chunk) {
+                ImportDataKaryawan::dispatch($chunk);
             });
 
             DB::commit();

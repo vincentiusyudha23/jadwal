@@ -8,9 +8,10 @@
                 <th class="text-center">Jabatan</th>
                 <th class="text-center">Divisi</th>
                 <th class="text-center">No. Rek</th>
+                <th class="text-center">Gaji Pokok</th>
                 <th class="text-center">Email</th>
-                <th class="text-center">Username</th>
-                <th class="text-center">Password</th>
+                {{-- <th class="text-center">Username</th>
+                <th class="text-center">Password</th> --}}
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -24,9 +25,10 @@
                         <td class="text-center">{{  \App\Enums\JabatanEnum::getItemJabatan($karyawan->karyawan?->jabatan ?? '') }}</td>
                         <td class="text-center">{{ \App\Enums\DivisiEnum::getItemDivisi($karyawan->karyawan?->divisi ?? '') }}</td>
                         <td class="text-center">{{ $karyawan->karyawan?->nomor_rekening }}</td>
+                        <td class="text-center">{{ currency($karyawan->karyawan?->gaji) }}</td>
                         <td class="text-center">{{ $karyawan->email }}</td>
-                        <td class="text-center">{{ $karyawan->username }}</td>
-                        <td class="text-center">{{ decryptPassword($karyawan->enc_password) }}</td>
+                        {{-- <td class="text-center">{{ $karyawan->username }}</td>
+                        <td class="text-center">{{ decryptPassword($karyawan->enc_password) }}</td> --}}
                         <td class="text-center">
                             <div class="d-flex gap-2 justify-content-center">
                                 <button class="btn btn-sm btn-success" type="button" id="btn-cardid" data-bs-toggle="modal" data-bs-target="#id-card-karyawan-{{ $karyawan->id }}">
@@ -67,6 +69,7 @@
                                     data-divisi="{{ strtolower($karyawan->karyawan?->divisi ?? '') }}"
                                     data-norek="{{ $karyawan->karyawan?->nomor_rekening ?? '' }}"
                                     data-email="{{ $karyawan->email }}"
+                                    data-gaji="{{ ceil($karyawan->karyawan->gaji) }}"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#edit-karyawan-form">
                                     <i class="fa-solid fa-pen-to-square text-white"></i>
