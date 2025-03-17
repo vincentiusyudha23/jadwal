@@ -10,12 +10,14 @@ use App\Enums\DivisiEnum;
 use App\Enums\JabatanEnum;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Imports\KaryawanImport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Jobs\ImportDataKaryawan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
@@ -433,18 +435,7 @@ class AdminController extends Controller
         try{
             DB::beginTransaction();
 
-            $file = $request->file;
-            $fileName = 'import-'.now()->format('dmYHi').'.'.$file->getClientOriginalExtension();
-            
-            $filePath = $file->storeAs('imports', $fileName, 'local');
-
-            $fullPath = storage_path("app/{$filePath}");
-            
-            $import = collect((new FastExcel)->startRow(1)->import($fullPath));
-
-            $import->chunk(10)->each(function ($chunk) {
-                ImportDataKaryawan::dispatch($chunk);
-            });
+            Excel::import(new KaryawanImport, $request->file('file'));
 
             DB::commit();
 
