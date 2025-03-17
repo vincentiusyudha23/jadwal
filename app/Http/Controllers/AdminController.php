@@ -473,21 +473,7 @@ class AdminController extends Controller
         try{
             DB::beginTransaction();
 
-            (new FastExcel)->import($request->file, function($line){
-                $user = User::where('name', $line['Nama Karyawan'])
-                    ->orWhere('id_karyawan', $line['ID Karyawan'])
-                    ->select('id')
-                    ->first();
-                if($user){
-                    return Jadwal::create([
-                        'id_karyawan' => $user->id,
-                        'tanggal' => $line['Tanggal'],
-                        'waktu' => $line['Waktu'],
-                        'tujuan' => $line['Tujuan'],
-                        'tugas' => $line['Tugas'] 
-                    ]);
-                }
-            });
+            Excel::import(new JadwalImport, $request->file('file'));
 
             DB::commit();
 
