@@ -356,7 +356,7 @@
                     success: function(response){
                         if(response.type === 'success'){
                             toastr.success('Berhasil Memperbarui Data');
-                            $('.table-data-karyawan').html(response.markup);
+                            $('.table-data-karyawan').parent().html(response.markup);
                             $('.table-data-karyawan').DataTable();
                             $('#edit-karyawan-form').find('button[aria-label="Close"]').click();
                         }
