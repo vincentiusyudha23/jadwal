@@ -1,6 +1,8 @@
-<div class="form-group">
-    @if (isset($label))
-        <label class="form-label" for="{{ $name }}">{{ $label }}</label>
+<div class="mb-3">
+    @if (isset($label) || isset($placeHolder))
+        <label class="form-label fw-bold text-secondary m-1 p-0" for="{{ $name }}">{{ $label ?? $placeHolder ?? '' }}</label>
     @endif
-    <input type="{{ $type ?? 'text' }}" name="{{ $name }}" id="{{ $name }}" placeholder="{{ $placeHolder ?? '' }}" class="form-control" value="{{ $value ?? '' }}">
+    <div class="input-group">
+        <input type="{{ $type ?? 'text' }}" placeholder="{{ ($placeHolder ?? '') ? '' : '' }}" name="{{ $name }}" id="{{ $name }}" value="{{ $value ?? '' }}" {{ $attributes->merge(['class' => 'form-control']) }}>
+    </div>
 </div>

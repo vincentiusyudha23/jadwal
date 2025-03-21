@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GajiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
@@ -43,9 +44,14 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/download-template-import', 'downloadTemplateImport')->name('download.template.import');
         Route::post('/import-jadwal-karyawan', 'importJadwalKaryawan')->name('import.jadwal.karyawan');
         Route::get('/download-template-jadwal', 'downloadTemplateJadwal')->name('download.template.jadwal');
-        Route::get('/penggajian', 'salary_page')->name('penggajian');
+        
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    });
+
+    Route::controller(GajiController::class)->group(function(){
+        Route::get('/penggajian', 'salary_page')->name('penggajian');
+        Route::post('/store-gaji', 'store')->name('gaji.store');
     });
 });
 

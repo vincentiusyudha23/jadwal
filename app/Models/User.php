@@ -5,10 +5,12 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Jadwal;
 use App\Models\Karyawan;
+use App\Models\GajiKaryawan;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -66,5 +68,10 @@ class User extends Authenticatable
     public function karyawan(): HasOne
     {
         return $this->hasOne(Karyawan::class, 'id_karyawan', 'id');
+    }
+
+    public function gajiKaryawan(): HasMany
+    {
+        return $this->hasMany(GajiKaryawan::class, 'id_karyawan', 'id');
     }
 }
