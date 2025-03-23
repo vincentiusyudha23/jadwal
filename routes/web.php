@@ -56,6 +56,7 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/gaji', 'detailsGaji')->name('gaji.details');
         Route::get('/slip-gaji-view/{id}', 'slipGajiView')->name('gaji.slip-gaji.view');
         Route::get('/frame-slip-gaji/{id}', 'frameSlipGaji')->name('gaji.slip-gaji.frame');
+        Route::post('/delete-slip-gaji', 'deleteGaji')->name('gaji.slip-gaji.delete');
     });
 });
 

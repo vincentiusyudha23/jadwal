@@ -113,4 +113,23 @@ class GajiController extends Controller
         $gaji = GajiKaryawan::findOrFail($id);
         return view('admin.gaji.frame-gaji', ['gaji' => $gaji]);
     }
+
+    public function deleteGaji(Request $request)
+    {
+        $gaji = GajiKaryawan::find($request->data_id);
+
+        if($gaji){
+            $gaji->delete();
+
+            return response()->json([
+                'type' => 'success',
+                'msg' => 'Berhasil Menghapus Slip Gaji',
+            ]);
+        }
+
+        return response()->json([
+            'type' => 'errors',
+            'msg' => 'Slip Gaji Tidak ditemukan',
+        ]);
+    }
 }

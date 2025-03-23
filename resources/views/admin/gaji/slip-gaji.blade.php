@@ -5,17 +5,15 @@
 @push('styles')
     <style>
         iframe{
-            width: 100%;
-            height: 100%;
-            transform: scale(1.35);
-            transform-origin: center;
+            width: 22cm;
+            height: 11cm;
         }
     </style>
 @endpush
 
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
-        <div class="mt-3 overflow-hidden" style="width: 100%; height: 550px;">
+        <div class="mt-3 overflow-x-auto d-flex justify-content-center" style="width: 100%;">
             <iframe src="{{ route('admin.gaji.slip-gaji.frame', ['id' => $gaji->id]) }}" id="iframe-slip-gaji"></iframe>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2 w-100 justify-content-center mt-2">
@@ -66,8 +64,7 @@
 
                 pdf.addImage(imgData, "PNG", 10, 10, pdfWidth - 20, pdfHeight);
                 
-                const karyawanID = iframeDoc.querySelector("#id_karyawan")?.textContent || "unknown"; 
-                pdf.save(`slip-gaji-${karyawanID}.pdf`);
+                pdf.save(`slip-gaji-{{ $gaji->user->id_karyawan }}.pdf`);
             } catch (error) {
                 console.error("Gagal membuat PDF:", error);
             }

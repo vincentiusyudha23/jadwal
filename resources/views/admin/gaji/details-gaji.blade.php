@@ -4,15 +4,12 @@
 
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
-        @php
-            $firstDate = $gajiKaryawan->first()->created_at->translatedFormat('F Y');
-        @endphp
         <div class="py-2">
             <nav aria-label="breadcrumb" class="p-0 mt-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('admin.gaji.riwayat') }}">Riwayat Gaji</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $firstDate }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ request('bulan', '') }}</li>
                 </ol>
             </nav>
 
@@ -20,7 +17,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center p-2 mb-3">
                         <h5 class="text-gray-700 fw-bold">
-                            Riwayat Penggajian : {{ $firstDate }}
+                            Riwayat Penggajian : {{ request('bulan', '') }}
                         </h5>
                     </div>
 
@@ -52,9 +49,7 @@
                                                     <a href="{{ route('admin.gaji.slip-gaji.view', ['id' => $gaji->id]) }}" class="btn btn-sm btn-success">
                                                         <i class="fa-solid fa-eye"></i>
                                                     </a>
-                                                    <a href="#" class="btn btn-sm btn-danger">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </a>
+                                                    <x-button-delete table="datatable" :data_id="$gaji->id" :route="route('admin.gaji.slip-gaji.delete')" method="POST"/>
                                                 </div>
                                             </td>
                                         </tr>

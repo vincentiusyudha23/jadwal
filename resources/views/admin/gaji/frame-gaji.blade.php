@@ -8,8 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            width: 100%;
-            height: 100vh;
+            width: 22cm;
             display: flex;
             justify-content: center;
             align-items: center;
