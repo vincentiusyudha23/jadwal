@@ -47,7 +47,7 @@ class GajiRequest extends FormRequest
             'pt_absensi' => 'nullable|numeric',
             'pt_ll' => 'nullable|numeric',
             'total_potongan' => 'required|numeric',
-            'total_terima' => 'required|numeric'
+            'total_diterima' => 'required|numeric'
         ];
     }
 }

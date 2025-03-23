@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Enums\BulanEnum;
+use App\Models\GajiKaryawan;
 use Illuminate\Http\Request;
 use App\Http\Requests\GajiRequest;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class GajiController extends Controller
 {
@@ -64,5 +68,49 @@ class GajiController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function riwayatGaji()
+    {
+        $penggajian = GajiKaryawan::latest()->get()->groupBy(function($query){
+            return $query->created_at->translatedFormat('F Y');
+        })->keys()->toArray();
+
+        return view('admin.gaji.riwayat-gaji', [
+            'penggajian' => $penggajian
+        ]);
+    }
+
+    public function detailsGaji()
+    {
+        $bulan = request('bulan', '');
+
+        abort_if(empty($bulan), 404);
+
+        $bulan = explode(' ', $bulan);
+
+        $fix_bulan = BulanEnum::getBulan($bulan[0]);
+        $fix_tahun = $bulan[1];
+
+        $gajiKaryawan = GajiKaryawan::whereMonth('created_at', $fix_bulan)->whereYear('created_at', $fix_tahun)->latest()->get();
+
+        return view('admin.gaji.details-gaji', [
+            'gajiKaryawan' => $gajiKaryawan
+        ]);
+    }
+
+    public function slipGajiView($id)
+    {
+        $gaji = GajiKaryawan::findOrFail($id);
+
+        return view('admin.gaji.slip-gaji', [
+            'gaji' => $gaji
+        ]);
+    }
+
+    public function frameSlipGaji($id)
+    {
+        $gaji = GajiKaryawan::findOrFail($id);
+        return view('admin.gaji.frame-gaji', ['gaji' => $gaji]);
     }
 }

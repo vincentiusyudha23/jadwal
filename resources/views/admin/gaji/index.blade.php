@@ -223,7 +223,7 @@
             pt_absensi: 0,
             pt_ll: 0,
             total_potongan: 0,
-            total_terima: 0
+            total_diterima: 0
         };
         
         document.addEventListener('alpine:init', () => {
@@ -242,7 +242,7 @@
                 },
                 calculateTotalTerima(){
                     let totalTerima = (this.calculateTotalUpah() + this.calculateTotalNonUpah()) - this.calculatePotongan()
-                    this.form.total_terima = totalTerima;
+                    this.form.total_diterima = totalTerima;
                     this.totalTerima = 'Total Diterima : Rp ' + new Intl.NumberFormat('id-ID').format(totalTerima);
                 },
                 calculateTotalNonUpah(){

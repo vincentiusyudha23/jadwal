@@ -117,6 +117,17 @@ if (!function_exists('currency')) {
     }
 }
 
+if (!function_exists('withoutCurrency')) {
+    function withoutCurrency($amount = 0)
+    {
+        if($amount == 0){
+            return '-';
+        }
+
+        return number_format($amount, 0, ',', '.') . ',-';
+    }
+}
+
 if(!function_exists('sendEmail')){
     function sendEmail($data= [])
     {

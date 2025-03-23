@@ -34,7 +34,7 @@
                 <i class="las la-money-check mx-2 fs-3"></i>
                 <span class="fw-semibold">Penggajian</span>
             </a>
-            <a href="{{ route('admin.history') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.history') ? 'active' : '' }}">
+            <a href="{{ route('admin.gaji.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.gaji.riwayat') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Gaji</span>
             </a>

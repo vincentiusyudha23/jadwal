@@ -37,11 +37,12 @@ class GajiKaryawan extends Model
         'pt_bpjs_kesehatan',
         'pt_bpjs_kerja',
         'pt_ll',
+        'pt_absensi',
         'total_potongan',
         'total_diterima',
     ];
 
-    public function karyawan(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_karyawan', 'id');
     }

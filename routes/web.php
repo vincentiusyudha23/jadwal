@@ -52,6 +52,10 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
     Route::controller(GajiController::class)->group(function(){
         Route::get('/penggajian', 'salary_page')->name('penggajian');
         Route::post('/store-gaji', 'store')->name('gaji.store');
+        Route::get('/riwayat-gaji', 'riwayatGaji')->name('gaji.riwayat');
+        Route::get('/gaji', 'detailsGaji')->name('gaji.details');
+        Route::get('/slip-gaji-view/{id}', 'slipGajiView')->name('gaji.slip-gaji.view');
+        Route::get('/frame-slip-gaji/{id}', 'frameSlipGaji')->name('gaji.slip-gaji.frame');
     });
 });
 
