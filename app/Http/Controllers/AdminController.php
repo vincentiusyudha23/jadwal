@@ -235,8 +235,18 @@ class AdminController extends Controller
             'tanggal' => ['required'],
             'tujuan' => ['required', 'max:255'],
             'tugas' => ['required'],
-            'waktu' => ['required']
+            'waktu' => ['required'],
+            'note' => ['required']
         ]);
+
+        $jadwal = Jadwal::where([
+            'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu
+        ])->first();
+
+        if($jadwal){
+            return redirect()->back()->with('errors', 'Tanggal dan waktu sudah dijadwalkan.');
+        }
 
         try{
             $user = User::find($request->karyawan);
@@ -247,7 +257,8 @@ class AdminController extends Controller
                     'tanggal' => $request->tanggal,
                     'tujuan' => $request->tujuan,
                     'tugas' => $request->tugas,
-                    'waktu' => $request->waktu
+                    'waktu' => $request->waktu,
+                    'note' => $request->note
                 ]);
 
                 return redirect()->back()->with('success', 'Berhasil Membuat Jadwal');
@@ -267,7 +278,8 @@ class AdminController extends Controller
             'tanggal' => ['required'],
             'tujuan' => ['required', 'max:255'],
             'tugas' => ['required'],
-            'waktu' => ['required']
+            'waktu' => ['required'],
+            'note' => ['required']
         ]);
 
         try{
@@ -281,7 +293,8 @@ class AdminController extends Controller
                     'tanggal' => $request->tanggal,
                     'tujuan' => $request->tujuan,
                     'tugas' => $request->tugas,
-                    'waktu' => $request->waktu
+                    'waktu' => $request->waktu,
+                    'note' => $request->note
                 ]);
 
                 return redirect()->back()->with('success', 'Berhasil Memperbarui Jadwal');

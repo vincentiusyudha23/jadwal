@@ -8,6 +8,7 @@
             <th>Nama</th>
             <th>Tujuan</th>
             <th>Tugas</th>
+            <th>Catatan</th>
             <th>Status</th>
             <th>Aksi</th>
         </tr>
@@ -21,6 +22,7 @@
                 <td>{{ $jadwal->user->name }}</td>
                 <td>{{ $jadwal?->tujuan ?? '' }}</td>
                 <td>{{ $jadwal?->tugas ?? '' }}</td>
+                <td>{{ $jadwal?->note ?? '' }}</td>
                 <td>
                     <x-status-jadwal type="button" :status="$jadwal->status"/>
                 </td>
@@ -68,7 +70,10 @@
                                                     placeholder="Tujuan" value="{{ $jadwal?->tujuan ?? '' }}">
                                             </div>
                                             <div class="form-group mb-3">
-                                                <textarea class="form-control" name="tugas" placeholder="Tugas">{{ $jadwal?->tugas ?? '' }}</textarea>
+                                                <textarea class="form-control" name="tugas" placeholder="Tugas...">{{ $jadwal?->tugas ?? '' }}</textarea>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <textarea class="form-control" name="note" placeholder="Catatan...">{{ $jadwal?->note ?? '' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="modal-footer">

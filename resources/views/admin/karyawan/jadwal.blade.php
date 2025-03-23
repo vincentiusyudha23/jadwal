@@ -16,12 +16,10 @@
                     <div class="card-title d-flex justify-content-between align-items-center">
                         <p class="text-gray-600 fw-bold fs-5">Input Jadwal Baru</p>
                     </div>
-                    @if ($errors->any())
+                    @if (session('errors'))
                         <div class="alert alert-danger" role="alert">
                             <ul class="px-4 m-0">
-                                @foreach ($errors->all() ?? [] as $msg)
-                                    <li>{{ $msg }}</li>
-                                @endforeach
+                                <li>{{ session('errors') }}</li>
                             </ul>
                         </div>
                     @endif
@@ -57,8 +55,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input-group mb-3">
-                                <textarea class="form-control" name="tugas" placeholder="Tugas..."></textarea>
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-12">
+                                    <div class="input-group mb-3">
+                                        <textarea class="form-control" name="tugas" placeholder="Tugas..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="input-group mb-3">
+                                        <textarea class="form-control" name="note" placeholder="Catatan..."></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="d-flex w-100 justify-content-end">
