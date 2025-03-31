@@ -210,27 +210,8 @@
                     });
             }
 
-            function checkLocation() {
-                return new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve(true);
-                        },
-                        (error) => {
-                            reject(false);
-                        }
-                    );
-                });
-            }
-
             $('#on-camera').on('click', function(){  
-                checkLocation()
-                    .then(() => {
-                        onCamera(facingMode);
-                    })
-                    .catch(() => {
-                        alert("Berikan akses lokasi dan hidupkan GPS!");
-                    });
+                onCamera(facingMode);
             });
 
             $('.btn-change-camera').on('click', function(){
