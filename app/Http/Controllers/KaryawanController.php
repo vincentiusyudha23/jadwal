@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Models\MediaImage;
 use Illuminate\Support\Str;
@@ -148,5 +149,43 @@ class KaryawanController extends Controller
         });
 
         return $export;
+    }
+
+    public function absenView()
+    {
+        return view('karyawan.absen.index');
+    }
+
+    public function storeAbsen(Request $request)
+    {
+        $this->validate($request, [
+            'image_id' => 'required',
+            'waktu' => 'required',
+            'tanggal' => 'required',
+            'lokasi' => 'required'
+        ]);
+        $user = Auth::user();
+        $absens = Absen::query()->where('id_karyawan', $user->id)->whereDate('created_at', now())->get();
+        
+        if($absens->where('type', 2)->isNotEmpty()){
+            return redirect()->back()->with('errors', 'Anda sudah melakukan absen hari ini.');
+        }
+
+        $type = 1;
+        $message = 'masuk';
+        if($absens->where('type', 1)->isNotEmpty()){
+            $type = 2;
+            $message = 'pulang';
+        }
+
+        Auth::user()->absen()->create([
+            'image' => $request->image_id,
+            'waktu' => $request->waktu,
+            'tanggal' => $request->tanggal,
+            'lokasi' => $request->lokasi,
+            'type' => $type
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil melakukan absen ' . $message);
     }
 }

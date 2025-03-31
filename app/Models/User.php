@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Models\Karyawan;
 use App\Models\GajiKaryawan;
@@ -73,5 +74,10 @@ class User extends Authenticatable
     public function gajiKaryawan(): HasMany
     {
         return $this->hasMany(GajiKaryawan::class, 'id_karyawan', 'id');
+    }
+
+    public function absen(): HasMany
+    {
+        return $this->hasMany(Absen::class, 'id_karyawan', 'id');
     }
 }

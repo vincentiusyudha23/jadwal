@@ -71,6 +71,8 @@ Route::middleware(['web','role:karyawan'])->prefix('karyawan')->name('karyawan.'
         Route::get('/riwayat-jadwal', 'riwayat_jadwal')->name('jadwal.riwayat');
         Route::get('/export-jadwal', 'export_jadwal')->name('export.jadwal');
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+        Route::get('/absen', 'absenView')->name('absen.view');
+        Route::post('/absen/store', 'storeAbsen')->name('absen.store');
     });
 });
 
