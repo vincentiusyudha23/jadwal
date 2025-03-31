@@ -126,40 +126,69 @@
             let stream = null;
 
             function getLocation(){
-                if("geolocation" in navigator){
-                    navigator.geolocation.getCurrentPosition(
-                        function (position){
-                            let lat = position.coords.latitude;
-                            let lon = position.coords.longitude;
-                            let url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-                            let now = new Date();
-                            
-                            let year = now.getFullYear();
-                            let month = (now.getMonth() + 1).toString().padStart(2, "0");
-                            let day = now.getDate().toString().padStart(2, "0");
-                            let formattedDate = `${year}-${month}-${day}`;
-
-                            let hours = now.getHours().toString().padStart(2, "0");
-                            let minutes = now.getMinutes().toString().padStart(2, "0");
-                            let formattedTime = `${hours}:${minutes}`;
-
-                            fetch(url)
-                                .then(response => response.json())
-                                .then(data => {
-                                    $('#lokasi').val(data.display_name);
-                                    $('#waktu').val(formattedTime);
-                                    $('#tanggal').val(formattedDate);
-                                })
-                                .catch(error => console.error('Error:', error))
-                                .finally(() => {
-                                    $('#saveAbsen').removeClass('disabled');
-                                });
-                        },
-                        function (error) {
-                            alert('GPS harus dinyalakan');
-                        }
-                    )
+                if (!navigator.geolocation) {
+                    alert('Geolocation tidak didukung oleh browser Anda.');
+                    return;
                 }
+
+                navigator.geolocation.getCurrentPosition(
+                    function (position){
+                        let lat = position.coords.latitude;
+                        let lon = position.coords.longitude;
+                        let now = new Date();
+                        
+                        let year = now.getFullYear();
+                        let month = (now.getMonth() + 1).toString().padStart(2, "0");
+                        let day = now.getDate().toString().padStart(2, "0");
+                        let formattedDate = `${year}-${month}-${day}`;
+
+                        let hours = now.getHours().toString().padStart(2, "0");
+                        let minutes = now.getMinutes().toString().padStart(2, "0");
+                        let formattedTime = `${hours}:${minutes}`;
+                        
+                        $('#waktu').val(formattedTime);
+                        $('#tanggal').val(formattedDate);
+                        getAddress(lat, lon);
+                    },
+                    function(error) {
+                        let errorMessage = "Error mendapatkan lokasi: ";
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage += "Pengguna menolak permintaan geolokasi.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage += "Informasi lokasi tidak tersedia.";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage += "Permintaan untuk mendapatkan lokasi pengguna timeout.";
+                                break;
+                            case error.UNKNOWN_ERROR:
+                                errorMessage += "Error tidak diketahui terjadi.";
+                                break;
+                        }
+                        alert(errorMessage);
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                )
+            }
+
+            function getAddress(lat, lon){
+                $.ajax({
+                    url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token={{ env('MAPBOX_TOKEN') }}`,
+                    method: 'GET',
+                    success: function(data) {
+                        if (data.features && data.features.length > 0) {
+                            let address = data.features[0].place_name;
+                            $('#lokasi').val(address);
+                            $('#saveAbsen').removeClass('disabled');
+                        } else {
+                            alert('Alamat tidak ditemukan untuk lokasi ini.');
+                        }
+                    },
+                    error: function() {
+                        alert('Coba Lagi!');
+                    }
+                });
             }
 
             function onCamera(mode){
