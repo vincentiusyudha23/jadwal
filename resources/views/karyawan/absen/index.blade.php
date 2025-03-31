@@ -154,6 +154,9 @@
                                 .finally(() => {
                                     $('#saveAbsen').removeClass('disabled');
                                 });
+                        },
+                        function (error) {
+                            alert('GPS harus dinyalakan');
                         }
                     )
                 }
@@ -225,13 +228,7 @@
                     return;
                 }
 
-                checkLocation()
-                    .then(() => {
-                        takePicture();
-                    })
-                    .catch(() => {
-                        alert("Berikan akses lokasi dan hidupkan GPS!");
-                    });
+                takePicture();
             });
 
             function takePicture(){
