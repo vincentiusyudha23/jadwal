@@ -166,7 +166,7 @@
                                 errorMessage += "Error tidak diketahui terjadi.";
                                 break;
                         }
-                        alert(errorMessage);
+                        alert('Nyalakan GPS/Lokasi anda!.');
                     },
                     { enableHighAccuracy: true, timeout: 10000 }
                 )
