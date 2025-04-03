@@ -73,6 +73,12 @@ Route::middleware(['web','role:karyawan'])->prefix('karyawan')->name('karyawan.'
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
         Route::get('/absen', 'absenView')->name('absen.view');
         Route::post('/absen/store', 'storeAbsen')->name('absen.store');
+        Route::get('/absen/riwayat', 'riwayatAbsen')->name('absen.riwayat');
+        Route::post('/absen/delete', 'deleteAbsen')->name('absen.delete');
+        Route::get('/absen/{id}', 'detailsAbsen')->name('asben.details');
+        Route::get('/gaji', 'riwayatGaji')->name('gaji.riwayat');
+        Route::get('/gaji/slip-gaji/{id}', 'slipGajiView')->name('gaji.slip-gaji.view');
+        Route::get('/gaji/frame/{id}', 'frameSlipGaji')->name('gaji.slip-gaji.frame');
     });
 });
 

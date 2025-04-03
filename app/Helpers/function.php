@@ -167,3 +167,9 @@ if(!function_exists('sendEmail')){
         return true;
     }
 }
+
+if(!function_exists('route_prefix')){
+    function route_prefix(){
+        return Auth::user()->hasRole('admin') ? 'admin.' : 'karyawan.';
+    }
+}

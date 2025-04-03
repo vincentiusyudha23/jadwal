@@ -80,7 +80,7 @@
             @if (Auth::user()->hasRole('karyawan'))
                 <li><a href="{{ route('karyawan.dashboard') }}" class="item-list-menu-mb">Halaman Utama</a></li>
                 <li><a href="{{ route('karyawan.absen.view') }}" class="item-list-menu-mb">Absensi Karyawan</a></li>
-                <li><a href="#" class="item-list-menu-mb">Riwayat Absensi</a></li>
+                <li><a href="{{ route('karyawan.absen.riwayat') }}" class="item-list-menu-mb">Riwayat Absensi</a></li>
                 <li><a href="{{ route('karyawan.jadwal.riwayat') }}" class="item-list-menu-mb">Riwayat Jadwal</a></li>
                 <li><a href="#" class="item-list-menu-mb">Riwayat Gaji</a></li>
                 <li><a href="#" class="item-list-menu-mb">Riwayat Ijin</a></li>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Halaman Utama')
+@section('title', 'Absen Karyawan')
 
 @push('styles')
     <style>
@@ -172,13 +172,27 @@
                 )
             }
 
-            function getAddress(lat, lon){
+            function getAddress(lat, lon) {
                 $.ajax({
-                    url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token={{ env('MAPBOX_TOKEN') }}`,
+                    url: `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`,
                     method: 'GET',
+                    headers: {
+                        'Accept-Language': 'id'
+                    },
                     success: function(data) {
-                        if (data.features && data.features.length > 0) {
-                            let address = data.features[0].place_name;
+                        if (data.address) {
+                            let addressParts = [];
+                            
+                            if (data.address.road) addressParts.push(data.address.road);
+                            if (data.address.village) addressParts.push(data.address.village);
+                            if (data.address.suburb) addressParts.push(data.address.suburb);
+                            if (data.address.city_district) addressParts.push(data.address.city_district);
+                            if (data.address.city) addressParts.push(data.address.city);
+                            if (data.address.state) addressParts.push(data.address.state);
+                            if (data.address.country) addressParts.push(data.address.country);
+                            
+                            let address = addressParts.join(', ');
+                            
                             $('#lokasi').val(address);
                             $('#saveAbsen').removeClass('disabled');
                         } else {
@@ -186,7 +200,7 @@
                         }
                     },
                     error: function() {
-                        alert('Coba Lagi!');
+                        alert('Gagal mendapatkan alamat. Silakan coba lagi!');
                     }
                 });
             }

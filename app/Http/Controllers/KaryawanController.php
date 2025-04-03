@@ -7,6 +7,7 @@ use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Models\MediaImage;
 use Illuminate\Support\Str;
+use App\Models\GajiKaryawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -156,6 +157,15 @@ class KaryawanController extends Controller
         return view('karyawan.absen.index');
     }
 
+    public function riwayatAbsen()
+    {
+        $absens = Auth::user()->absen()->orderBy('created_at', 'desc')->get();
+
+        return view('karyawan.absen.riwayat')->with([
+            'absens' => $absens
+        ]);
+    }
+
     public function storeAbsen(Request $request)
     {
         $this->validate($request, [
@@ -187,5 +197,46 @@ class KaryawanController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Berhasil melakukan absen ' . $message);
+    }
+
+    public function deleteAbsen(Request $request)
+    {
+        $this->validate($request, [
+            'data_id' => 'required'
+        ]);
+        
+        return Absen::findOrFail($request->data_id)->delete() ?
+            response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']) :
+            response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
+    }
+
+    public function detailsAbsen($id)
+    {
+        $absen = Auth::user()->absen()->where('id', $id)->first();
+        abort_if(empty($absen), 404);
+        $absens = Absen::whereDate('created_at', $absen->created_at)->get();
+        return view('karyawan.absen.details')->with(['absens' => $absens]);
+    }
+
+    public function riwayatGaji()
+    {
+        $penggajian = Auth::user()->gajiKaryawan()->orderBy('created_at', 'desc')->get();
+        return view('karyawan.gaji.riwayat')->with(['penggajian' => $penggajian]);
+    }
+
+    public function slipGajiView($id)
+    {
+        $gaji = Auth::user()->gajiKaryawan()->where('id', $id)->first();
+        abort_if(empty($gaji), 404);
+        return view('admin.gaji.slip-gaji', [
+            'gaji' => $gaji
+        ]);
+    }
+
+    public function frameSlipGaji($id)
+    {
+        $gaji = Auth::user()->gajiKaryawan()->where('id', $id)->first();
+        abort_if(empty($gaji), 404);
+        return view('admin.gaji.frame-gaji', ['gaji' => $gaji]);
     }
 }

@@ -14,12 +14,12 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="mt-3 overflow-x-auto d-flex justify-content-center" style="width: 100%;">
-            <iframe src="{{ route('admin.gaji.slip-gaji.frame', ['id' => $gaji->id]) }}" id="iframe-slip-gaji"></iframe>
+            <iframe src="{{ route(route_prefix() . 'gaji.slip-gaji.frame', ['id' => $gaji->id]) }}" id="iframe-slip-gaji"></iframe>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2 w-100 justify-content-center mt-2">
             <button class="btn btn-info" onclick="printIframe()">Print</button>
             <button class="btn btn-success" onclick="downloadPDF()">Unduh</button>
-            <button class="btn btn-secondary">Cancel</button>
+            <a href="{{ route(route_prefix() . 'gaji.riwayat') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </x-navbar-admin>
 @endsection

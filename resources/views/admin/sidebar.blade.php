@@ -53,7 +53,7 @@
                 <i class="las la-camera mx-2 fs-3"></i>
                 <span class="fw-semibold">Absensi Karyawan</span>
             </a>
-            <a href="#" class="text-white fs-5 sidebar-item">
+            <a href="{{ route('karyawan.absen.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.absen.riwayat') ? 'active' : '' }}">
                 <i class="las la-clock mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Absensi</span>
             </a>
@@ -61,7 +61,7 @@
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Jadwal</span>
             </a>
-            <a href="#" class="text-white fs-5 sidebar-item">
+            <a href="{{ route('karyawan.gaji.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.gaji.riwayat') ? 'active' : '' }}">
                 <i class="las la-file-invoice mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Gaji</span>
             </a>
