@@ -65,11 +65,11 @@
                 <i class="las la-file-invoice mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Gaji</span>
             </a>
-            <a href="#" class="text-white fs-5 sidebar-item">
+            <a href="{{ route('karyawan.ijin.view') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.ijin.view') ? 'active' : '' }}">
                 <i class="lab la-telegram mx-2 fs-3"></i>
                 <span class="fw-semibold">Pengajuan Ijin</span>
             </a>
-            <a href="#" class="text-white fs-5 sidebar-item">
+            <a href="{{ route('karyawan.ijin.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.ijin.riwayat') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Ijin</span>
             </a>

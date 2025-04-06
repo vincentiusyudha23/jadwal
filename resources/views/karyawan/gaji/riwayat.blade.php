@@ -11,11 +11,13 @@
                         <h5 class="text-gray-700 fw-bold">
                             Riwayat Penggajian
                         </h5>
+
+                        <a href="{{ route('karyawan.gaji.export') }}" class="btn btn-sm btn-success fw-bold">Export</a>
                     </div>
 
                     <div class="card-content">
                         <div class="table-responsive">
-                            <table class="table" id="datatable">
+                            <table class="table table-bordered table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
                                         <th>Hari</th>

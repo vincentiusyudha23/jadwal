@@ -23,7 +23,7 @@
 
                     <div class="card-content">
                         <div class="table-responsive">
-                            <table class="table" id="datatable">
+                            <table class="table table-bordered table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
                                         <th class="text-start">Nama</th>

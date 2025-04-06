@@ -7,6 +7,7 @@ use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Models\Karyawan;
 use App\Models\GajiKaryawan;
+use App\Models\IjinKaryawan;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -79,5 +80,10 @@ class User extends Authenticatable
     public function absen(): HasMany
     {
         return $this->hasMany(Absen::class, 'id_karyawan', 'id');
+    }
+
+    public function ijinKaryawan(): HasMany
+    {
+        return $this->hasMany(IjinKaryawan::class, 'id_karyawan', 'id');
     }
 }

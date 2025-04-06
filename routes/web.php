@@ -75,10 +75,18 @@ Route::middleware(['web','role:karyawan'])->prefix('karyawan')->name('karyawan.'
         Route::post('/absen/store', 'storeAbsen')->name('absen.store');
         Route::get('/absen/riwayat', 'riwayatAbsen')->name('absen.riwayat');
         Route::post('/absen/delete', 'deleteAbsen')->name('absen.delete');
-        Route::get('/absen/{id}', 'detailsAbsen')->name('asben.details');
+        Route::get('/absen/{id}', 'detailsAbsen')->name('absen.details');
+        Route::get('/export-absen', 'exportAbsen')->name('absen.export');
         Route::get('/gaji', 'riwayatGaji')->name('gaji.riwayat');
         Route::get('/gaji/slip-gaji/{id}', 'slipGajiView')->name('gaji.slip-gaji.view');
         Route::get('/gaji/frame/{id}', 'frameSlipGaji')->name('gaji.slip-gaji.frame');
+        Route::get('/gaji/export', 'exportGaji')->name('gaji.export');
+        Route::get('/pengajuan-ijin', 'pengajuanIjin')->name('ijin.view');
+        Route::post('/pengajuan-ijin/store', 'storeIjin')->name('ijin.store');
+        Route::get('/pengajuan-ijin/riwayat', 'riwayatIjin')->name('ijin.riwayat');
+        Route::get('/pengajuan-ijin/{id}', 'detailsIjin')->name('ijin.details');
+        Route::post('/pengajuan-ijin/delete', 'deleteIjin')->name('ijin.delete');
+        Route::get('/export-ijin', 'exportIjin')->name('ijin.export');
     });
 });
 

@@ -1,4 +1,4 @@
-<table class="table" id="datatable">
+<table class="table table-bordered table-striped table-hover" id="datatable">
     <thead>
         <tr>
             <th scope="col">Hari</th>

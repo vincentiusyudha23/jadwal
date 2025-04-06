@@ -5,6 +5,8 @@
 /public/storage
 /public/assets/import
 /public/assets/img
+/public/assets/work_report
+/public/assets/surat_ijin
 /storage/*.key
 /vendor
 .env

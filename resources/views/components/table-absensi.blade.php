@@ -23,7 +23,7 @@
                         <td>{{ $absen->lokasi }}</td>
                         <td>
                             <div>
-                                <a href="{{ route('karyawan.asben.details', $absen->id) }}" class="btn btn-sm btn-success">
+                                <a href="{{ route('karyawan.absen.details', $absen->id) }}" class="btn btn-sm btn-success">
                                     <i class="fa-solid fa-eye text-white"></i>
                                 </a>
                                 <x-button-delete table="tabel-absen" :data_id="$absen->id" :route="$routeDelete" method="POST" />
