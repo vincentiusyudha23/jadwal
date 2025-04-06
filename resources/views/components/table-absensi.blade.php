@@ -22,7 +22,7 @@
                         <td>{{ $absen->user->name }}</td>
                         <td>{{ $absen->lokasi }}</td>
                         <td>
-                            <div>
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 <a href="{{ route('karyawan.absen.details', $absen->id) }}" class="btn btn-sm btn-success">
                                     <i class="fa-solid fa-eye text-white"></i>
                                 </a>
