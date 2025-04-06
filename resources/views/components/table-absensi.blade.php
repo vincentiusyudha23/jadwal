@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table tabel-absen" id="datatable">
+    <table class="table tabel-absen table-bordered table-striped table-hover" id="datatable">
         <thead>
             <tr>
                 <th>Hari</th>
@@ -23,7 +23,7 @@
                         <td>{{ $absen->lokasi }}</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center gap-2">
-                                <a href="{{ route('karyawan.absen.details', $absen->id) }}" class="btn btn-sm btn-success">
+                                <a href="{{ route(route_prefix() . 'absen.details', $absen->id) }}" class="btn btn-sm btn-success">
                                     <i class="fa-solid fa-eye text-white"></i>
                                 </a>
                                 <x-button-delete table="tabel-absen" :data_id="$absen->id" :route="$routeDelete" method="POST" />

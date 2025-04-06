@@ -96,7 +96,9 @@
             })
 
             // activeSidebar();
-            $('#datatable').DataTable();
+            $('#datatable').DataTable({
+                order: []
+            });
         });
     </script>
     @if (session('failed.role'))

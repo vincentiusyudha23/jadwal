@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Models\Karyawan;
 use App\Enums\DivisiEnum;
@@ -508,5 +509,31 @@ class AdminController extends Controller
         $file_name = 'Template_Import_Jadwal.xlsx';
 
         return response()->download($file_path, $file_name);
+    }
+
+    public function dataAbsensi()
+    {
+        $absensi = Absen::latest()->get();
+
+        return view('admin.absen.index', compact('absensi'));
+    }
+
+    public function detailAbsensi($id)
+    {
+        $absen = Absen::findOrFail($id);
+        $absens = Absen::whereDate('created_at', $absen->created_at)->where('id_karyawan', $absen->user->id)->get();
+
+        return view('karyawan.absen.details')->with(['absens' => $absens]);
+    }
+
+    public function deleteAbsen(Request $request)
+    {
+        $this->validate($request, [
+            'data_id' => 'required'
+        ]);
+        
+        return Absen::findOrFail($request->data_id)->delete() ?
+            response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']) :
+            response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
     }
 }

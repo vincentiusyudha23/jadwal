@@ -18,7 +18,7 @@
                 <i class="las la-user-circle mx-2 fs-3"></i>
                 <span class="fw-semibold">Data Karyawan</span>
             </a>
-            <a href="#" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.karyawan') ? 'active' : '' }}">
+            <a href="{{ route('admin.absen.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.absen.riwayat') ? 'active' : '' }}">
                 <i class="las la-camera mx-2 fs-3"></i>
                 <span class="fw-semibold">Data Absensi</span>
             </a>
