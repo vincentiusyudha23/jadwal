@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-data-karyawan" id="datatable">
+    <table class="table table-bordered table-striped table-hover table-data-karyawan" id="datatable">
         <thead>
             <tr>
                 <th class="text-center">No.</th>

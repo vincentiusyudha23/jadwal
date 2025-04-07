@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Absen;
 use App\Models\Jadwal;
+use App\Enums\IjinEnum;
 use App\Models\Karyawan;
 use App\Enums\DivisiEnum;
 use App\Enums\JabatanEnum;
 use Illuminate\Support\Str;
+use App\Models\IjinKaryawan;
 use Illuminate\Http\Request;
 use App\Imports\JadwalImport;
 use App\Imports\KaryawanImport;
@@ -398,7 +400,8 @@ class AdminController extends Controller
                 'Tujuan' => $jadwal->tujuan,
                 'tugas' => $jadwal->tugas,
                 'status' => statusJadwal($jadwal->status),
-                'keterangan' => $jadwal->keterangan
+                'keterangan' => $jadwal->keterangan,
+                'Work Report' => $jadwal?->work_report ? asset('assets/work_report/'.$jadwal->work_report) : '',
             ];
         });
 
@@ -535,5 +538,61 @@ class AdminController extends Controller
         return Absen::findOrFail($request->data_id)->delete() ?
             response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']) :
             response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
+    }
+
+    public function pengajuanIzin()
+    {
+        $pengajuan = IjinKaryawan::latest()->get()->groupBy(function($item) {
+            return $item->from_date->format('d/m/Y');
+        })->keys()->toArray();
+        
+        return view('admin.ijin.index', compact('pengajuan'));
+    }
+
+    public function showRiwayatIjin()
+    {
+        $tanggal = request()->query('tanggal');
+        $ijins = IjinKaryawan::whereDate('from_date', Carbon::createFromFormat('d/m/Y', $tanggal))->latest()->get();
+
+        return view('admin.ijin.riwayat', compact('ijins'));
+    }
+
+    public function detailsIjin($id)
+    {
+        $ijin = IjinKaryawan::findOrFail($id);
+        $urlPrev = url()->previous();
+        return view('admin.ijin.details', compact('ijin', 'urlPrev'));
+    }
+
+    public function deleteIjin(Request $request)
+    {
+        $this->validate($request, [
+            'data_id' => 'required'
+        ]);
+        
+        return IjinKaryawan::where('id', $request->data_id)?->first()->delete() ?
+            response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Ijin.']) :
+            response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Ijin.']);
+    }
+
+    public function exportIjin()
+    {
+        $ids = request('ids', []);;
+        $ijin = IjinKaryawan::whereIn('id', $ids)->orderBy('created_at', 'desc')->get();
+        $export = (new FastExcel($ijin))->download('ijin_karyawan.xlsx', function($ijin){
+            return [
+                'Tanggal Pengajuan' => $ijin->created_at->translatedFormat('d/m/Y'),
+                'Nama' => $ijin->user->name,
+                'ID karyawan' => $ijin->user->id_karyawan,
+                'Jabatan' => $ijin->user->karyawan->jabatan,
+                'Divisi' => $ijin->user->karyawan->divisi,
+                'Tipe Ijin' => IjinEnum::getLabel($ijin->type),
+                'Dari Tanggal' => $ijin->from_date,
+                'Sampai Tanggal' => $ijin->to_date,
+                'Keterangan' => $ijin->keterangan,
+                'Surat Ijin' => asset('assets/surat_ijin/'.$ijin->surat)
+            ];
+        });
+        return $export;
     }
 }

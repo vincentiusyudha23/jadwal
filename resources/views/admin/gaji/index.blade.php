@@ -336,6 +336,9 @@
                         this.form.no_rek = data.no_rek
                         this.form.total_absen = data.total_absen || 0
                         this.form.gaji_pokok = data.gaji_pokok || 0
+                        this.form.ijin = data.ijin || 0
+                        this.form.cuti = data.cuti || 0
+                        this.form.sakit = data.sakit || 0
                         this.form.tj_komunikasi = 0
                         this.form.tj_keahlian = 0
                         this.form.tj_kesehatan = 0

@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="item-list-menu-mb">
+                <a href="{{ route('admin.absen.riwayat') }}" class="item-list-menu-mb">
                     Data Absensi
                 </a>
             </li>
@@ -68,6 +68,11 @@
             <li>
                 <a href="{{ route('admin.gaji.riwayat') }}" class="item-list-menu-mb">
                     Riwayat Gaji
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.ijin') }}" class="item-list-menu-mb">
+                    Riwayat Izin
                 </a>
             </li>
             <li>

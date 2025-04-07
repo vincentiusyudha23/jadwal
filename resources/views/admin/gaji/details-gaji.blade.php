@@ -19,6 +19,7 @@
                         <h5 class="text-gray-700 fw-bold">
                             Riwayat Penggajian : {{ request('bulan', '') }}
                         </h5>
+                        <a href="{{ route('admin.gaji.export', ['ids' => $gajiKaryawan?->pluck('id')->toArray()]) }}" class="btn btn-sm btn-success">Export</a>
                     </div>
 
                     <div class="card-content">

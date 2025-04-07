@@ -18,16 +18,13 @@
                         <span class="fs-6 text-gray-700 fw-bold">
                             Jadwal Karyawan : {{ \Carbon\Carbon::parse($tanggal)->translatedFormat('l, d-m-Y') }}
                         </span>
-                        <a class="btn btn-sm btn-primary">Kembali</a>
-                    </div>
-                    <div class="w-100 d-flex justify-content-end align-items-center">
                         <a href="{{ route('admin.export.jadwal', ['tanggal' => $tanggal]) }}" class="btn btn-sm btn-success text-white fw-bold" type="button">
                             Export
                             <i class="fa-solid fa-download ps-1"></i>
                         </a>
                     </div>
-                    <div class="p-2">
-                        <table class="table tabel-data-jadwal" id="datatable">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover tabel-data-jadwal" id="datatable">
                             <thead>
                                 <tr>
                                     <th>Hari</th>

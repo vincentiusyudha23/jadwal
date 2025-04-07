@@ -47,7 +47,11 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/absensi', 'dataAbsensi')->name('absen.riwayat');
         Route::get('/absensi/{id}', 'detailAbsensi')->name('absen.details');
         Route::post('/absensi/delete', 'deleteAbsen')->name('absen.delete');
-        
+        Route::get('/pengajuan-ijin', 'pengajuanIzin')->name('ijin');
+        Route::get('/pengajuan-ijin/riwayat', 'showRiwayatIjin')->name('ijin.riwayat');
+        Route::get('/pengajuan-ijin/{id}', 'detailsIjin')->name('ijin.details');
+        Route::post('/pengajuan-ijin/delete', 'deleteIjin')->name('ijin.delete');
+        Route::get('/export-ijin', 'exportIjin')->name('ijin.export');
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });
@@ -60,6 +64,7 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/slip-gaji-view/{id}', 'slipGajiView')->name('gaji.slip-gaji.view');
         Route::get('/frame-slip-gaji/{id}', 'frameSlipGaji')->name('gaji.slip-gaji.frame');
         Route::post('/delete-slip-gaji', 'deleteGaji')->name('gaji.slip-gaji.delete');
+        Route::get('/export-gaji', 'exportGaji')->name('gaji.export');
     });
 });
 

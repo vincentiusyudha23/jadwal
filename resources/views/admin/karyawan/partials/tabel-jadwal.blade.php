@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table tabel-data-jadwal" id="datatable">
+    <table class="table table-bordered table-striped table-hover tabel-data-jadwal" id="datatable">
     <thead>
         <tr>
             <th>Hari</th>

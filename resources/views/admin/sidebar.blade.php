@@ -38,6 +38,10 @@
                 <i class="las la-history mx-2 fs-3"></i>
                 <span class="fw-semibold">Riwayat Gaji</span>
             </a>
+            <a href="{{ route('admin.ijin') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.ijin') ? 'active' : '' }}">
+                <i class="lab la-telegram mx-2 fs-3"></i>
+                <span class="fw-semibold">Riwayat Izin</span>
+            </a>
             <a href="{{ route('admin.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <i class="las la-user-lock mx-2 fs-3"></i>
                 <span class="fw-semibold">Kelola Akun</span>

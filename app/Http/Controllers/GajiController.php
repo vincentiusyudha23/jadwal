@@ -10,20 +10,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests\GajiRequest;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class GajiController extends Controller
 {
     public function salary_page()
     {   
-        $karyawans = User::hasKaryawan()->latest()->get()->transform(function($item){
+        $karyawans = User::hasKaryawan()->latest()->get()->transform(function($user){
+            $total_absen = $user->absen()->whereMonth('created_at', now()->month)->where('type', 1)->count();
+            $ijin_user = $user->ijinKaryawan()->whereMonth('created_at', now()->month)->get();
             return [
-                'name' => $item->name,
-                'idKaryawan'  => $item->id_karyawan,
-                'jabatan'  => $item->karyawan->jabatan,
-                'divisi' => $item->karyawan->divisi,
-                'no_rek' => $item->karyawan->nomor_rekening,
-                'total_absen' => rand(1,24),
-                'gaji_pokok' => $item->karyawan->gaji,
+                'name' => $user->name,
+                'idKaryawan'  => $user->id_karyawan,
+                'jabatan'  => $user->karyawan->jabatan,
+                'divisi' => $user->karyawan->divisi,
+                'no_rek' => $user->karyawan->nomor_rekening,
+                'ijin' => $ijin_user->where('type', 1)->count(),
+                'sakit' => $ijin_user->where('type', 2)->count(),
+                'cuti' => $ijin_user->where('type', 3)->count(),
+                'total_absen' => $total_absen,
+                'gaji_pokok' => $user->karyawan->gaji,
             ];
         })->toArray();
 
@@ -131,5 +137,49 @@ class GajiController extends Controller
             'type' => 'errors',
             'msg' => 'Slip Gaji Tidak ditemukan',
         ]);
+    }
+
+    public function exportGaji()
+    {
+        $ids = request('ids', []);
+        $gaji = GajiKaryawan::whereIn('id', $ids)->orderBy('created_at', 'desc')->get();
+        $export = (new FastExcel($gaji))->download('gaji_karyawan.xlsx', function($gaji){
+            return [
+                'Bulan Gaji' => $gaji->created_at->translatedFormat('F Y'),
+                'Tanggal Gaji' => $gaji->created_at->translatedFormat('d/m/Y'),
+                'Nama' => $gaji->user->name,
+                'ID karyawan' => $gaji->user->id_karyawan,
+                'Jabatan' => $gaji->user->karyawan->jabatan,
+                'Divisi' => $gaji->user->karyawan->divisi,
+                'Total Hari Kerja' => $gaji->total_hari_kerja,
+                'Ijin' => $gaji->ijin,
+                'Sakit' => $gaji->sakit,
+                'Cuti' => $gaji->cuti,
+                'Alpa' => $gaji->alpa,
+                'Total Absen' => $gaji->total_absen,
+                'Gaji Pokok' => $gaji->gp_bulanan,
+                'Tunjangan Komunikasi' => $gaji->tj_komunikasi,
+                'Tunjangan Keahlian' => $gaji->tj_keahlian,
+                'Tunjangan Kesehatan' => $gaji->tj_kesehatan,
+                'Total Upah Tetap' => $gaji->total_upah_tetap,
+                'Tunjangan Makan' => $gaji->tj_makan,
+                'Tunjangan Transportasi' => $gaji->tj_transportasi,
+                'Lembur' => $gaji->lembur,
+                'Penerimaan Lain-lain' => $gaji->pll,
+                'Pinjaman Perusahaan' => $gaji->pp,
+                'Lebih Bayar PPH21' => $gaji->lbpph21,
+                'Total Upah Non Tetap' => $gaji->total_upah_non_tetap,
+                'PPH21' => $gaji->pt_pph21,
+                'Pinjaman Perusahaan (Potongan)' => $gaji->pt_pp,
+                'BPJS Kesehatan' => $gaji->pt_bpjs_kesehatan,
+                'BPJS Ketenagakerjaan' => $gaji->pt_bpjs_kerja,
+                'Potongan Absensi' => $gaji->pt_absensi,
+                'Potongan Lain-lain' => $gaji->pt_ll,
+                'Total Potongan' => $gaji->total_potongan,
+                'Total Diterima' => $gaji->total_diterima,
+            ];
+        });
+
+        return $export;
     }
 }
