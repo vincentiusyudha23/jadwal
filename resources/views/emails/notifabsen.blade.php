@@ -58,7 +58,7 @@
                                 <hr style="border-top: 1px solid #382E38;margin:3% 0;opacity: .15;">
 
                                 <a href="{{ $link_absen ?? '#' }}" style="width: 100%; display: inline-block; background: #007bff;  color: #fff; text-decoration: none; border-radius: 5px; text-align:center; padding: 10px 0; font-weight: bold;">
-                                    Link Absen
+                                    Melakukan Absen
                                 </a>
                             </td>
                         </tr>

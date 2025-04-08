@@ -9,7 +9,7 @@
                         <tr>
                             <td>
                                 <h3 style="color:#382E38; margin:0; padding:0; text-align: center;">
-                                    Jadwal Pekerjaan Baru
+                                    Upload Bukti Pekerjaan
                                 </h3>
 
                                 <hr style="border-top: 1px solid #382E38;margin:3% 0;opacity: .15;">
@@ -18,7 +18,7 @@
                         <tr>
                             <td>
                                 <p>Halo <strong>{{ $jadwal?->user?->name ?? '' }}</strong>,</p>
-                                <p>Anda memiliki jadwal pekerjaan yang baru saja dibuat. Berikut rinciannya:</p>
+                                <p>Anda memiliki jadwal pekerjaan yang sebentar lagi akan selesai, <strong>jangan lupa upload bukti pekerjaan.</strong> Berikut rinciannya:</p>
                                 
                                 <table role="presentation" border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 3% 0;">
                                     <tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Absen;
 use App\Models\Jadwal;
 use App\Enums\IjinEnum;
@@ -371,12 +372,21 @@ class KaryawanController extends Controller
                 $folder_path = global_assets_path('assets/surat_ijin');
                 $file->move($folder_path, $file_db);
 
-                $user->ijinKaryawan()->create([
+                $IjinKaryawan = $user->ijinKaryawan()->create([
                     'from_date' => $request->from_date,
                     'to_date' => $request->to_date,
                     'keterangan' => $request->keterangan,
                     'type' => IjinEnum::getValue($request->tipe_ijin),
                     'surat' => $file_db
+                ]);
+
+                sendEmail([
+                    'to' => User::where('role', 'admin')->first()?->email,
+                    'subject' => 'Pengajuan Ijin Karyawan',
+                    'view' => 'ijin',
+                    'viewData' => [
+                        'ijin' => $IjinKaryawan
+                    ]
                 ]);
 
                 DB::commit();

@@ -18,6 +18,7 @@ use App\Imports\KaryawanImport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Jobs\ImportDataKaryawan;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\NotificationJadwalJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
@@ -263,15 +264,8 @@ class AdminController extends Controller
                     'waktu' => $request->waktu,
                     'note' => $request->note
                 ]);
-
-                sendEmail([
-                    'to' => $user->email,
-                    'subject' => 'Jadwal Pekerjaan Terbaru!',
-                    'view' => 'jadwal',
-                    'viewData' => [
-                        'jadwal' => $jadwalNew
-                    ]
-                ]);
+                
+                NotificationJadwalJob::dispatch($jadwalNew);
 
                 return redirect()->back()->with('success', 'Berhasil Membuat Jadwal');
             } else {

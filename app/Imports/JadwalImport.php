@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Jadwal;
 use Illuminate\Support\Collection;
+use App\Jobs\NotificationJadwalJob;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
@@ -38,13 +39,15 @@ class JadwalImport implements ToCollection, WithHeadingRow
                     continue;
                 }
 
-                Jadwal::create([
+                $jadwalNew = Jadwal::create([
                     'id_karyawan' => $user->id,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
                     'tujuan' => $line['Tujuan'],
                     'tugas' => $line['Tugas'] 
                 ]);
+
+                NotificationJadwalJob::dispatch($jadwalNew);
             }
         }
     }
