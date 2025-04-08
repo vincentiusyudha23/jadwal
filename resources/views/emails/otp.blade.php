@@ -1,53 +1,38 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode OTP Anda</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 100%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .logo {
-            width: 100px;
-            margin-bottom: 10px;
-        }
-        .otp {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            padding: 10px;
-            border-radius: 5px;
-            background: #ecf0f1;
-            display: inline-block;
-        }
-        .footer {
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <img src="{{ assets('img/logo-1.png') }}" alt="PT. WIRA GRIYA" class="logo">
+@extends('emails.template')
 
-        <h2>Kode OTP Anda</h2>
-        <p>Gunakan kode berikut untuk memulihkan kata sandi anda:</p>
-        <p class="otp">{{ $otp }}</p>
-        <p>Kode ini berlaku selama <strong>5 menit</strong>. Jangan berikan kode ini kepada siapa pun.</p>
-        <p>Jika Anda tidak meminta kode ini, abaikan email ini.</p>
-        <p class="footer">© {{ date('Y') }} PT. WIRA GRIYA. Semua hak dilindungi.</p>
-    </div>
-</body>
-</html>
+@section('content')
+    <table role="presentation" cellspacing="0" cellpadding="0" width="100%" dir="ltr" style="background:#fff; margin-bottom: 24px; border: 1px solid #E0DED2; border-radius: 16px;">
+        <tr>
+            <td>
+                <table role="presentation" cellspacing="0" cellpadding="0" width="90%" style="margin: 5% auto;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3 style="color:#382E38; margin:0; padding:0; text-align: center;">
+                                    Kode OTP Anda
+                                </h3>
+
+                                <hr style="border-top: 1px solid #382E38;margin:3% 0;opacity: .15;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">
+                                <p>Gunakan kode berikut untuk memulihkan kata sandi anda</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">
+                                <p style="border: 1px solid #382E38; display: inline-block; padding: 8px; border-radius: 5px; font-size: 1.5rem;">{{ $otp }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">
+                                <p style="font-size: 13px;">Kode ini berlaku selama 5 menit. Jangan berikan kode ini kepada siapa pun.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+@endsection

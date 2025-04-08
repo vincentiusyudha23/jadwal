@@ -118,4 +118,8 @@ Route::middleware('guest')->group(function(){
 
 Route::get('/deploy', [Controller::class, 'deploy']);
 
+Route::get('/test', function(){
+    return view('emails.jadwal');
+});
+
 require __DIR__.'/auth.php';

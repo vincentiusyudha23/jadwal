@@ -255,13 +255,22 @@ class AdminController extends Controller
             $user = User::find($request->karyawan);
 
             if($user){
-                Jadwal::create([
+                $jadwalNew = Jadwal::create([
                     'id_karyawan' => $user->id,
                     'tanggal' => $request->tanggal,
                     'tujuan' => $request->tujuan,
                     'tugas' => $request->tugas,
                     'waktu' => $request->waktu,
                     'note' => $request->note
+                ]);
+
+                sendEmail([
+                    'to' => $user->email,
+                    'subject' => 'Jadwal Pekerjaan Terbaru!',
+                    'view' => 'jadwal',
+                    'viewData' => [
+                        'jadwal' => $jadwalNew
+                    ]
                 ]);
 
                 return redirect()->back()->with('success', 'Berhasil Membuat Jadwal');
