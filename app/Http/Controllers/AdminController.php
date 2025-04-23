@@ -467,9 +467,6 @@ class AdminController extends Controller
 
         }catch(\Exception $e){
             DB::rollBack();
-            // if(app()->isLocal()){
-            //     dd($e->getMessage());
-            // }
             return response()->json([
                 'type' => 'error',
                 'msg' => $e->getMessage()
@@ -519,9 +516,35 @@ class AdminController extends Controller
 
     public function dataAbsensi()
     {
-        $absensi = Absen::latest()->get();
+        $absensi = Absen::latest()->get()->groupBy('tanggal')->keys()->map(function($item){
+            return Carbon::parse($item)->format('d/m/Y');
+        })->toArray();
 
-        return view('admin.absen.index', compact('absensi'));
+        return view('admin.absen.riwayat-absen', compact('absensi'));
+    }
+
+    public function dataAbsensiByDate()
+    {
+        $tanggal = request('tanggal', '');
+        abort_if(empty($tanggal), 404);
+        
+        $tanggal = str_replace('/', '-', $tanggal);
+
+        $absensi = Absen::whereDate('created_at', Carbon::parse($tanggal)->format('Y-m-d'))
+            ->where('type', 1)
+            ->latest()
+            ->get()
+            ->map(function($item){
+                $absenPulang = Absen::where(['id_karyawan' => $item->id_karyawan, 'type' => 2])->whereDate('tanggal', $item->tanggal)->first();
+                $item['waktu_masuk'] = $item->waktuFormat;
+                $item['waktu_pulang'] = $absenPulang?->waktuFormat ?? '';
+                $item['total'] = !empty($absenPulang) ? $item->created_at->diff($absenPulang->created_at)->format('%H jam %i menit') : '';
+                return $item;
+            });
+            
+        return view('admin.absen.index')->with([
+            'absensi' => $absensi
+        ]);
     }
 
     public function detailAbsensi($id)

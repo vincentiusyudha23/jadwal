@@ -29,9 +29,11 @@
                                 <tr>
                                     <th>Hari</th>
                                     <th>Tanggal</th>
+                                    <th>Waktu</th>
                                     <th>Nama</th>
                                     <th>Tujuan</th>
                                     <th>Tugas</th>
+                                    <th>Catatan</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -41,9 +43,11 @@
                                     <tr>
                                         <th>{{ $jadwal->tanggal->translatedFormat('l') }}</th>
                                         <td>{{ $jadwal->tanggal->format('d/m/Y') }}</td>
+                                        <td>{{ $jadwal->waktuFormat }}</td>
                                         <td>{{ $jadwal->user->name }}</td>
                                         <td>{{ $jadwal?->tujuan ?? '' }}</td>
                                         <td>{{ $jadwal?->tugas ?? '' }}</td>
+                                        <td>{{ $jadwal->note }}</td>
                                         <td>
                                             <x-status-jadwal type="button" :status="$jadwal->status" />
                                         </td>

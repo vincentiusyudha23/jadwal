@@ -1,40 +1,49 @@
-<div class="card-content">
-    <form wire:submit="loadData" class="w-100 d-flex flex-column flex-sm-row justify-content-end align-items-center mb-3">
-        <div class="mx-2 mb-2 mb-sm-0 date-input">
-            <div class="input-group">
-                <span class="input-group-text" id="basic-addon3">From</span>
-                <input type="date" wire:model="date_from" class="form-control" id="basic-url" name="date_from"
-                    aria-describedby="basic-addon3 basic-addon4">
-            </div>
+<div class="card-content" x-data="riwayatJadwal">
+    <div class="mb-4">
+        <div class="input-group">
+            <input x-model="search" class="form-control" type="text" name="search" placeholder="Pencarian...">
         </div>
-        <div class="btn btn-sm bg-gray-200 d-none d-md-block">
-            <span class="fw-bold">-</span>
-        </div>
-        <div class="mx-2 mb-2 mb-sm-0 date-input">
-            <div class="input-group">
-                <input type="date" class="form-control" wire:model="date_to" name="date_to" aria-label="Recipient's username"
-                    aria-describedby="basic-addon2">
-                <span class="input-group-text" id="basic-addon2">To</span>
-            </div>
-        </div>
-        <div class="date-input button">
-            <button class="btn btn-sm btn-success">Cari</button>
-            <a href="#" wire:click.prevent="firstData" class="btn btn-sm btn-danger">
-                <i class="fa-solid fa-rotate-left"></i>
-            </a>
-        </div>
-    </form>
+    </div>
     <div wire:loading class="skeleton skeleton-line" style="--lines: 3; --c-w: 100%; --l-h: 30px;"></div>
     <div class="w-100 d-flex flex-column gap-3 list-riwayat">
-        @foreach ($jadwals as $tanggal)
-            <a href="{{ route('admin.history.show', ['tanggal' => $tanggal]) }}" wire:loading.remove class="text-gray-700 fw-bold w-100 bg-gray-300 p-2 rounded-2 list-riwayat-item">
-                Jadwal Tanggal : {{ \Carbon\Carbon::parse($tanggal)->format('d/m/Y') }}
-            </a>
-        @endforeach
+        <template x-if="jadwalArr.length > 0">
+            <template x-for="(item, index) in jadwalArr" :key="index">
+                <a x-bind:href="item.route" x-text="item.text" class="text-gray-700 fw-bold w-100 bg-gray-300 p-2 rounded-2 list-riwayat-item"></a>
+            </template>
+        </template>
     </div>
-    @if(count($jadwals) < 1)
+    <template x-if="jadwalArr.length < 1">
         <div class="w-100 d-flex justify-content-center align-items-center" style="height: 100px;" wire:loading.class="d-none">
-            <span wire:loading.remove>Tidak Ada Jadwal</span>
+            <span>Tidak Ada Jadwal</span>
         </div>
-    @endif
+    </template>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('riwayatJadwal', () => ({
+            jadwal: @json($jadwals),
+            jadwalArr: [],
+            search: '',
+            get tanggal(){
+                return _.filter(this.jadwal, (jadwal) => {
+                    const formattedTanggal = new Date(jadwal.tanggal).toLocaleDateString('id-ID', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    return formattedTanggal.includes(this.search);
+                })
+            },
+            init(){
+                this.jadwalArr = this.jadwal
+                this.$watch('tanggal', val => {
+                    console.log(val);
+                    
+                    this.jadwalArr = val
+                })
+            }
+        }))
+    })
+</script>

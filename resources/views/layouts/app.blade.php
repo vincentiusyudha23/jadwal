@@ -52,11 +52,6 @@
     <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     @stack('scripts')
     <script>
-        var cleave = new Cleave('.input-uang', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-        });
-
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         $(document).ready(function() {
@@ -104,6 +99,11 @@
             // activeSidebar();
             $('#datatable').DataTable({
                 order: []
+            });
+
+            var cleave = new Cleave('.input-uang', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
             });
         });
     </script>

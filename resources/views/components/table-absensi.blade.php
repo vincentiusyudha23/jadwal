@@ -4,9 +4,12 @@
             <tr>
                 <th>Hari</th>
                 <th>Tanggal</th>
-                <th>Waktu</th>
-                <th class="text-center">Tipe</th>
                 <th>Nama</th>
+                <th class="text-center">Waktu Masuk</th>
+                <th class="text-center">Waktu Pulang</th>
+                <th>
+                    <p class="text-center">Total</p>
+                </th>
                 <th>Lokasi</th>
                 <th>Aksi</th>
             </tr>
@@ -17,9 +20,12 @@
                     <tr>
                         <td>{{ $absen->tanggal->translatedFormat('l') }}</td>
                         <td>{{ $absen->tanggal->format('d/m/Y') }}</td>
-                        <td>{{ $absen->waktuFormat }}</td>
-                        <td class="text-center">{!! \App\Enums\AbsenEnum::getType($absen->type) !!}</td>
                         <td>{{ $absen->user->name }}</td>
+                        <td class="text-center">{{ $absen->waktu_masuk }}</td>
+                        <td class="text-center">{{ $absen->waktu_pulang }}</td>
+                        <td>
+                            <p class="text-center">{{ $absen->total }}</p>
+                        </td>
                         <td>{{ $absen->lokasi }}</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center gap-2">

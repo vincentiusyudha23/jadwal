@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Jadwal;
 use Livewire\Component;
 
@@ -31,8 +32,14 @@ class RiwayatJadwal extends Component
         $jadwals = Jadwal::latest()->get()
                 ->groupBy(function($query){
                     return $query->tanggal;
-                })->keys();
-        
+                })->keys()->map(function($tanggal){
+                    return [
+                        'tanggal' => $tanggal,
+                        'text' => Carbon::parse($tanggal)->format('d/m/Y'),
+                        'route' => route('admin.history.show', ['tanggal' => $tanggal])
+                    ];
+                });
+                
         return $this->jadwals = $jadwals;
     }
 

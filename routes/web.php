@@ -45,6 +45,7 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::post('/import-jadwal-karyawan', 'importJadwalKaryawan')->name('import.jadwal.karyawan');
         Route::get('/download-template-jadwal', 'downloadTemplateJadwal')->name('download.template.jadwal');
         Route::get('/absensi', 'dataAbsensi')->name('absen.riwayat');
+        Route::get('/absensi-tanggal', 'dataAbsensiByDate')->name('absen.riwayat.tanggal');
         Route::get('/absensi/{id}', 'detailAbsensi')->name('absen.details');
         Route::post('/absensi/delete', 'deleteAbsen')->name('absen.delete');
         Route::get('/pengajuan-ijin', 'pengajuanIzin')->name('ijin');

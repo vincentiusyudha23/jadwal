@@ -5,11 +5,20 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="py-2">
+            @if (Auth::user()->hasRole('admin'))
+            <nav aria-label="breadcrumb" class="p-0 mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.absen.riwayat') }}">Data Absensi</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ back()->getTargetUrl() }}">{{ $absens->first()->tanggal->format('d-m-Y') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                </ol>
+            </nav>
+            @endif
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title w-100 d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold">Absen Tanggal: <br> <small>{{ $absens->first()->created_at->translatedFormat('l, d/m/Y') }}</small></h5>
-                        <a href="{{ route( route_prefix() . 'absen.riwayat') }}" class="btn btn-sm btn-primary">Kembali</a>
+                    <div class="card-title w-100 d-flex justify-content-end align-items-center mb-3">
+                        <a href="{{ back()->getTargetUrl() }}" class="btn btn-sm btn-primary">Kembali</a>
                     </div>
                     <div class="card-content">
                         <div class="card bg-secondary bg-opacity-10 p-2 mb-3">
