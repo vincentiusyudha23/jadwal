@@ -80,7 +80,7 @@ class AdminController extends Controller
             'divisi' => ['required'],
             'nomor_rekening' => ['required'],
             'email' => ['required', 'email'],
-            'gaji' => ['required', 'numeric']
+            'gaji' => ['required']
         ]);
 
         try{
@@ -102,7 +102,7 @@ class AdminController extends Controller
                 'jabatan' => $request->jabatan,
                 'divisi' => $request->divisi,
                 'nomor_rekening' => $request->nomor_rekening,
-                'gaji' => $request->gaji
+                'gaji' => (int) str_replace(',', '', $request->gaji)
             ]);
 
             $user->assignRole('karyawan');
@@ -113,7 +113,7 @@ class AdminController extends Controller
 
         }catch(\Exception $e){
             DB::rollBack();
-            return redirect()->back()->with('errors', 'Terjadi Kesalahan.');
+            return redirect()->back()->with('error', 'Terjadi Kesalahan.');
         }
     }
 

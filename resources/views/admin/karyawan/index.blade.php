@@ -34,11 +34,15 @@
                     @if ($errors->any())
                         <div class="alert alert-danger" role="alert">
                             <ul class="px-4 m-0">
-                                @foreach ($errors->all() ?? [] as $msg)
+                                @foreach ($errors->all() as $msg)
                                     <li>{{ $msg }}</li>
                                 @endforeach
                             </ul>
                         </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger msg-danger" role="alert">{{ session('error') }}</div>
                     @endif
                     @if (session('success'))
                         <div class="alert alert-success msg-success" role="alert">{{ session('success') }}</div>
@@ -106,7 +110,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="input-group mb-3">
-                                    <input class="form-control" type="number" name="gaji" id="gaji" value="{{ old('gaji') }}" placeholder="Gaji Pokok">
+                                    <input class="form-control input-uang" type="text" name="gaji" id="gaji" value="{{ old('gaji') }}" placeholder="Gaji Pokok">
                                 </div>
                             </div>
                         </div>
@@ -120,13 +124,16 @@
             </div>
             <div class="card shadow-sm card-table">
                 <div class="card-body p-4">
-                    <div class="w-100 d-flex justify-content-end gap-2">
-                        <a href="{{ route('admin.export.akun.all') }}"  class="btn btn-sm btn-success">
-                            <span class="me-1 fw-bold">Export</span>
-                        </a>
-                        <button type="button" class="btn btn-sm btn-primary" id="import-btn">
-                            <span class="me-1 fw-bold">Import</span>
-                        </button>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-gray-600 fs-5">Data Karyawan</span>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('admin.export.akun.all') }}"  class="btn btn-sm btn-success">
+                                <span class="me-1 fw-bold">Export</span>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-primary" id="import-btn">
+                                <span class="me-1 fw-bold">Import</span>
+                            </button>
+                        </div>
                     </div>
                     @include('admin.karyawan.partials.table')
                 </div>

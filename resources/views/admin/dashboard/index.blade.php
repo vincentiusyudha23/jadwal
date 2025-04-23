@@ -28,16 +28,13 @@
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-12 d-none d-lg-block">
+                <div class="col-12">
                     <div class="card w-100">
                         <div class="card-body">
                             @include('admin.dashboard.partials.table')
                         </div>
                     </div>
                 </div>
-                @foreach ($jadwals as $jadwal)
-                    <x-card-tugas :jadwal="$jadwal" :karyawans="$karyawans"/>
-                @endforeach
             </div>
         </div>
     </x-navbar-admin>
