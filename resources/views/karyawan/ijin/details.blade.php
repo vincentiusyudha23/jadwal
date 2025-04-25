@@ -7,9 +7,18 @@
         <div class="py-2">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title mb-3 d-flex justify-content-between align-items-center">
-                        <h4 class="fw-bold">Pengajuan Izin</h4>
-                        <a class="btn btn-sm btn-primary" href="{{ route('karyawan.ijin.riwayat') }}">Kembali</a>
+                    <div class="card-title mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h4 class="fw-bold">Pengajuan Izin</h4>
+                            <a class="btn btn-sm btn-primary" href="{{ route('karyawan.ijin.riwayat') }}">Kembali</a>
+                        </div>
+                        <div class="w-100 p-2 rounded border bg-secondary bg-opacity-10 d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="fs-6"><strong>Nama :</strong> {{ Auth::user()->name }}</span>
+                                <br>
+                                <span class="fs-6"><strong>ID Karyawan :</strong> {{ Auth::user()->id_karyawan }}</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3 w-100 d-flex flex-md-row flex-column gap-3">
                         <div class="form-check">

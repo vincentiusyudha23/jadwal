@@ -30,6 +30,14 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
+
+                        <div class="w-100 p-2 rounded border bg-secondary bg-opacity-10 d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="fs-6"><strong>Nama :</strong> {{ Auth::user()->name }}</span>
+                                <br>
+                                <span class="fs-6"><strong>ID Karyawan :</strong> {{ Auth::user()->id_karyawan }}</span>
+                            </div>
+                        </div>
                     </div>
                     <form action="{{ route('karyawan.ijin.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf

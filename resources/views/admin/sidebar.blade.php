@@ -71,11 +71,11 @@
             </a>
             <a href="{{ route('karyawan.ijin.view') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.ijin.view') ? 'active' : '' }}">
                 <i class="lab la-telegram mx-2 fs-3"></i>
-                <span class="fw-semibold">Pengajuan Ijin</span>
+                <span class="fw-semibold">Pengajuan Izin</span>
             </a>
             <a href="{{ route('karyawan.ijin.riwayat') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.ijin.riwayat') ? 'active' : '' }}">
                 <i class="las la-history mx-2 fs-3"></i>
-                <span class="fw-semibold">Riwayat Ijin</span>
+                <span class="fw-semibold">Riwayat Izin</span>
             </a>
             <a href="{{ route('karyawan.profile') }}" class="text-white fs-5 sidebar-item {{ Request()->routeIs('karyawan.profile') ? 'active' : '' }}">
                 <i class="las la-user-lock mx-2 fs-3"></i>

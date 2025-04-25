@@ -5,11 +5,6 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="py-2">
-            <nav aria-label="breadcrumb" class="p-0 mt-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('karyawan.dashboard') }}">Halaman Utama</a></li>
-                </ol>
-            </nav>
             <div class="card w-100 bg-white rounded-3">
                 <div class="card-body">
                     <div class="w-100 d-flex align-items-center justify-content-between">

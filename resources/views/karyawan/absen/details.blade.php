@@ -17,19 +17,20 @@
             @endif
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title w-100 d-flex justify-content-end align-items-center mb-3">
-                        <a href="{{ back()->getTargetUrl() }}" class="btn btn-sm btn-primary">Kembali</a>
-                    </div>
                     <div class="card-content">
-                        <div class="card bg-secondary bg-opacity-10 p-2 mb-3">
+                        <div class="card d-flex justify-content-between align-items-start flex-row bg-secondary bg-opacity-10 p-2 mb-3">
                             <div>
-                                <span class="fw-bold">Nama :</span>
-                                <span>{{ $absens->first()->user->name }}</span>
+                                <div>
+                                    <span class="fw-bold">Nama :</span>
+                                    <span>{{ $absens->first()->user->name }}</span>
+                                </div>
+                                <div>
+                                    <span class="fw-bold">ID Karyawan :</span>
+                                    <span>{{ $absens->first()->user->id_karyawan }}</span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="fw-bold">ID Karyawan :</span>
-                                <span>{{ $absens->first()->user->id_karyawan }}</span>
-                            </div>
+
+                            <a href="{{ back()->getTargetUrl() }}" class="btn btn-sm btn-primary">Kembali</a>
                         </div>
 
                         <div class="row">

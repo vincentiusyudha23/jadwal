@@ -11,7 +11,7 @@ enum IjinEnum: int
     public static function getLabel(int $value): string
     {
         return match ($value) {
-            self::IJIN => 'Ijin',
+            self::IJIN => 'Izin',
             self::SAKIT => 'Sakit',
             self::CUTI => 'Cuti',
             default => 'Unknown',

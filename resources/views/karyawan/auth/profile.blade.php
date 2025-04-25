@@ -5,12 +5,6 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="container-md py-2 px-md-5 d-flex flex-column justify-content-center">
-            <nav aria-label="breadcrumb" class="p-0 mt-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('karyawan.dashboard') }}">Halaman Utama</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Ubah Password</li>
-                </ol>
-            </nav>
             <div class="card shadow-sm card-profile">
                 <div class="card-body p-4">
                     <div class="w-100 d-flex justify-content-between align-item-center mb-3">

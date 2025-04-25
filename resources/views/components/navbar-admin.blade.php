@@ -88,8 +88,8 @@
                 <li><a href="{{ route('karyawan.absen.riwayat') }}" class="item-list-menu-mb">Riwayat Absensi</a></li>
                 <li><a href="{{ route('karyawan.jadwal.riwayat') }}" class="item-list-menu-mb">Riwayat Jadwal</a></li>
                 <li><a href="{{ route('karyawan.gaji.riwayat') }}" class="item-list-menu-mb">Riwayat Gaji</a></li>
-                <li><a href="{{ route('karyawan.ijin.view') }}" class="item-list-menu-mb">Pengajuan Ijin</a></li>
-                <li><a href="{{ route('karyawan.ijin.riwayat') }}" class="item-list-menu-mb">Riwayat Ijin</a></li>
+                <li><a href="{{ route('karyawan.ijin.view') }}" class="item-list-menu-mb">Pengajuan Izin</a></li>
+                <li><a href="{{ route('karyawan.ijin.riwayat') }}" class="item-list-menu-mb">Riwayat Izin</a></li>
                 <li><a href="{{ route('karyawan.profile') }}" class="item-list-menu-mb">Kelola Akun</a></li>
             @endif
         </ul>

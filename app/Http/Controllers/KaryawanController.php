@@ -45,9 +45,9 @@ class KaryawanController extends Controller
         $this->validate($request, [
             'id' => ['required'],
             'status_jadwal' => ['required','max:2'],
-            'keterangan' => ['nullable'],
-            'image' => ['nullable'],
-            'work_report' => ['nullable', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
+            'keterangan' => ['required'],
+            'image' => ['required'],
+            'work_report' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
         ]);
         
         try{
@@ -183,7 +183,17 @@ class KaryawanController extends Controller
 
     public function riwayatAbsen()
     {
-        $absens = Auth::user()->absen()->orderBy('created_at', 'desc')->get();
+        $absens = Auth::user()
+            ->absen()
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($item){
+                $absenPulang = Absen::where(['id_karyawan' => $item->id_karyawan, 'type' => 2])->whereDate('tanggal', $item->tanggal)->first();
+                $item['waktu_masuk'] = $item->waktuFormat;
+                $item['waktu_pulang'] = $absenPulang?->waktuFormat ?? '';
+                $item['total'] = !empty($absenPulang) ? $item->created_at->diff($absenPulang->created_at)->format('%H jam %i menit') : '';
+                return $item;
+            });
 
         return view('karyawan.absen.riwayat')->with([
             'absens' => $absens

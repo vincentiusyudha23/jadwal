@@ -132,6 +132,18 @@
                     success: function(response){
                         if(response.type == 'success'){
                             toastr.success(response.msg);
+                            location.reload();
+                        }
+                    },
+                    error: function(err){
+                        if (err.responseJSON && err.responseJSON.errors) {
+                            Object.values(err.responseJSON.errors).forEach(messages => {
+                                messages.forEach(message => {
+                                    toastr.error(message);
+                                });
+                            });
+                        } else {
+                            toastr.error('Terjadi kesalahan yang tidak diketahui');
                         }
                     },
                     complete: function(){
