@@ -222,7 +222,7 @@
                                 <div class="mb-2">
                                     <label class="form-label" for="gaji-edit">Gaji</label>
                                     <div class="input-group">
-                                        <input class="form-control" type="number" name="gaji" id="gaji-edit" placeholder="Gaji Pokok">
+                                        <input class="form-control input-edit-uang" type="text" name="gaji" id="gaji-edit" placeholder="Gaji Pokok">
                                     </div>
                                 </div>
                             </div>
@@ -239,6 +239,7 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script>
         function printIframe(id) {
             var iframe = document.getElementById('iframe-card-id-'+id);
@@ -249,6 +250,14 @@
         }
 
         $(document).ready(function() {
+
+            new Cleave($('.input-uang'), {
+                numeral: true,
+                prefix: 'Rp ',
+                delimiter: '.',       
+                numeralDecimalMark: ',',
+                numeralThousandsGroupStyle: 'thousand',
+            });
 
             $('.btn-download-card').on('click', function(){
                 let id = $(this).data('id_card');
@@ -340,7 +349,15 @@
                 form.find('select[name="divisi"]').val(divisi).trigger('change');
                 form.find('input[name="nomor_rekening"]').val(norek);
                 form.find('input[name="email"]').val(email);
-                form.find('input[name="gaji"]').val(gaji);
+
+                const tagGaji = form.find('input[name="gaji"]');
+                new Cleave(tagGaji, {
+                    numeral: true,
+                    prefix: 'Rp ',
+                    delimiter: '.',       
+                    numeralDecimalMark: ',',
+                    numeralThousandsGroupStyle: 'thousand',
+                }).setRawValue(gaji);
             });
 
             $('.edit-karyawan-form').on('submit', function(e){

@@ -80,7 +80,7 @@ class AdminController extends Controller
             'divisi' => ['required'],
             'nomor_rekening' => ['required'],
             'email' => ['required', 'email'],
-            'gaji' => ['required']
+            'gaji' => ['required', 'string']
         ]);
 
         try{
@@ -102,7 +102,7 @@ class AdminController extends Controller
                 'jabatan' => $request->jabatan,
                 'divisi' => $request->divisi,
                 'nomor_rekening' => $request->nomor_rekening,
-                'gaji' => (int) str_replace(',', '', $request->gaji)
+                'gaji' => (int) str_replace(['.', 'Rp '], '', $request->gaji)
             ]);
 
             $user->assignRole('karyawan');
@@ -129,7 +129,7 @@ class AdminController extends Controller
             'divisi' => ['required'],
             'nomor_rekening' => ['required'],
             'email' => ['required', 'email'],
-            'gaji' => ['required', 'numeric']
+            'gaji' => ['required', 'string']
         ]);
 
         try{
@@ -150,7 +150,7 @@ class AdminController extends Controller
                 'jabatan' => $request->jabatan,
                 'divisi' => $request->divisi,
                 'nomor_rekening' => $request->nomor_rekening,
-                'gaji' => $request->gaji
+                'gaji' => (int) str_replace(['.', 'Rp '], '', $request->gaji)
             ]);
 
             $karyawans = User::where('role', 'karyawan')->latest()->get();
