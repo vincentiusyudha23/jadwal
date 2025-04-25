@@ -5,6 +5,13 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="py-2">
+            <nav aria-label="breadcrumb" class="p-0 mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.ijin') }}">Riwayat Izin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $ijins->first()->from_date->format('d-m-Y') }}</li>
+                </ol>
+            </nav>
             <div class="card">
                 <div class="card-body">
                     <div class="card-title mb-3 d-flex justify-content-between align-items-center">

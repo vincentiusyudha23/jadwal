@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Enums\BulanEnum;
+use App\Enums\DivisiEnum;
+use App\Enums\JabatanEnum;
 use App\Models\GajiKaryawan;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\GajiRequest;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class GajiController extends Controller
@@ -22,8 +24,8 @@ class GajiController extends Controller
             return [
                 'name' => $user->name,
                 'idKaryawan'  => $user->id_karyawan,
-                'jabatan'  => $user->karyawan->jabatan,
-                'divisi' => $user->karyawan->divisi,
+                'jabatan'  => JabatanEnum::getItemJabatan($user->karyawan->jabatan ?? ''),
+                'divisi' => DivisiEnum::getItemDivisi($user->karyawan->divisi ?? ''),
                 'no_rek' => $user->karyawan->nomor_rekening,
                 'ijin' => $ijin_user->where('type', 1)->count(),
                 'sakit' => $ijin_user->where('type', 2)->count(),

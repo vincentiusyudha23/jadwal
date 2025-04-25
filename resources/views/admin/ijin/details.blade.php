@@ -5,11 +5,28 @@
 @section('content')
     <x-navbar-admin :name="Auth::user()->name">
         <div class="py-2">
+            <nav aria-label="breadcrumb" class="p-0 mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.ijin') }}">Riwayat Izin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ $urlPrev }}">{{ $ijin->from_date->format('d-m-Y') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                </ol>
+            </nav>
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title mb-3 d-flex justify-content-between align-items-center">
-                        <h4 class="fw-bold">Pengajuan Izin</h4>
-                        <a class="btn btn-sm btn-primary" href="{{ $urlPrev }}">Kembali</a>
+                    <div class="card-title mb-3 ">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h4 class="fw-bold">Pengajuan Izin</h4>
+                            <a class="btn btn-sm btn-primary" href="{{ $urlPrev }}">Kembali</a>
+                        </div>
+                        <div class="w-100 p-2 rounded border bg-secondary bg-opacity-10 d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="fs-6"><strong>Nama :</strong> {{ $ijin->user->name }}</span>
+                                <br>
+                                <span class="fs-6"><strong>ID Karyawan :</strong> {{ $ijin->user->id_karyawan }}</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3 w-100 d-flex flex-md-row flex-column gap-3">
                         <div class="form-check">

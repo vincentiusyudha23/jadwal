@@ -39,7 +39,7 @@ class DivisiEnum
     {
         $divisi = self::getDivisi();
 
-        return $divisi[strtolower($text)] ?? $text;
+        return $divisi[strtolower($text)] ?? strtoupper($text);
     }
 
     public static function getValDivisi()

@@ -9,7 +9,7 @@ class JabatanEnum
     public static function getJabatan()
     {
         return [
-            'spv' => 'SPV'
+            'spv' => 'Spv'
         ];
     }
 
@@ -17,7 +17,7 @@ class JabatanEnum
     {
         $jabatan = self::getJabatan();
 
-        return $jabatan[strtolower($text)] ?? $text;
+        return $jabatan[strtolower($text)] ?? ucfirst($text);
     }
 
     public static function getValJabatan()

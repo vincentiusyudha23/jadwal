@@ -49,7 +49,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     @stack('scripts')
     <script>
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -99,11 +98,6 @@
             // activeSidebar();
             $('#datatable').DataTable({
                 order: []
-            });
-
-            var cleave = new Cleave('.input-uang', {
-                numeral: true,
-                numeralThousandsGroupStyle: 'thousand',
             });
         });
     </script>

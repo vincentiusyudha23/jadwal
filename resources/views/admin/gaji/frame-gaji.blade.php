@@ -128,11 +128,11 @@
                             <thead>
                                 <tr>
                                     <td><strong>Jabatan</strong></td>
-                                    <td><strong>:</strong> {{ $gaji->user->karyawan->jabatan }} </td>
+                                    <td><strong>:</strong> {{ \App\Enums\JabatanEnum::getItemJabatan($gaji->user?->karyawan?->jabatan ?? '') }} </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Divisi</strong></td>
-                                    <td><strong>:</strong> {{ $gaji->user->karyawan->divisi }} </td>
+                                    <td><strong>:</strong> {{ \App\Enums\DivisiEnum::getItemDivisi($gaji->user?->karyawan?->divisi ?? '') }} </td>
                                 </tr>
                             </thead>
                         </table>
@@ -260,7 +260,7 @@
 
                     <td>Potongan Lain-lain</td>
                     <td>Rp</td>
-                    <td align="right" style="padding: 0 5px;">{{ withoutCurrency($gaji->pt_pll) }}</td>
+                    <td align="right" style="padding: 0 5px;">{{ withoutCurrency($gaji->pt_ll) }}</td>
                 </tr>
 
                 <tr>

@@ -7,6 +7,12 @@
     <x-navbar-admin :name="Auth::user()->name">
         <div x-data="penggajian">
             <div class="pt-3 pb-5 px-md-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Penggajian</li>
+                    </ol>
+                </nav>
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Input Penggajian Karyawan</h5>
@@ -46,7 +52,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" label="Ijin" name="ijin" placeHolder="Ijin" x-model="form.ijin"/>
+                                <x-global-input type="text" label="Izin" name="ijin" placeHolder="Ijin" x-model="form.ijin"/>
                             </div>
                             <div class="col-12 col-md-6">
                                 <x-global-input type="text" label="Sakit" name="sakit" placeHolder="Sakit" x-model="form.sakit"/>
@@ -77,23 +83,23 @@
                         <h5 class="card-title fw-bold">Upah Tetap</h5>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="gp_bulanan" placeHolder="GP Bulanan" x-model="form.gaji_pokok" disabled readonly/>
+                                <x-global-input x-ref="gaji_pokok" type="text" name="gp_bulanan" placeHolder="GP Bulanan" disabled readonly/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="tj_komunikasi" placeHolder="TJ Komunikasi" x-model="form.tj_komunikasi"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="tj_keahlian" placeHolder="TJ Keahlian" x-model="form.tj_keahlian"/>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="tj_kesehatan" placeHolder="TJ Kesehatan" x-model="form.tj_kesehatan"/>
+                                <x-global-input data-cleave type="text" name="tj_komunikasi" placeHolder="TJ Komunikasi"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="total_upah_tetap" placeHolder="Total Upah Tetap" x-model="form.total_upah_tetap" readonly/>
+                                <x-global-input data-cleave type="text" name="tj_keahlian" placeHolder="TJ Keahlian"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-global-input data-cleave type="text" name="tj_kesehatan" placeHolder="TJ Kesehatan"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-global-input type="text" name="total_upah_tetap" placeHolder="Total Upah Tetap" x-ref="total_upah_tetap" readonly/>
                             </div>
                         </div>
                     </div>
@@ -105,31 +111,31 @@
                         <h5 class="card-title fw-bold">Upah Non-Tetap</h5>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="tj_makan" placeHolder="TJ Makan" x-model="form.tj_makan"/>
+                                <x-global-input data-cleave type="text" name="tj_makan" placeHolder="TJ Makan" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="lembur" placeHolder="Lembur" x-model="form.lembur"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="tj_transport" placeHolder="TJ Transport" x-model="form.tj_transport"/>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="pll" placeHolder="Penerimaan Lain-lain" x-model="form.pll"/>
+                                <x-global-input data-cleave type="text" name="lembur" placeHolder="Lembur"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="pinjaman_perusahaan" placeHolder="Pinjaman Perusahaan" x-model="form.pp"/>
+                                <x-global-input data-cleave type="text" name="tj_transport" placeHolder="TJ Transport"/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="_lbpph21" placeHolder="Lebih Bayar PPH21" x-model="form.lbpph21"/>
+                                <x-global-input data-cleave type="text" name="pll" placeHolder="Penerimaan Lain-lain"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="total_unt" placeHolder="Total Upah Non-Tetap" x-model="form.total_upah_non_tetap" readonly/>
+                                <x-global-input data-cleave type="text" name="pp" placeHolder="Pinjaman Perusahaan"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-global-input data-cleave type="text" name="lbpph21" placeHolder="Lebih Bayar PPH21"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-global-input type="text" name="total_upah_non_tetap" placeHolder="Total Upah Non-Tetap" x-ref="total_upah_non_tetap" readonly/>
                             </div>
                         </div>
                     </div>
@@ -141,31 +147,31 @@
                         <h5 class="card-title fw-bold">Potongan</h5>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="_pph21" placeHolder="PPH21" x-model="form.pt_pph21"/>
+                                <x-global-input data-cleave type="text" name="pt_pph21" placeHolder="PPH21"/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="pinjaman_perusahaan" placeHolder="Pinjaman Perusahaan" x-model="form.pt_pp"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="bpjs_kesehatan" placeHolder="BPJS Kesehatan" x-model="form.pt_bpjs_kesehatan"/>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="potongan_absensi" placeHolder="Potongan Absensi" x-model="form.pt_absensi"/>
+                                <x-global-input data-cleave type="text" name="pt_pp" placeHolder="Pinjaman Perusahaan"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="bpjs_ketenagakerjaan" placeHolder="BPJS Ketenagakerjaan" x-model="form.pt_bpjs_kerja"/>
+                                <x-global-input data-cleave type="text" name="pt_bpjs_kesehatan" placeHolder="BPJS Kesehatan"/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" name="potongan_lain" placeHolder="Potongan Lain-lain" x-model="form.pt_ll"/>
+                                <x-global-input data-cleave type="text" name="pt_absensi" placeHolder="Potongan Absensi"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" name="total_potongan" placeHolder="Total Potongan" x-model="form.total_potongan"/>
+                                <x-global-input data-cleave type="text" name="pt_bpjs_kerja" placeHolder="BPJS Ketenagakerjaan"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-global-input data-cleave type="text" name="pt_ll" placeHolder="Potongan Lain-lain"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-global-input type="text" name="total_potongan" placeHolder="Total Potongan" x-ref="total_potongan"/>
                             </div>
                         </div>
                     </div>
@@ -192,6 +198,7 @@
 @push('scripts')
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script>
         const defaultForm = {
             idKaryawan : null,
@@ -255,7 +262,7 @@
                         (parseFloat(this.form.lbpph21) || 0);
 
                     this.form.total_upah_non_tetap = total
-
+                    this.$refs.total_upah_non_tetap.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
                     return total
                 },
                 calculateTotalUpah() {
@@ -266,7 +273,7 @@
                         (parseFloat(this.form.tj_kesehatan) || 0);
                     
                     this.form.total_upah_tetap = total
-
+                    this.$refs.total_upah_tetap.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
                     return total
                 },
                 calculatePotongan(){
@@ -278,6 +285,7 @@
                         (parseFloat(this.form.pt_absensi) || 0) +
                         (parseFloat(this.form.pt_ll) || 0);
                     this.form.total_potongan = total
+                    this.$refs.total_potongan.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
                     return total
                 },
                 intializeSelect2(){
@@ -326,6 +334,22 @@
                         this.isLoading = false
                     }
                 },
+                initializeCleave(){
+                    document.querySelectorAll('[data-cleave]').forEach(input => {
+                        new Cleave(input, {
+                            numeral: true,
+                            prefix: 'Rp ',
+                            delimiter: '.',       
+                            numeralDecimalMark: ',',
+                            numeralThousandsGroupStyle: 'thousand',
+                        })
+
+                        input.addEventListener('input', (e) => {
+                            let rawValue = e.target.value.replace(/Rp\s?/g, '').replace(/\./g, '');
+                            this.form[input.name] = rawValue;
+                        })
+                    })
+                },
                 init(){
                     this.$watch('karyawanData', val => {
                         let data = this.karyawanData
@@ -339,21 +363,8 @@
                         this.form.ijin = data.ijin || 0
                         this.form.cuti = data.cuti || 0
                         this.form.sakit = data.sakit || 0
-                        this.form.tj_komunikasi = 0
-                        this.form.tj_keahlian = 0
-                        this.form.tj_kesehatan = 0
-                        this.form.tj_makan = 0
-                        this.form.tj_transport = 0
-                        this.form.lembur = 0
-                        this.form.pp = 0
-                        this.form.pll = 0
-                        this.form.lbpph21 = 0
-                        this.form.pt_pph21 = 0
-                        this.form.pt_pp = 0
-                        this.form.pt_bpjs_kesehatan = 0
-                        this.form.pt_bpjs_kerja = 0
-                        this.form.pt_absensi = 0
-                        this.form.pt_ll = 0
+
+                        this.$refs.gaji_pokok.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.gaji_pokok);
 
                         this.calculateTotalTerima();
                     });
@@ -376,6 +387,7 @@
                     this.$watch('form.pt_ll', () => this.calculateTotalTerima());
     
                     this.intializeSelect2()
+                    this.initializeCleave()
                 }
             }))
         });

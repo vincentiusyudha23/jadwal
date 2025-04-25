@@ -31,8 +31,8 @@
                                         <th class="text-center">ID</th>
                                         <th>Jabatan</th>
                                         <th>Divisi</th>
-                                        <th>No. Rekening</th>
-                                        <th class="text-end">Total Diterima</th>
+                                        <th class="text-start">No. Rekening</th>
+                                        <th class="text-start">Total Diterima</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -41,10 +41,10 @@
                                         <tr>
                                             <td class="text-start">{{ $gaji->user->name }}</td>
                                             <td class="text-center">{{ $gaji->user->id_karyawan }}</td>
-                                            <td>{{ $gaji->user->karyawan->jabatan }}</td>
-                                            <td>{{ $gaji->user->karyawan->divisi }}</td>
-                                            <td>{{ $gaji->user->karyawan->nomor_rekening }}</td>
-                                            <td class="text-end">{{ currency($gaji->total_diterima) }}</td>
+                                            <td>{{ \App\Enums\JabatanEnum::getItemJabatan($gaji->user->karyawan->jabatan ?? '') }}</td>
+                                            <td>{{ \App\Enums\DivisiEnum::getItemDivisi($gaji->user->karyawan->divisi ?? '') }}</td>
+                                            <td class="text-start">{{ $gaji->user->karyawan->nomor_rekening }}</td>
+                                            <td class="text-start">{{ currency($gaji->total_diterima) }}</td>
                                             <td>
                                                 <div class="w-100 d-flex gap-2 justify-content-center align-items-center">
                                                     <a href="{{ route('admin.gaji.slip-gaji.view', ['id' => $gaji->id]) }}" class="btn btn-sm btn-success">
