@@ -243,17 +243,18 @@ class AdminController extends Controller
             'note' => ['required']
         ]);
 
-        $jadwal = Jadwal::where([
-            'tanggal' => $request->tanggal,
-            'waktu' => $request->waktu
-        ])->first();
-
-        if($jadwal){
-            return redirect()->back()->with('errors', 'Tanggal dan waktu sudah dijadwalkan.');
-        }
-
         try{
             $user = User::find($request->karyawan);
+
+            $jadwal = Jadwal::where([
+                'id_karyawan' => $user->id,
+                'tanggal' => $request->tanggal,
+                'waktu' => $request->waktu
+            ])->first();
+
+            if($jadwal){
+                return redirect()->back()->with('errors', 'Tanggal dan waktu sudah dijadwalkan.');
+            }
 
             if($user){
                 $jadwalNew = Jadwal::create([
@@ -294,6 +295,15 @@ class AdminController extends Controller
             $user = User::find($request->karyawan);
 
             if($user && $jadwal){
+
+                $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
+                $waktuSekarang = Carbon::now();
+                $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
+
+                if($selisihWaktu < 60){
+                    return redirect()->back()->with('errors', 'Sudah tidak dapat melakukan edit jadwal');
+                }
+
                 $jadwal->update([
                     'id_karyawan' => $user->id,
                     'tanggal' => $request->tanggal,
@@ -319,12 +329,22 @@ class AdminController extends Controller
         $jadwal = Jadwal::find($id_jadwal);
 
         if($jadwal){
+
+            $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
+            $waktuSekarang = Carbon::now();
+            $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
+
+            if($selisihWaktu < 60){
+                return response()->json([
+                    'type' => 'errors',
+                    'msg' => 'Sudah tidak dapat menghapus jadwal',
+                ]);
+            }
+
             $jadwal->delete();
 
             $jadwals = Jadwal::latest()->get();
             $karyawans = User::where('role', 'karyawan')->select('name', 'id')->latest()->get();
-
-            // $markup = View::make('admin.karyawan.partials.tabel-jadwal', compact('jadwals', 'karyawans'))->render();
 
             return response()->json([
                 'type' => 'success',

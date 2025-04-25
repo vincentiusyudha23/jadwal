@@ -37,13 +37,18 @@
                         },
                         success: function(response) {
                             Swal.hideLoading();
-                            if (response.msg) {
+                            if (response.msg && response.type == 'success') {
                                 Swal.fire({
                                     title: response.msg,
                                     icon: 'success',
                                 });
                                 
                                 location.reload();
+                            } else {
+                                Swal.fire({
+                                    title: response.msg,
+                                    icon: 'error',
+                                });
                             }
                         }
                     })
