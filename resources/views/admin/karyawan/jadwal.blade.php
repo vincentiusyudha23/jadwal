@@ -27,7 +27,7 @@
                         @csrf
                         <div class="w-100">
                             <div class="row mb-3">
-                                <div class="col-12 col-lg-6">
+                                <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                                     <div class="input-group">
                                         <select class="form-select" name="karyawan" aria-label="Default select example">
                                             <option disabled selected>Pilih Karyawan</option>

@@ -46,8 +46,12 @@ class KaryawanController extends Controller
             'id' => ['required'],
             'status_jadwal' => ['required','max:2'],
             'keterangan' => ['required'],
-            'image' => ['required'],
+            'image' => ['required', 'array', 'min:1'],
+            'image.0' => ['required', 'integer'],
+            'image.1' => ['nullable', 'integer'],
             'work_report' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
+        ], [], [
+            'image.0' => 'Foto Bukti',
         ]);
         
         try{
@@ -366,7 +370,21 @@ class KaryawanController extends Controller
 
             $user = Auth::user();
 
-            if($user->ijinKaryawan()->where('from_date', $request->from_date)->where('to_date', $request->to_date)->exists()){
+            if($user->ijinKaryawan()
+                ->where(function ($query) use ($request) {
+                    $query->where(function ($q) use ($request) {
+                        $q->where('from_date', '<=', $request->from_date)
+                        ->where('to_date', '>=', $request->from_date);
+                    })->orWhere(function ($q) use ($request) {
+                        $q->where('from_date', '<=', $request->to_date)
+                        ->where('to_date', '>=', $request->to_date);
+                    })->orWhere(function ($q) use ($request) {
+                        $q->where('from_date', '>=', $request->from_date)
+                        ->where('to_date', '<=', $request->to_date);
+                    });
+                })
+                ->exists()
+            ){
                 return redirect()->back()->with('errors', 'Ijin sudah diajukan pada tanggal tersebut');
             }
 

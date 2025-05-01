@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Enums\BulanEnum;
+use Carbon\CarbonPeriod;
 use App\Enums\DivisiEnum;
 use App\Enums\JabatanEnum;
 use App\Models\GajiKaryawan;
@@ -20,16 +21,29 @@ class GajiController extends Controller
     {   
         $karyawans = User::hasKaryawan()->latest()->get()->transform(function($user){
             $total_absen = $user->absen()->whereMonth('created_at', now()->month)->where('type', 1)->count();
-            $ijin_user = $user->ijinKaryawan()->whereMonth('created_at', now()->month)->get();
+            $totalIjin = 0;
+            $totalSakit = 0;
+            $totalCuti = 0;
+
+            $user->ijinKaryawan()->whereMonth('from_date', now()->month)->where('type', 1)->get()->each(function($ijin) use (&$totalIjin){
+                $totalIjin += $this->calculateIjinKaryawan($ijin);
+            });
+            $user->ijinKaryawan()->whereMonth('from_date', now()->month)->where('type', 2)->get()->each(function($ijin) use (&$totalSakit){
+                $totalSakit += $this->calculateIjinKaryawan($ijin);
+            });
+            $user->ijinKaryawan()->whereMonth('from_date', now()->month)->where('type', 3)->get()->each(function($ijin) use (&$totalCuti){
+                $totalCuti += $this->calculateIjinKaryawan($ijin);
+            });
+
             return [
                 'name' => $user->name,
                 'idKaryawan'  => $user->id_karyawan,
                 'jabatan'  => JabatanEnum::getItemJabatan($user->karyawan->jabatan ?? ''),
                 'divisi' => DivisiEnum::getItemDivisi($user->karyawan->divisi ?? ''),
                 'no_rek' => $user->karyawan->nomor_rekening,
-                'ijin' => $ijin_user->where('type', 1)->count(),
-                'sakit' => $ijin_user->where('type', 2)->count(),
-                'cuti' => $ijin_user->where('type', 3)->count(),
+                'ijin' => $totalIjin,
+                'sakit' => $totalSakit,
+                'cuti' => $totalCuti,
                 'total_absen' => $total_absen,
                 'gaji_pokok' => $user->karyawan->gaji,
             ];
@@ -38,6 +52,24 @@ class GajiController extends Controller
         return view('admin.gaji.index', [
             'karyawans' => $karyawans
         ]);
+    }
+
+    private function calculateIjinKaryawan($data)
+    {
+        $start = Carbon::parse($data->from_date);
+        $end = Carbon::parse($data->to_date);
+
+        $periodStart = $start->copy();
+        $periodEnd = $end->copy();
+
+        $daysInMonth = collect(CarbonPeriod::create($periodStart, $periodEnd))
+            ->filter(function ($date){
+                return $date->month == Carbon::now()->month &&
+                       $date->year == Carbon::now()->year &&
+                       !$date->isSunday();
+            });
+
+        return $daysInMonth->count();
     }
 
     public function store(GajiRequest $request)

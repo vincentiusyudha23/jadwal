@@ -333,8 +333,8 @@ class AdminController extends Controller
             $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
             $waktuSekarang = Carbon::now();
             $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
-
-            if($selisihWaktu < 60){
+            
+            if($selisihWaktu < 60 && $waktuJadwal->diffInHours($waktuSekarang, false) < 24){
                 return response()->json([
                     'type' => 'errors',
                     'msg' => 'Sudah tidak dapat menghapus jadwal',
