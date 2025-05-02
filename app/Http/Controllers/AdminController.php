@@ -460,7 +460,11 @@ class AdminController extends Controller
                 'Nama' => $user->name,
                 'ID Karyawan' => $user->id_karyawan,
                 'username' => $user->username,
-                'password' => decryptPassword($user->enc_password)
+                'password' => decryptPassword($user->enc_password),
+                'Jabatan' => \App\Enums\JabatanEnum::getItemJabatan($user->karyawan->jabatan ?? ''),
+                'Divisi' => \App\Enums\DivisiEnum::getItemDivisi($user->karyawan?->divisi ?? ''),
+                'Nomor Rekening' => $user->karyawan?->nomor_rekening ?? '',
+                'Gaji Pokok' => $user->karyawan?->gaji ?? ''
             ];
         });
 
@@ -485,11 +489,13 @@ class AdminController extends Controller
                 'msg' => 'Berhasil mengimport data karyawan.'
             ]);
 
-        }catch(\Exception $e){
+        }catch(\Maatwebsite\Excel\Validators\ValidationException $e){
             DB::rollBack();
             return response()->json([
                 'type' => 'error',
-                'msg' => $e->getMessage()
+                'msg' => collect($e->failures())->map(function($err){
+                    return "Row '{$err->row()}', {$err->errors()[0]}";
+                })
             ], 422);
         }
     }
@@ -586,6 +592,28 @@ class AdminController extends Controller
             response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
     }
 
+    public function exportAbsen($tanggal)
+    {
+        abort_if(empty($tanggal), 404);
+        $absens = Absen::whereDate('tanggal', $tanggal)->where('type', 1)->latest()->get();
+
+        $export = (new FastExcel($absens))->download('data_absen_' . Carbon::parse($tanggal)->format('d-m-Y') . '.xlsx', function($absen){
+            $absenPulang = Absen::whereDate('tanggal', $absen->tanggal)->where(['id_karyawan' => $absen->id_karyawan, 'type' => 2])->first();
+            return [
+                'Hari' => $absen->tanggal->translatedFormat('l'),
+                'Tanggal' => $absen->tanggal->format('d/m/Y'),
+                'Nama' => $absen->user->name,
+                'ID Karyawan' => $absen->user->id_karyawan,
+                'Waktu Masuk' => $absen->waktuFormat,
+                'Waktu Pulang' => $absenPulang?->waktuFormat,
+                'Total' => !empty($absenPulang) ? $absen->created_at->diff($absenPulang->created_at)->format('%H jam %i menit') : '',
+                'Lokasi' => $absen->lokasi
+            ];
+        });
+
+        return $export;
+    }
+
     public function pengajuanIzin()
     {
         $pengajuan = IjinKaryawan::latest()->get()->groupBy(function($item) {
@@ -633,8 +661,8 @@ class AdminController extends Controller
                 'Jabatan' => $ijin->user->karyawan->jabatan,
                 'Divisi' => $ijin->user->karyawan->divisi,
                 'Tipe Ijin' => IjinEnum::getLabel($ijin->type),
-                'Dari Tanggal' => $ijin->from_date,
-                'Sampai Tanggal' => $ijin->to_date,
+                'Dari Tanggal' => $ijin->from_date->format('d/m/Y'),
+                'Sampai Tanggal' => $ijin->to_date->format('d/m/Y'),
                 'Keterangan' => $ijin->keterangan,
                 'Surat Ijin' => asset('assets/surat_ijin/'.$ijin->surat)
             ];

@@ -189,6 +189,7 @@ class KaryawanController extends Controller
     {
         $absens = Auth::user()
             ->absen()
+            ->where('type', 1)
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function($item){
@@ -267,20 +268,22 @@ class KaryawanController extends Controller
     public function exportAbsen()
     {
         $user = Auth::user();
-        $absen = $user->absen()->orderBy('created_at', 'desc')->get();
-        $export = (new FastExcel($absen))->download('absen_karyawan.xlsx', function($absen) use ($user){
+        $absens = $user->absen()->where('type', 1)->latest()->get();
+
+        $export = (new FastExcel($absens))->download('data_absen_' . $user->name . '_' . $user->id_karyawan . '.xlsx', function($absen) use ($user){
+            $absenPulang = $user->absen()->where(['id_karyawan' => $absen->id_karyawan, 'type' => 2])->first();
             return [
-                'Hari' => $absen->created_at->translatedFormat('l'),
-                'Tanggal' => $absen->tanggal->translatedFormat('d/m/Y'),
-                'Nama' => $user->name,
-                'ID karyawan' => $user->id_karyawan,
-                'Jabatan' => $user->karyawan->jabatan,
-                'Divisi' => $user->karyawan->divisi,
-                'Waktu' => $absen->waktu,
-                'Tipe Absen' => AbsenEnum::getText($absen->type),
+                'Hari' => $absen->tanggal->translatedFormat('l'),
+                'Tanggal' => $absen->tanggal->format('d/m/Y'),
+                'Nama' => $absen->user->name,
+                'ID Karyawan' => $absen->user->id_karyawan,
+                'Waktu Masuk' => $absen->waktuFormat,
+                'Waktu Pulang' => $absenPulang?->waktuFormat,
+                'Total' => !empty($absenPulang) ? $absen->created_at->diff($absenPulang->created_at)->format('%H jam %i menit') : '',
                 'Lokasi' => $absen->lokasi
             ];
         });
+
         return $export;
     }
 
@@ -402,7 +405,7 @@ class KaryawanController extends Controller
 
                 $IjinKaryawan = $user->ijinKaryawan()->create([
                     'from_date' => $request->from_date,
-                    'to_date' => $request->to_date,
+                    'to_date' => $request->to_date ?? $request->from_date,
                     'keterangan' => $request->keterangan,
                     'type' => IjinEnum::getValue($request->tipe_ijin),
                     'surat' => $file_db
@@ -463,8 +466,8 @@ class KaryawanController extends Controller
                 'Jabatan' => $user->karyawan->jabatan,
                 'Divisi' => $user->karyawan->divisi,
                 'Tipe Ijin' => IjinEnum::getLabel($ijin->type),
-                'Dari Tanggal' => $ijin->from_date,
-                'Sampai Tanggal' => $ijin->to_date,
+                'Dari Tanggal' => $ijin->from_date->format('d/m/Y'),
+                'Sampai Tanggal' => $ijin->to_date->format('d/m/Y'),
                 'Keterangan' => $ijin->keterangan,
                 'Surat Ijin' => asset('assets/surat_ijin/'.$ijin->surat)
             ];

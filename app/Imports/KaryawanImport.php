@@ -8,12 +8,14 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class KaryawanImport implements ToCollection, WithHeadingRow
+class KaryawanImport implements ToCollection, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
     /**
     * @param Collection $collection
@@ -22,6 +24,7 @@ class KaryawanImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         foreach ($rows as $karyawan) {
+
             if(is_null($karyawan['Nama'])){
                 continue;
             }
@@ -62,11 +65,24 @@ class KaryawanImport implements ToCollection, WithHeadingRow
                     'jabatan' => $karyawan['Jabatan'],
                     'divisi' => $karyawan['Divisi'],
                     'nomor_rekening' => $karyawan['Nomor Rekening'],
-                    'gaji' => (float) $karyawan['Gaji']
+                    'gaji' => (float) data_get($karyawan, 'Gaji Pokok', 0)
                 ]
             );
 
             $user->assignRole('karyawan'); 
         }
+    }
+
+    public function rules(): array
+    {
+        return [
+            'Nama' => 'required',
+            'Jabatan' => 'required',
+            'Nomor Rekening' => 'required',
+            'Gaji Pokok' => 'required',
+            'Divisi' => 'required',
+            'ID' => 'required',
+            'Email' => 'required'
+        ];
     }
 }

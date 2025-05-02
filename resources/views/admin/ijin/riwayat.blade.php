@@ -9,7 +9,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Halaman Utama</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.ijin') }}">Riwayat Izin</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $ijins->first()->from_date->format('d-m-Y') }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ str_replace('/', '-', request('tanggal', '')) }}</li>
                 </ol>
             </nav>
             <div class="card">

@@ -456,11 +456,13 @@
                             },
                             error: function(err){
                                 Swal.hideLoading();
-                                var error = err.responseJSON.msg ?? 'Gagal mengimport data karyawan.';
-
+                                var error = err.responseJSON.msg ?? [];
+                                
+                                let htmlErr = error.map(msg => `<span>${msg}</span>`).join('<br>');
+                                
                                 Swal.fire({
                                     title: 'Gagal',
-                                    text: error,
+                                    html: htmlErr,
                                     icon: 'error',
                                 });
                             }

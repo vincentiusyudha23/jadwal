@@ -48,6 +48,7 @@ Route::middleware(['web','role:admin'])->prefix('admin')->name('admin.')->group(
         Route::get('/absensi-tanggal', 'dataAbsensiByDate')->name('absen.riwayat.tanggal');
         Route::get('/absensi/{id}', 'detailAbsensi')->name('absen.details');
         Route::post('/absensi/delete', 'deleteAbsen')->name('absen.delete');
+        Route::get('/absensi/export-absensi/{tanggal}', 'exportAbsen')->name('absen.export');
         Route::get('/pengajuan-ijin', 'pengajuanIzin')->name('ijin');
         Route::get('/pengajuan-ijin/riwayat', 'showRiwayatIjin')->name('ijin.riwayat');
         Route::get('/pengajuan-ijin/{id}', 'detailsIjin')->name('ijin.details');
