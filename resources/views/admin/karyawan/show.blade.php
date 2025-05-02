@@ -88,7 +88,7 @@
                                         @endphp
                                         <div class="col-lg-4 col-md-6 col-12 mb-3">
                                             <div class="border rounded p-2" style="height: 200px;">
-                                                <a class="w-100 h-100" href="{{ $image['img_url'] ?? '' }}" target="_blank">
+                                                <a class="w-100 h-100" href="{{ $image['img_url'] ?? '#' }}" target="_blank">
                                                     <img src="{{ $image['img_url'] ?? '' }}" alt="img" class="w-100 h-100 object-fit-contain">
                                                 </a>
                                             </div>
