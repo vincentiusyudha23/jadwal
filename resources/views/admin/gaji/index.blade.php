@@ -288,6 +288,16 @@
                     this.$refs.total_potongan.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
                     return total
                 },
+                calculateAlpa(){
+                    let totalHariKerja = parseInt(this.form.total_hari_kerja) || 0;
+                    let ijin = parseInt(this.form.ijin) || 0;
+                    let sakit = parseInt(this.form.sakit) || 0;
+                    let cuti = parseInt(this.form.cuti) || 0;
+                    let totalAbsen = parseInt(this.form.total_absen) || 0;
+
+                    let total = totalHariKerja - (ijin + sakit + cuti + totalAbsen);
+                    this.form.alpa = total < 0 ? 0 : total;
+                },
                 intializeSelect2(){
                     this.selectKaryawan = $(this.$refs.selectKaryawan).select2({
                         theme: "bootstrap-5",
@@ -385,6 +395,11 @@
                     this.$watch('form.pt_bpjs_kerja', () => this.calculateTotalTerima());
                     this.$watch('form.pt_absensi', () => this.calculateTotalTerima());
                     this.$watch('form.pt_ll', () => this.calculateTotalTerima());
+                    this.$watch('form.ijin', () => this.calculateAlpa());
+                    this.$watch('form.sakit', () => this.calculateAlpa());
+                    this.$watch('form.cuti', () => this.calculateAlpa());
+                    this.$watch('form.total_absen', () => this.calculateAlpa());
+                    this.$watch('form.total_hari_kerja', () => this.calculateAlpa());
     
                     this.intializeSelect2()
                     this.initializeCleave()

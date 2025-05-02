@@ -66,7 +66,8 @@ class GajiController extends Controller
             ->filter(function ($date){
                 return $date->month == Carbon::now()->month &&
                        $date->year == Carbon::now()->year &&
-                       !$date->isSunday();
+                       !$date->isSunday() && 
+                       !$date->isSaturday();
             });
 
         return $daysInMonth->count();

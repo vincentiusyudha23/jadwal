@@ -38,7 +38,7 @@
                                         <td class="text-center">{{ \App\Enums\IjinEnum::getLabel($item->type) }}</td>
                                         <td class="text-center">{{ $item->from_date->format('d/m/y') }}</td>
                                         <td class="text-center">{{ $item->to_date->format('d/m/y') }}</td>
-                                        <td class="text-center">{{ $item->from_date->diffInDays($item->to_date) + 1 }} Hari</td>
+                                        <td class="text-center">{{ kalkulasiHariIjin($item) }} Hari</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td class="text-center">
                                             <div class="w-100 d-flex gap-2 justify-content-center align-items-center">

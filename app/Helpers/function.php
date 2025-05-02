@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\MediaImage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -14,7 +16,7 @@ if (!function_exists('assets')) {
 if(!function_exists('getCurrentTimeOfDay')){
     function getCurrentTimeOfDay($user = 'admin')
     {
-        $hour = Carbon\Carbon::now()->format('H');
+        $hour = Carbon::now()->format('H');
         
         if ($hour >= 5 && $hour < 12) {
             return 'Selamat Pagi, '.$user;
@@ -175,5 +177,22 @@ if(!function_exists('sendEmail')){
 if(!function_exists('route_prefix')){
     function route_prefix(){
         return Auth::user()->hasRole('admin') ? 'admin.' : 'karyawan.';
+    }
+}
+
+if(!function_exists('kalkulasiHariIjin')){
+    function kalkulasiHariIjin($data){
+        $start = Carbon::parse($data->from_date);
+        $end = Carbon::parse($data->to_date);
+
+        $periodStart = $start->copy();
+        $periodEnd = $end->copy();
+
+        $daysInMonth = collect(CarbonPeriod::create($periodStart, $periodEnd))
+            ->filter(function ($date){
+                return !$date->isSunday() && !$date->isSaturday();
+            });
+
+        return $daysInMonth->count();
     }
 }
