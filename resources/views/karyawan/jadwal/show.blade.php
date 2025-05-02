@@ -91,20 +91,27 @@
     
                         <hr>
                         @php
-                            $images = json_decode($jadwal->image);
+                            $images = json_decode($jadwal->image, true);
                         @endphp
                         <div class="w-100 d-flex gap-2">
                             @if ($images)
-                                @foreach ($images as $item)
-                                    <x-media-upload-v2 :image="$item"/>
-                                @endforeach
+                                @if (count((array)($images ?? [])) > 1)
+                                    @foreach ($images as $item)
+                                        <x-media-upload-v2 :image="$item"/>
+                                    @endforeach
+                                @else
+                                    @foreach ($images as $item)
+                                        <x-media-upload-v2 :image="$item"/>
+                                    @endforeach
+                                    <x-media-upload-v2/>
+                                @endif
                             @else
                                 <x-media-upload-v2/>
                                 <x-media-upload-v2/>
                             @endif
                         </div>
                         <div class="w-100 mt-4">
-                            <button type="submit" id="btn-submit-form" class="btn btn-success w-100">Simpan</button>
+                            <button type="submit" id="btn-submit-form" class="btn btn-success w-100 disabled">Simpan</button>
                         </div>
                     </div>
                 </div>

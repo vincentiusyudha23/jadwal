@@ -461,6 +461,7 @@ class AdminController extends Controller
                 'ID Karyawan' => $user->id_karyawan,
                 'username' => $user->username,
                 'password' => decryptPassword($user->enc_password),
+                'email' => $user->email ?? '',
                 'Jabatan' => \App\Enums\JabatanEnum::getItemJabatan($user->karyawan->jabatan ?? ''),
                 'Divisi' => \App\Enums\DivisiEnum::getItemDivisi($user->karyawan?->divisi ?? ''),
                 'Nomor Rekening' => $user->karyawan?->nomor_rekening ?? '',
@@ -586,10 +587,20 @@ class AdminController extends Controller
         $this->validate($request, [
             'data_id' => 'required'
         ]);
-        
-        return Absen::findOrFail($request->data_id)->delete() ?
-            response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']) :
-            response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
+
+        $absen = Absen::find($request->data_id);
+
+        if($absen){
+            $absenPulang = Absen::where(['id_karyawan' => $absen->id_karyawan, 'type' => 2])->whereDate('created_at', $absen->created_at)->first();
+            if($absenPulang){
+                $absenPulang->delete();
+            }
+            $absen->delete();
+
+            return response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']);
+        }
+
+        return response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
     }
 
     public function exportAbsen($tanggal)

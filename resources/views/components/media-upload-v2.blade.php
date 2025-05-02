@@ -14,12 +14,11 @@
         cursor: pointer;
         overflow: hidden;
     }
-
-    .upload-box img {
-        max-width: 100%;
-        max-height: 100%;
+    .upload-box .url-image > img {
+        width: 200px;
+        height: 200px;
         border-radius: 20px;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     .upload-box input[type="file"] {
@@ -55,7 +54,9 @@
 @endphp
 <div class="upload-box" id="upload-box-{{ $random_id }}">
     @if($images)
-        <img src="{{ $images['img_url'] ?? '' }}" alt="{{ $images['alt'] }}">
+        <a href="{{ $images['img_url'] ?? '#' }}" target="_blank" class="url-image w-100 h-100">
+            <img src="{{ $images['img_url'] ?? '' }}" alt="{{ $images['alt'] }}">
+        </a>
         <span class="remove-icon remove-icon-{{ $random_id }}"><i class="fas fa-times"></i></span>
     @else
         <input type="file" id="file-input-{{ $random_id }}" accept="image/*">
@@ -92,8 +93,11 @@
                         var reader = new FileReader();
                         reader.onload = function(e) {
                             $btnChoose.addClass('d-none');
+                            var blobUrl = URL.createObjectURL(file);
                             $uploadBox.append(
+                                '<a href="'+ blobUrl +'" target="_blank" class="url-image w-100 h-100">' +
                                 '<img src="' + e.target.result + '" alt="Uploaded Image">' +
+                                '</a>' +
                                 '<span class="remove-icon remove-icon-' + id +
                                 '"><i class="fas fa-times"></i></span>'
                             );
@@ -120,10 +124,20 @@
                                 }, false); 
                                 return xhr;
                             },
+                            beforeSend: function(){
+                                let btnSub = $('button[type="submit"]');
+                                if(!btnSub.hasClass('disabled')){
+                                    btnSub.addClass('disabled');
+                                }
+                            },
                             success: function(response) {
                                 if(response.type == 'success'){
                                     $progressBar.css('width', '100%'); // Set progress bar to full width
-                                    $uploadBox.find('input[name="image[]"]').val(response.id);
+                                    if($uploadBox.find('input[type="hidden"][name="image[]"]')){
+                                        $uploadBox.find('input[type="hidden"][name="image[]"]').val(response.id);
+                                    }
+                                    
+                                    $('button[type="submit"]').removeClass('disabled');
                                 }
                             },
                             error: function(response) {
@@ -140,7 +154,7 @@
                         '<input type="file" id="file-input-' + id + '" accept="image/*">' +
                         '<span class="btn btn-sm btn-primary" id="btn-file-' + id + '">Choose File</span>' +
                         '<div class="progress-bar" id="progress-bar-' + id + '"><span></span></div>'+
-                        '<input type="hidden" name="image" value="">'
+                        '<input type="hidden" name="image[]" value="">'
                     );
                     setupEventHandlers(id); // Re-setup event handlers
                 });

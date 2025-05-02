@@ -46,11 +46,12 @@ class KaryawanController extends Controller
             'id' => ['required'],
             'status_jadwal' => ['required','max:2'],
             'keterangan' => ['required'],
-            'image' => ['required', 'array', 'min:1'],
-            'image.0' => ['required', 'integer'],
-            'image.1' => ['nullable', 'integer'],
+            'image' => ['required', 'array'],
+            'image.0' => ['required', 'string'],
+            'image.1' => ['nullable', 'string'],
             'work_report' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
         ], [], [
+            'image' => 'Foto Bukti',
             'image.0' => 'Foto Bukti',
         ]);
         
@@ -251,17 +252,27 @@ class KaryawanController extends Controller
         $this->validate($request, [
             'data_id' => 'required'
         ]);
-        
-        return Absen::findOrFail($request->data_id)->delete() ?
-            response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']) :
-            response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
+
+        $user = Auth::user();
+        $absen = $user->absen()->find($request->data_id);
+
+        if($absen){
+            $absenPulang = $user->absen()->whereDate('created_at', $absen->created_at)->where('type', 2)->first();
+            if($absenPulang){
+                $absenPulang->delete();
+            }
+            $absen->delete();
+
+            return response()->json(['type' => 'success', 'msg' => 'Berhasil Menghapus Absen.']);
+        }
+
+        return response()->json(['type' => 'errors', 'msg' => 'Gagal Menghapus Absen.']);
     }
 
     public function detailsAbsen($id)
     {
-        $absen = Auth::user()->absen()->where('id', $id)->first();
-        abort_if(empty($absen), 404);
-        $absens = Absen::whereDate('created_at', $absen->created_at)->get();
+        $absen = Auth::user()->absen()->findOrFail($id);
+        $absens = Auth::user()->absen()->whereDate('created_at', $absen->created_at)->get();
         return view('karyawan.absen.details')->with(['absens' => $absens]);
     }
 
