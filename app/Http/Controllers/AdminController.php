@@ -37,6 +37,10 @@ class AdminController extends Controller
     //     $this->middleware('role:admin');
     // }
     
+    /**
+     * Menampilkan dashboard admin dengan jadwal hari ini dan daftar karyawan.
+     * Data diteruskan ke tampilan 'admin.dashboard.index' untuk dirender.
+     */
     public function index()
     {
         $jadwals = Jadwal::whereDate('tanggal', Carbon::now())->orderBy('created_at', 'desc')->get();
@@ -44,6 +48,11 @@ class AdminController extends Controller
         return view('admin.dashboard.index', compact('jadwals', 'karyawans'));
     }
 
+    /**
+     * Menampilkan halaman data karyawan.
+     * Mengambil data karyawan, divisi, dan jabatan untuk ditampilkan 
+     * pada halaman indeks karyawan admin.
+     */
     public function karyawan()
     {
         $karyawans = User::hasKaryawan()->latest()->get();
@@ -68,7 +77,12 @@ class AdminController extends Controller
 
         return view('admin.karyawan.index', compact('karyawans', 'divisi', 'jabatan'));
     }
-
+    
+     /**
+     * Menyimpan data karyawan baru ke dalam database.
+     * Data yang disimpan meliputi informasi user dan karyawan.
+     * Setelah data berhasil disimpan, role 'karyawan' akan ditambahkan ke user.
+     */
     public function store_karyawan(Request $request)
     {
         $this->validate($request, [
@@ -117,6 +131,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Fungsi untuk mengupdate data karyawan
+     */
     public function update_karyawan(Request $request)
     {
         $this->validate($request, [
@@ -175,6 +192,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * fungsi untuk melakukan penghapusan data karyawan
+     */
     public function delete_karyawan(Request $request)
     {
         $id_karyawan = $request->data_id;
@@ -202,6 +222,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * fungsi untuk menampilkan id card karyawan
+     */
     public function view_id_card($id)
     {
         $karyawan = User::findOrFail($id);
@@ -210,6 +233,9 @@ class AdminController extends Controller
         return view('admin.karyawan.partials.card-id', compact('karyawan', 'image'));
     }
 
+    /**
+     * fungsi untuk memproses download id card karyawan dalam bentuk PDF
+     */
     public function downloadCardId($id)
     {
         $karyawan = User::findOrFail($id);
@@ -225,6 +251,9 @@ class AdminController extends Controller
         return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
+    /**
+     * fungsi untuk menampilkan halaman pembuatan jadwal karyawan
+     */
     public function jadwal()
     {
         $karyawans = User::hasKaryawan()->select('name', 'id')->latest()->get();
@@ -232,6 +261,9 @@ class AdminController extends Controller
         return view('admin.karyawan.jadwal', compact('karyawans', 'jadwals'));
     }
 
+    /**
+     * fungsi untuk memproses pembuatan jadwal karyawan ke dalam database
+     */
     public function store_jadwal(Request $request)
     {
         $this->validate($request, [
@@ -266,7 +298,7 @@ class AdminController extends Controller
                     'note' => $request->note
                 ]);
                 
-                NotificationJadwalJob::dispatch($jadwalNew);
+                NotificationJadwalJob::dispatch($jadwalNew);  // fungsi pengiriman notifikasi ke email karyawan
 
                 return redirect()->back()->with('success', 'Berhasil Membuat Jadwal');
             } else {
@@ -277,6 +309,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * fungsi untuk memproses update jadwal karyawan
+     */
     public function update_jadwal(Request $request)
     {
         $this->validate($request, [
@@ -296,14 +331,16 @@ class AdminController extends Controller
 
             if($user && $jadwal){
 
+                // menghalang admin untuk melakukan update jadwal kurang dari 1 jam dari waktu yang sudah ditetapkam
                 $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
                 $waktuSekarang = Carbon::now();
                 $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
-
+                
                 if($selisihWaktu < 60){
                     return redirect()->back()->with('errors', 'Sudah tidak dapat melakukan edit jadwal');
                 }
 
+                // Update Jadwal ke database
                 $jadwal->update([
                     'id_karyawan' => $user->id,
                     'tanggal' => $request->tanggal,
@@ -322,6 +359,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * fungsi untuk memproses penghapusan data jadwal karyawan
+     */
     public function delete_jadwal(Request $request)
     {
         $id_jadwal = $request->data_id;
@@ -334,6 +374,7 @@ class AdminController extends Controller
             $waktuSekarang = Carbon::now();
             $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
             
+            // admin hanya bisa menghapus jadwal paling lambat 1 jam dari waktu jadwal yang sudah di tentukan
             if($selisihWaktu < 60 && $waktuJadwal->diffInHours($waktuSekarang, false) < 24){
                 return response()->json([
                     'type' => 'errors',
@@ -358,6 +399,9 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * fungsi untuk menampilkan detail jadwal yang sudah dibuat
+     */
     public function show_jadwal($id)
     {
         $jadwal = Jadwal::find($id);
@@ -365,11 +409,17 @@ class AdminController extends Controller
         return view('admin.karyawan.show', compact('jadwal'));
     }
 
+    /**
+     * fungsi untuk menampilkan halaman profile admin / update password dan email
+     */
     public function profile()
     {
         return view('admin.auth.profile');
     }
-
+    
+    /**
+     * fungsi untuk memproses update password dan email admin
+     */
     public function updatePassword(Request $request)
     {
         $validated = $request->validateWithBag('updatePassword', [
@@ -395,11 +445,17 @@ class AdminController extends Controller
         return back()->with('success', 'Berhasil Memperbarui Akun');
     }
 
+    /**
+     * fungsi untuk menampilkan halaman riwayat jadwal
+     */
     public function history()
     {
         return view('admin.history.index');
     }
 
+    /**
+     * fungsi untuk menampilkan riwayat jadwal berdasarkan tanggal
+     */
     public function getHistory($tanggal)
     {
         $jadwals = Jadwal::whereDate('tanggal', $tanggal)->orderBy('created_at', 'desc')->get();
@@ -408,6 +464,9 @@ class AdminController extends Controller
         return view('admin.history.show', compact('jadwals', 'tanggal', 'karyawans'));
     }
 
+    /**
+     * fungsi untuk memproses export jadwal ke excel
+     */
     public function export_jadwal($option)
     {
         $tanggal = Carbon::parse($option);

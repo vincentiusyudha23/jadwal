@@ -19,7 +19,11 @@
         <div class="d-flex flex-column flex-md-row gap-2 w-100 justify-content-center mt-2">
             <button class="btn btn-info" onclick="printIframe()">Print</button>
             <button class="btn btn-success" onclick="downloadPDF()">Unduh</button>
+            @if (Auth::user()->hasRole('admin'))
+            <a href="{{ route('admin.gaji.details') . '?bulan=' . $gaji->created_at->translatedFormat('F Y') }}" class="btn btn-secondary">Cancel</a>
+            @else
             <a href="{{ route(route_prefix() . 'gaji.riwayat') }}" class="btn btn-secondary">Cancel</a>
+            @endif
         </div>
     </x-navbar-admin>
 @endsection
