@@ -425,7 +425,7 @@ class AdminController extends Controller
         $validated = $request->validateWithBag('updatePassword', [
             'username' => ['required'],
             'password' => ['nullable',Password::defaults(), 'confirmed'],
-            'email' => ['required']
+            'email' => ['required', 'unique:users,email,'.$request->user()->id]
         ]);
         
         $data = [
