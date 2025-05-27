@@ -31,7 +31,16 @@ class RunNotificationWorkReport extends Command
         Jadwal::where('tanggal', Carbon::now()->format('Y-m-d'))
             ->get()
             ->each(function ($jadwal) {
-                NotificationWorkReportJob::dispatch($jadwal);
+                if(now()->format('H:i') == '16:00'){
+                    NotificationWorkReportJob::dispatch($jadwal, 'work');
+                }
+
+                $waktuJadwal = Carbon::parse($jadwal->waktu)->subHour();
+                $satuJamSebelum = $waktuJadwal->format('H:i');
+
+                if(now()->format('H:i') == $satuJamSebelum){
+                    NotificationWorkReportJob::dispatch($jadwal, 'jadwal');
+                }
             });
     }
 }

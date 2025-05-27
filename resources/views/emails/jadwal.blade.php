@@ -18,7 +18,7 @@
                         <tr>
                             <td>
                                 <p>Halo <strong>{{ $jadwal?->user?->name ?? '' }}</strong>,</p>
-                                <p>Anda memiliki jadwal pekerjaan yang baru saja dibuat. Berikut rinciannya:</p>
+                                <p>{{ $msg_jadwal ?? 'Anda memiliki jadwal pekerjaan yang baru saja dibuat.' }} Berikut rinciannya:</p>
                                 
                                 <table role="presentation" border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse; margin: 3% 0;">
                                     <tr>

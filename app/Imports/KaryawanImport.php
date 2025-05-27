@@ -39,7 +39,7 @@ class KaryawanImport implements ToCollection, WithHeadingRow, WithValidation, Sk
             if($user){
                 $user->update([
                     'name' => $karyawan['Nama'],
-                    'id_karyawan' => (int) $karyawan['ID'],
+                    'id_karyawan' => (string) $karyawan['ID'],
                     'username' => $username,
                     'password' => Hash::make($password),
                     'enc_password' => Crypt::encryptString($password),
@@ -49,7 +49,7 @@ class KaryawanImport implements ToCollection, WithHeadingRow, WithValidation, Sk
             }else{
                 $user = User::create([
                     'name' => $karyawan['Nama'],
-                    'id_karyawan' => (int) $karyawan['ID'],
+                    'id_karyawan' => (string) $karyawan['ID'],
                     'username' => $username,
                     'password' => Hash::make($password),
                     'enc_password' => Crypt::encryptString($password),

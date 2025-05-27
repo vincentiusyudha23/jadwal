@@ -8,9 +8,7 @@ class JabatanEnum
 
     public static function getJabatan()
     {
-        return [
-            'spv' => 'Spv'
-        ];
+        return [];
     }
 
     public static function getItemJabatan($text)

@@ -272,7 +272,7 @@ class AdminController extends Controller
             'tujuan' => ['required', 'max:255'],
             'tugas' => ['required'],
             'waktu' => ['required'],
-            'note' => ['required']
+            'note' => ['nullable']
         ]);
 
         try{

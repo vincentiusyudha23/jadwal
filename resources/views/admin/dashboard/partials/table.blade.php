@@ -10,7 +10,7 @@
                 <th scope="col">Tugas</th>
                 <th scope="col">Catatan</th>
                 <th scope="col">Status</th>
-                <th scope="col">Aksi</th>
+                <th scope="col" class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                     <td>
                         <x-status-jadwal type="button" :status="$jadwal->status"/>
                     </td>
-                    <td>
+                    <td class="text-center">
                         @if (Auth::user()->hasRole('admin'))
                             <div class="d-flex gap-2 justify-content-center">
                                 <a href="{{ route('admin.karyawan.jadwal.show', ['id' => $jadwal->id]) }}"
@@ -86,9 +86,8 @@
                                 <x-button-delete table="tabel-data-jadwal" :data_id="$jadwal->id" :route="route('admin.karyawan.jadwal.delete')" method="POST" />
                             </div>  
                         @else
-                            <a href="{{ route('karyawan.jadwal.show', ['id' => $jadwal->id]) }}" class="btn btn-sm btn-success fs-6">
-                                <i class="fa-solid fa-arrow-up-from-bracket me-1"></i>
-                                Bukti
+                            <a href="{{ route('karyawan.jadwal.show', ['id' => $jadwal->id]) }}" class="btn btn-sm btn-success">
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
                             </a>
                         @endif
                     </td>

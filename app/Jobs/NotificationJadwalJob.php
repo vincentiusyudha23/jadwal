@@ -31,7 +31,8 @@ class NotificationJadwalJob implements ShouldQueue
             'subject' => 'Jadwal Pekerjaan Terbaru!',
             'view' => 'jadwal',
             'viewData' => [
-                'jadwal' => $this->jadwal
+                'jadwal' => $this->jadwal,
+                'msg_jadwal' => 'Anda memiliki jadwal pekerjaan yang baru saja dibuat.'
             ]
         ]);
     }

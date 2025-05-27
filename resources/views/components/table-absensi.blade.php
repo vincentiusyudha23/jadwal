@@ -7,8 +7,8 @@
                 <th>Nama</th>
                 <th class="text-center">Waktu Masuk</th>
                 <th class="text-center">Waktu Pulang</th>
-                <th>
-                    <p class="text-center">Total</p>
+                <th class="text-center">
+                    Total
                 </th>
                 <th>Lokasi</th>
                 <th>Aksi</th>

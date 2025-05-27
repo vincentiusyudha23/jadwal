@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:run-notification-user --type=masuk')->dailyAt('07:30');
         $schedule->command('app:run-notification-user --type=pulang')->dailyAt('16:30');
-        $schedule->command('app:run-notification-work-report')->dailyAt('16:00');
+        $schedule->command('app:run-notification-work-report')->everyMinute();
     }
 
     /**

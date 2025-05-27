@@ -49,7 +49,7 @@ class KaryawanController extends Controller
             'image' => ['required', 'array'],
             'image.0' => ['required', 'string'],
             'image.1' => ['nullable', 'string'],
-            'work_report' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
+            'work_report' => ['nullable', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif', 'max:10240']
         ], [], [
             'image' => 'Foto Bukti',
             'image.0' => 'Foto Bukti',

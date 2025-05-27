@@ -133,9 +133,9 @@ if (!function_exists('withoutCurrency')) {
 if(!function_exists('sendEmail')){
     function sendEmail($data= [])
     {
-        if(env('APP_ENV') == 'local'){
-            return true;
-        }
+        // if(env('APP_ENV') == 'local'){
+        //     return true;
+        // }
 
         if (!isset($data['to']) || !isset($data['subject']) || !isset($data['view'])) {
             return false;
