@@ -321,7 +321,7 @@ class AdminController extends Controller
             'tujuan' => ['required', 'max:255'],
             'tugas' => ['required'],
             'waktu' => ['required'],
-            'note' => ['required']
+            'note' => ['nullable']
         ]);
 
         try{
@@ -602,7 +602,7 @@ class AdminController extends Controller
 
     public function dataAbsensi()
     {
-        $absensi = Absen::where('type', 2)->orderBy('created_at', 'desc')->get()->groupBy('tanggal')->keys()->map(function($item){
+        $absensi = Absen::where('type', 1)->orderBy('created_at', 'desc')->get()->groupBy('tanggal')->keys()->map(function($item){
             return Carbon::parse($item)->format('d/m/Y');
         })->toArray();
         
