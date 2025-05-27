@@ -39,7 +39,6 @@
             init(){
                 this.jadwalArr = this.jadwal
                 this.$watch('tanggal', val => {
-                    console.log(val);
                     
                     this.jadwalArr = val
                 })
