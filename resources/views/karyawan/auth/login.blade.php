@@ -72,10 +72,8 @@
                             </div>
                         </div>
                         <div class="w-100 mb-3">
-                            <button id="show-password" class="btn btn-transparent" type="button" style="border: 0px;">
-                                <input type="checkbox" class="form-check-input">
-                                <span class="text-white px-2">Show Password</span>
-                            </button>
+                            <input type="checkbox" class="form-check-input" id="show-password">
+                            <label for="show-password" class="form-label text-white">Show Password</label>
                         </div>
                         <div class="w-100">
                             <button class="btn btn-light w-100" type="submit">
@@ -92,17 +90,11 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#show-password').on('click', function() {
+            $('#show-password').on('input', function(){
                 var el = $(this);
-                var checked = el.find('input[type="checkbox"]');
-
-                if (checked.prop('checked')) {
-                    checked.attr('checked', false);
-                    $('input[name="password"]').attr('type', 'password');
-                } else {
-                    checked.attr('checked', 'checked');
-                    $('input[name="password"]').attr('type', 'text');
-                }
+                var type = el.prop('checked') ? 'text' : 'password';
+                
+                $('input[name="password"]').attr('type', type);
             });
         });
     </script>

@@ -28,7 +28,7 @@
                                     <br>
                                     Kami ingin mengingatkan bahwa Anda perlu melakukan 
                                     @if($type == 'Masuk')
-                                        <strong>absen masuk sebelum pukul 07.00 pagi</strong>. 
+                                        <strong>absen masuk sebelum pukul 08.00 pagi</strong>. 
                                     @endif
                                     @if($type == 'Pulang')
                                         <strong>absen pulang sebelum pukul 05.00 sore</strong>. 
@@ -41,7 +41,7 @@
                         <tr>
                             <td>
                                 @if($type == 'Masuk')
-                                    <p style="margin: 3% 1% 0 0;"><strong>📍 Waktu Absen Masuk:</strong> 07.00 WIB</p>
+                                    <p style="margin: 3% 1% 0 0;"><strong>📍 Waktu Absen Masuk:</strong> 08.00 WIB</p>
                                 @endif
                                 @if($type == 'Pulang')
                                     <p style="margin: 3% 1% 0 0;"><strong>📍 Waktu Absen Pulang:</strong> 17.00 WIB</p>

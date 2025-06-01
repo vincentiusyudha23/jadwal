@@ -335,9 +335,10 @@ class AdminController extends Controller
                 $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
                 $waktuSekarang = Carbon::now();
                 $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
+                $waktu_bisa_edit = $waktuJadwal->copy()->addDay()->setTime(6, 0, 0);
                 
-                if($selisihWaktu < 60){
-                    return redirect()->back()->with('errors', 'Sudah tidak dapat melakukan edit jadwal');
+                if($selisihWaktu < 60 && $waktuSekarang->lt($waktu_bisa_edit)){
+                    return redirect()->back()->with('errors', 'Anda dapat melakukan edit jadwal di esok hari pukul 06:00');
                 }
 
                 // Update Jadwal ke database
@@ -373,12 +374,13 @@ class AdminController extends Controller
             $waktuJadwal = Carbon::parse($jadwal->tanggal->format('Y-m-d') . ' ' . $jadwal->waktu);
             $waktuSekarang = Carbon::now();
             $selisihWaktu = $waktuSekarang->diffInMinutes($waktuJadwal, false);
-            
+            $waktu_bisa_hapus = $waktuJadwal->copy()->addDay()->setTime(6, 0, 0);
+
             // admin hanya bisa menghapus jadwal paling lambat 1 jam dari waktu jadwal yang sudah di tentukan
-            if($selisihWaktu < 60 && $waktuJadwal->diffInHours($waktuSekarang, false) < 24){
+            if($selisihWaktu < 60 && $waktuSekarang->lt($waktu_bisa_hapus)){
                 return response()->json([
                     'type' => 'errors',
-                    'msg' => 'Sudah tidak dapat menghapus jadwal',
+                    'msg' => 'Anda dapat menghapus jadwal di esok hari pukul 06:00',
                 ]);
             }
 

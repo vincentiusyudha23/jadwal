@@ -59,11 +59,6 @@
                                             <tr>
                                                 <td style="text-align: center;">
                                                     <p style="font-size: 13px; color: #777;">
-                                                        <strong>PT. WIRA GRIYA</strong>
-                                                        <br>
-                                                        HRD | ADMIN | +628000000000
-                                                        <br>
-                                                        <br>
                                                         © {{ date('Y') }} PT. WIRA GRIYA. Semua hak dilindungi.
                                                     </p>
                                                 </td>
