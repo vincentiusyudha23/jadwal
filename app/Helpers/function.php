@@ -180,6 +180,12 @@ if(!function_exists('route_prefix')){
     }
 }
 
+if(!function_exists('prefix_password')){
+    function prefix_password(){
+        return request()->segment(1) == 'admin' ? 'admin' : 'karyawan';
+    }
+}
+
 if(!function_exists('kalkulasiHariIjin')){
     function kalkulasiHariIjin($data){
         $start = Carbon::parse($data->from_date);

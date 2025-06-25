@@ -22,6 +22,6 @@
 
 @section('content')
 <section class="container vh-100">
-    <livewire:forgot-password/>
+    <livewire:forgot-password :role="prefix_password()"/>
 </section>
 @endsection

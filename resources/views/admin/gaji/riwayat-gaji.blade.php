@@ -25,10 +25,19 @@
                     <div class="card-title mb-4 w-100 d-flex justify-content-between align-items-center">
                         <span class="fs-5 fw-bold text-gray-600">Riwayat Gaji</span>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 d-flex gap-2 position-relative">
                         <div class="input-group ">
                             <input type="text" x-model="search" class="form-control" name="search" id="search" placeholder="Pencarian...">
                         </div>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-secondary opacity-75" x-on:click="openDatePicker">
+                                <i class="las la-calendar la-lg"></i>
+                            </button>
+                            <button x-show="isSelectDate" class="btn btn-sm btn-danger" x-on:click="clearSelectedDate">
+                                X
+                            </button>
+                        </div>
+                        <input x-ref="dateInput" type="text" class="position-absolute" style="opacity: 0; width: 1px; height: 1px; top: 100%; right: 0;">
                     </div>
 
                     <div class="d-flex flex-column list-gaji">
@@ -61,14 +70,75 @@
                 penggajian: @json($penggajian),
                 penggajianArr : [],
                 search: '',
+                datePicker: null,
+                isSelectDate: false,
                 get bulanGaji(){
                     return _.filter(this.penggajian, (bulan) => bulan.toLowerCase().includes(this.search.toLowerCase()));
                 },
+                openDatePicker(){
+                    this.$nextTick(() => {
+                        this.datePicker.open();
+                        // Trigger reposition setelah dibuka
+                        setTimeout(() => {
+                            const calendar = document.querySelector('.flatpickr-calendar');
+                            if (calendar) {
+                                calendar.style.position = 'absolute';
+                                calendar.style.top = '100%';
+                                calendar.style.right = '0';
+                                calendar.style.marginTop = '5px';
+                            }
+                        }, 10);
+                    })
+                },
+                clearSelectedDate(){
+                    this.isSelectDate = false;
+                    this.penggajianArr = this.penggajian;
+                },
                 init(){
-                    this.penggajianArr = this.penggajian
+                    const $this = this;
+                    this.penggajianArr = this.penggajian                    
 
                     this.$watch('bulanGaji', val => {
                         this.penggajianArr = val;
+                    })
+
+                    this.$nextTick(() => {
+                        this.datePicker = flatpickr(this.$refs.dateInput, {
+                            allowInput: true,
+                            position: "below", // Posisi calendar
+                            appendTo: this.$refs.dateInput.parentElement, // Menempel pada parent
+                            static: true,
+                            plugins: [
+                                new monthSelectPlugin({
+                                    shorthand: false, //defaults to false
+                                    dateFormat: "m.y", //defaults to "F Y"
+                                    altFormat: "F Y", //defaults to "F Y"
+                                })
+                            ],
+                            locale: "id",
+                            onChange: (selectedDates) => {
+                                $this.isSelectDate = true;
+                                const monthIndex = selectedDates[0].getMonth();
+                                const year = selectedDates[0].getFullYear();
+                                const monthNames = [
+                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                                ];
+
+                                let selectedDate = `${monthNames[monthIndex]} ${year}`;
+                                const data = $this.penggajian
+                                $this.penggajianArr = data.filter(item => {
+                                    return item == selectedDate;
+                                });
+                            },
+                            onOpen: () => {
+                                const calendar = document.querySelector('.flatpickr-calendar');
+                                calendar.style.position = 'absolute';
+                                calendar.style.top = '100%';
+                                calendar.style.right = '0';
+                                calendar.style.marginTop = '5px';
+                            }
+                        });
                     })
                 }
             }))

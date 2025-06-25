@@ -109,6 +109,7 @@ Route::middleware('guest')->group(function(){
 
     Route::get('/', [AuthenticatedSessionController::class, 'login_karyawan'])->name('firstpage_karyawan');
     Route::post('/login', [AuthenticatedSessionController::class, 'storeKaryawan'])->name('login.karyawan');
+    Route::get('/forgot-password-karyawan', [AuthenticatedSessionController::class, 'forgotPassword'])->name('forgot_password');
 
     Route::prefix('admin')->group(function(){
         Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('first_page');

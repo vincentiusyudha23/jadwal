@@ -76,9 +76,14 @@
                             <label for="show-password" class="form-label text-white">Show Password</label>
                         </div>
                         <div class="w-100">
-                            <button class="btn btn-light w-100" type="submit">
+                            <button class="btn btn-light w-100 mb-2" type="submit">
                                 <span class="fw-bold">SIGN IN</span>
                             </button>
+                            <div class="text-center">
+                                <a class="text-white" href="{{ route('forgot_password') }}">
+                                    Lupa Password
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>

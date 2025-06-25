@@ -321,9 +321,29 @@
                     toastr.warning('Isi Terlebih Dahulu Username dan ID Karyawan.');
                 }
             });
-            $('#submit-new-karyawan').on('click', function(){
-                var spinner = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                $(this).html(spinner).addClass('disabled');
+            $('#karyawan_form').on('submit', function(e) {
+                e.preventDefault();
+                const form = this;
+                const submitBtn = $(form).find('#submit-new-karyawan');
+                let gaji = $(form).find('#gaji').val().replace(/Rp\s?/g, '').replace(/\./g, '');
+
+                if(gaji.startsWith('-')){
+                    toastr.error('Gaji tidak boleh minus!');
+                    return;
+                }
+
+                const spinner = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+                submitBtn.html(spinner).addClass('disabled');
+                
+                if (!form.checkValidity()) {
+                    submitBtn.html('Submit').removeClass('disabled');
+                    form.reportValidity();
+                    return;
+                }
+
+                setTimeout(() => {
+                    form.submit();
+                }, 100);
             });
             
             $(document).on('click', '.btn-edit-karyawan', function(){
@@ -365,6 +385,12 @@
                 var el = $(this);
                 var formData = new FormData(this);
                 var btn = el.find('button[type="submit"]');
+                var gaji = el.find('#gaji-edit').val().replace(/Rp\s?/g, '').replace(/\./g, '');
+
+                if(gaji.startsWith('-')){
+                    toastr.error('Gaji tidak boleh minus!');
+                    return;
+                }
 
                 $.ajax({
                     type: 'POST',
