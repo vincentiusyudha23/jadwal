@@ -52,18 +52,18 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" label="Izin" name="ijin" placeHolder="Ijin" x-model="form.ijin"/>
+                                <x-global-input type="text" label="Izin" name="ijin" placeHolder="Ijin" x-model="form.ijin" readonly disabled/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" label="Sakit" name="sakit" placeHolder="Sakit" x-model="form.sakit"/>
+                                <x-global-input type="text" label="Sakit" name="sakit" placeHolder="Sakit" x-model="form.sakit" readonly disabled/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" label="Cuti" name="cuti" placeHolder="Cuti" x-model="form.cuti"/>
+                                <x-global-input type="text" label="Cuti" name="cuti" placeHolder="Cuti" x-model="form.cuti" readonly disabled/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="text" label="Alpa" name="alpa" placeHolder="Alpa" x-model="form.alpa"/>
+                                <x-global-input type="text" label="Alpa" name="alpa" placeHolder="Alpa" x-model="form.alpa" readonly disabled/>
                             </div>
                         </div>
                         <div class="row">
@@ -71,7 +71,7 @@
                                 <x-global-input type="number" label="Nomor Rekening" name="no_rekening" placeHolder="Nomor Rekening" x-model="form.no_rek" disabled readonly/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" label="Total Absensi" name="total_absen" placeHolder="Total Absensi" x-model="form.total_absen"/>
+                                <x-global-input type="number" label="Total Absensi" name="total_absen" placeHolder="Total Absensi" x-model="form.total_absen" disabled readonly/>
                             </div>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                                 <x-global-input data-cleave type="text" name="pt_bpjs_kesehatan" placeHolder="BPJS Kesehatan"/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input data-cleave type="text" name="pt_absensi" placeHolder="Potongan Absensi"/>
+                                <x-global-input data-cleave type="text" name="pt_absensi" placeHolder="Potongan Absensi" x-model="form.pt_absensi"/>
                             </div>
                         </div>
                         <div class="row">
@@ -297,6 +297,9 @@
 
                     let total = totalHariKerja - (ijin + sakit + cuti + totalAbsen);
                     this.form.alpa = total < 0 ? 0 : total;
+
+                    let gajiperhari = parseInt(this.form.gaji_pokok) > 0 && totalHariKerja > 0 ? parseInt(this.form.gaji_pokok) / totalHariKerja : 0;
+                    this.form.pt_absensi = gajiperhari * total;
                 },
                 intializeSelect2(){
                     this.selectKaryawan = $(this.$refs.selectKaryawan).select2({
