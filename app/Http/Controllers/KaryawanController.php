@@ -381,27 +381,31 @@ class KaryawanController extends Controller
 
         try {
             DB::beginTransaction();
-
-            if(kalkulasiHariIjin((object)$request->all()) > 12){
-                return redirect()->back()->with('errors', 'Total hari izin tidak boleh lebih dari 12');
+            
+            if($request->tipe_ijin == 3 && kalkulasiHariIjin((object)$request->all()) > 12){
+                return redirect()->back()->with('errors', 'Total hari pengajuan cuti tidak boleh lebih dari 12');
             }
 
             $user = Auth::user();
 
-            $total_izin = 0;
-            $awalTahun = now()->startOfYear();
-            $akhirTahun = now()->endOfYear();
-
-            $user->ijinKaryawan()->where(function($query) use ($awalTahun, $akhirTahun){
-                $query->whereBetween('from_date', [$awalTahun, $akhirTahun])
-                    ->orWhereBetween('to_date', [$awalTahun, $akhirTahun]);
-            })->get()
-            ->each(function($ijin) use (&$total_izin){
-                $total_izin += kalkulasiHariIjin($ijin);
-            });
-
-            if($total_izin >= 12 || $total_izin + kalkulasiHariIjin((object)$request->all()) > 12){
-                return redirect()->back()->with('errors', 'Tidak bisa mengajukan izin karena total izin anda tahun ini sudah 12 kali');
+            if($request->tipe_ijin == 3){
+                $total_izin = 0;
+                $awalTahun = now()->startOfYear();
+                $akhirTahun = now()->endOfYear();
+    
+                $user->ijinKaryawan()->where('type', 3)
+                ->where(function($query) use ($awalTahun, $akhirTahun){
+                    $query->whereBetween('from_date', [$awalTahun, $akhirTahun])
+                        ->orWhereBetween('to_date', [$awalTahun, $akhirTahun]);
+                })
+                ->get()
+                ->each(function($ijin) use (&$total_izin){
+                    $total_izin += kalkulasiHariIjin($ijin);
+                });
+    
+                if($total_izin >= 12 || $total_izin + kalkulasiHariIjin((object)$request->all()) > 12){
+                    return redirect()->back()->with('errors', 'Tidak bisa mengajukan cuti karena total cuti anda tahun ini sudah 12 kali');
+                }
             }
 
             if($user->ijinKaryawan()

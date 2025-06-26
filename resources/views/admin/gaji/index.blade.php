@@ -158,7 +158,7 @@
                                 <x-global-input data-cleave type="text" name="pt_bpjs_kesehatan" placeHolder="BPJS Kesehatan"/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input data-cleave type="text" name="pt_absensi" placeHolder="Potongan Absensi" x-model="form.pt_absensi"/>
+                                <x-global-input data-cleave type="text" name="pt_absensi" placeHolder="Potongan Absensi"/>
                             </div>
                         </div>
                         <div class="row">
@@ -242,6 +242,7 @@
                 },
                 totalTerima: 'Total Diterima : Rp 0',
                 isLoading: false,
+                pt_absen: null,
                 get karyawanData(){
                     return _.find(this.karyawans, {
                         idKaryawan: this.selectKaryawanId
@@ -299,7 +300,13 @@
                     this.form.alpa = total < 0 ? 0 : total;
 
                     let gajiperhari = parseInt(this.form.gaji_pokok) > 0 && totalHariKerja > 0 ? parseInt(this.form.gaji_pokok) / totalHariKerja : 0;
-                    this.form.pt_absensi = gajiperhari * total;
+                    let potongan_cuti = cuti > 12 ? (cuti - 12) : 0;
+
+                    this.form.pt_absensi = gajiperhari * (total + ijin + sakit + potongan_cuti);
+                    const inputPtAbsen = document.querySelector('[name="pt_absensi"]');
+                    if(inputPtAbsen && inputPtAbsen.cleaveInstance){
+                        inputPtAbsen.cleaveInstance.setRawValue(this.form.pt_absensi.toString());
+                    }
                 },
                 intializeSelect2(){
                     this.selectKaryawan = $(this.$refs.selectKaryawan).select2({
@@ -349,7 +356,7 @@
                 },
                 initializeCleave(){
                     document.querySelectorAll('[data-cleave]').forEach(input => {
-                        new Cleave(input, {
+                        input.cleaveInstance = new Cleave(input, {
                             numeral: true,
                             prefix: 'Rp ',
                             delimiter: '.',       
@@ -364,6 +371,9 @@
                     })
                 },
                 init(){
+                    this.intializeSelect2()
+                    this.initializeCleave()
+
                     this.$watch('karyawanData', val => {
                         let data = this.karyawanData
 
@@ -403,9 +413,8 @@
                     this.$watch('form.cuti', () => this.calculateAlpa());
                     this.$watch('form.total_absen', () => this.calculateAlpa());
                     this.$watch('form.total_hari_kerja', () => this.calculateAlpa());
-    
-                    this.intializeSelect2()
-                    this.initializeCleave()
+
+                    
                 }
             }))
         });
