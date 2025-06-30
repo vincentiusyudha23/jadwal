@@ -72,6 +72,7 @@
                 search: '',
                 datePicker: null,
                 isSelectDate: false,
+                localSaved: null,
                 get bulanGaji(){
                     return _.filter(this.penggajian, (bulan) => bulan.toLowerCase().includes(this.search.toLowerCase()));
                 },
@@ -93,6 +94,27 @@
                 clearSelectedDate(){
                     this.isSelectDate = false;
                     this.penggajianArr = this.penggajian;
+
+                    if(this.localSaved){
+                        localStorage.removeItem('selectedDates');
+                        this.localSaved = null;
+                    }
+                },
+                handleFilter(selectedDates){
+                    this.isSelectDate = true;
+                    const monthIndex = new Date(selectedDates[0]).getMonth();
+                    const year = new Date(selectedDates[0]).getFullYear();
+                    const monthNames = [
+                        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                    ];
+
+                    let selectedDate = `${monthNames[monthIndex]} ${year}`;
+
+                    let data = this.penggajian;
+                    this.penggajianArr = data.filter(item => {
+                        return item == selectedDate;
+                    });
                 },
                 init(){
                     const $this = this;
@@ -117,19 +139,8 @@
                             ],
                             locale: "id",
                             onChange: (selectedDates) => {
-                                $this.isSelectDate = true;
-                                const monthIndex = selectedDates[0].getMonth();
-                                const year = selectedDates[0].getFullYear();
-                                const monthNames = [
-                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-                                ];
-
-                                let selectedDate = `${monthNames[monthIndex]} ${year}`;
-                                const data = $this.penggajian
-                                $this.penggajianArr = data.filter(item => {
-                                    return item == selectedDate;
-                                });
+                                localStorage.setItem('selectedDates', JSON.stringify(selectedDates));
+                                $this.handleFilter(selectedDates);
                             },
                             onOpen: () => {
                                 const calendar = document.querySelector('.flatpickr-calendar');
@@ -139,6 +150,11 @@
                                 calendar.style.marginTop = '5px';
                             }
                         });
+
+                        this.localSaved = JSON.parse(localStorage.getItem('selectedDates'));
+                        if(this.localSaved){
+                            this.datePicker.setDate(this.localSaved[0], true, 'm.y');
+                        }
                     })
                 }
             }))

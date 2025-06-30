@@ -72,6 +72,7 @@
                 search: '',
                 datePicker: null,
                 isSelectDate: false,
+                localSaved: null,
                 get tanggal(){
                     return _.filter(this.pengajuan, (tanggal) => {
                         const formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', {
@@ -99,6 +100,11 @@
                     this.datePicker.clear();
                     this.pengajuanArr = this.pengajuan
                     this.isSelectDate = false;
+
+                    if(this.localSaved){
+                        localStorage.removeItem('selectedDates');
+                        this.localSaved = null;
+                    }
                 },
                 init(){
                     const $this = this;
@@ -125,6 +131,7 @@
                             let data = $this.pengajuan;
 
                             if(start && end){
+                                localStorage.setItem('selectedDates', JSON.stringify(selectedDates));
                                 $this.pengajuanArr = data.filter(item => {
                                     const [day, month, year] = item.split('/');
                                     const itemDate = new Date(year, month - 1, day);
@@ -141,6 +148,13 @@
                             calendar.style.marginTop = '5px';
                         }
                     });
+
+                    this.localSaved = JSON.parse(localStorage.getItem('selectedDates'));
+                    if(this.localSaved){
+                        this.$nextTick(() => {
+                            this.datePicker.setDate(this.localSaved, true, 'd-m-Y');
+                        });
+                    }
                 }
             }))
         });

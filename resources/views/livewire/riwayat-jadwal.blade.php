@@ -41,6 +41,7 @@
                 end: null
             },
             isSelectDate: false,
+            localSaved: null,
             get tanggal(){
                 return _.filter(this.jadwal, (jadwal) => {
                     const formattedTanggal = new Date(jadwal.tanggal).toLocaleDateString('id-ID', {
@@ -69,6 +70,21 @@
                 this.datePicker.clear();
                 this.jadwalArr = this.jadwal;
                 this.isSelectDate = false;
+
+                if(this.localSaved){
+                    localStorage.removeItem('selectedDates');
+                    this.localSaved = null;
+                }
+            },
+            handleFilter(date){
+                this.isSelectDate = true;
+                let jadwalData = this.jadwal;
+                let start = new Date(date[0]);
+                let end = new Date(date[1]);
+                this.jadwalArr = jadwalData.filter(item => {
+                    const itemDate = new Date(item.tanggal);
+                    return itemDate >= start && (!end || itemDate <= end);
+                });
             },
             init(){
                 const $this = this;
@@ -86,17 +102,12 @@
                     static: true,
                     locale: "id",
                     onChange: (selectedDates) => {
-                        $this.isSelectDate = true;
                         let start = selectedDates[0];
                         let end = selectedDates[1];
-                        
-                        let jadwalData = $this.jadwal;
 
                         if(start && end){
-                            $this.jadwalArr = jadwalData.filter(item => {
-                                const itemDate = new Date(item.tanggal);
-                                return itemDate >= start && (!end || itemDate <= end);
-                            });
+                            localStorage.setItem('selectedDates', JSON.stringify(selectedDates));
+                            $this.handleFilter(selectedDates);
                         }
                     },
                     onOpen: () => {
@@ -107,6 +118,14 @@
                         calendar.style.marginTop = '5px';
                     }
                 });
+
+                this.localSaved = JSON.parse(localStorage.getItem('selectedDates'));
+
+                if(this.localSaved){
+                    this.$nextTick(() => {
+                        this.datePicker.setDate(this.localSaved, true);
+                    });
+                }
             }
         }))
     })
