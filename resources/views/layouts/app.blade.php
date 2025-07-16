@@ -48,7 +48,7 @@
         @yield('content')
         <div class="w-100 position-fixed bottom-0 bg-white pe-3">
             <div class="d-flex justify-content-center" style="width: 85%;">
-                <h6 class="collaboartion-text fw-bold">Collaboration with PT Wira Griya x Hangga Jati Priangga and Retri Dela Puspita</h6>
+                <h6 class="collaboartion-text fw-bold">Collaboration with PT Wira Griya x Hanggar Jati Priangga and Retri Dela Puspita</h6>
             </div>
         </div>
     </main>
