@@ -71,7 +71,7 @@
                                 <x-global-input type="number" label="Nomor Rekening" name="no_rekening" placeHolder="Nomor Rekening" x-model="form.no_rek" disabled readonly/>
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-global-input type="number" label="Total Absensi" name="total_absen" placeHolder="Total Absensi" x-model="form.total_absen" disabled readonly/>
+                                <x-global-input type="number" label="Total Absensi" name="total_absen" placeHolder="Total Absensi" x-model="form.total_absen"/>
                             </div>
                         </div>
                     </div>

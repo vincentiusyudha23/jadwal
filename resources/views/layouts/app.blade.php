@@ -27,12 +27,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/plugins/monthSelect/style.min.css">
     @stack('styles')
-    {{-- <style>
-        .title-sidebar.active{
+    <style>
+        /* .title-sidebar.active{
             background-image: url('{{ assets("img/logo-1.png") }}');
             background-size: 20px;
+        } */
+        .collaboartion-text{
+            font-size: 1em;
+            margin: 0;
+            padding: 5px 0;
         }
-    </style> --}}
+    </style>
 </head>
 
 <body class="p-0 m-0">
@@ -41,6 +46,11 @@
     </aside>
     <main class="main-content bg-gray-100">
         @yield('content')
+        <div class="w-100 position-fixed bottom-0 bg-white pe-3">
+            <div class="d-flex justify-content-center" style="width: 85%;">
+                <h6 class="collaboartion-text fw-bold">Collaboration with PT Wira Griya x Hangga Jati Priangga and Retri Dela Puspita</h6>
+            </div>
+        </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

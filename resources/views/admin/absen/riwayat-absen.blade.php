@@ -118,8 +118,11 @@
                     let data = this.absensi;
                     let start = new Date(date[0]);
                     let end = new Date(date[1]);
+                    
                     this.absensiArr = data.filter(item => {
-                        const itemDate = new Date(item);
+                        const [day, month, year] = item.split('/');
+                        const itemDate = new Date(year, month - 1, day);
+
                         return itemDate >= start && (!end || itemDate <= end);
                     });
                 },

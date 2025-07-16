@@ -39,19 +39,19 @@
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="input-group">
-                                        <input class="form-control" type="date" name="tanggal">
+                                        <input class="form-control" type="date" name="tanggal" placeholder="Tanggal">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6 col-12">
+                            <div class="row">
+                                <div class="col-md-6 col-12 mb-3">
                                     <div class="input-group">
                                         <input class="form-control" type="text" name="tujuan" placeholder="Tujuan...">
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12 mb-3">
                                     <div class="input-group">
-                                        <input class="form-control" type="time" name="waktu">
+                                        <input class="form-control" type="time" name="waktu" placeholder="Waktu">
                                     </div>
                                 </div>
                             </div>
