@@ -94,8 +94,12 @@ if(!function_exists('get_data_image')){
 if(!function_exists('global_assets_path')){
     function global_assets_path($path)
     {
-        return str_replace(['core/public/',
-                               'core\\public\\'], '', public_path($path));
+        if(env('APP_ENV') === 'production'){
+            $publicHtmlPath = '/home/wiragriy/public_html'; 
+            return str_replace(['core/public/', 'core\\public\\'], '', $publicHtmlPath . '/' .$path);
+        }else{
+            return str_replace(['core/public/', 'core\\public\\'], '', public_path($path));
+        }
     }
 }
 
